@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext"
 const MainChat = ({ ticket }) => {
   const { user } = useAuth();
   return (
-    <div key={ticket._id} style={{ width: '300px', padding: '10px', backgroundColor: !user.admin ? 'green' : ticket.adminLast ? 'gray' : 'green' }}>
+    <div key={ticket._id} style={{ width: '180px', padding: '10px', backgroundColor: !user.admin ? 'green' : ticket.adminLast ? 'gray' : 'green' }}>
       <NavLink to={`/chat/${ticket._id}`}><strong style={{ color: 'white' }}>Chat de {ticket._id.substring(0,8)}</strong></NavLink>
       <div>
         {ticket.messages.slice(-1).map((msg, index) => {
