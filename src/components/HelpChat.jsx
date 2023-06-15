@@ -68,10 +68,11 @@ const HelpChat = () => {
       setMsgList(prev => prev.filter(msg => msg.name !== tgt))
     };
 
-    return (
+    return (        
       <Draggable>
-        <div className='chat-popout' onClick={() => setTarget(tgt)}>
+        <div className='chat-popout'>
           <h1><b>{tgt}</b></h1>
+          <button onClick={() => setTarget('')} style={{ fontSize: '15pt', position: 'absolute', top: '-8px', right: '32px' }}>_</button>
           <button onClick={handlePopoutClose} style={{ position: 'absolute', top: '4px', right: '12px' }}>X</button>
           <div className="help-chat">
             <div className='help-chat--chat'>
@@ -122,9 +123,13 @@ const HelpChat = () => {
           <Button variant='green' size='xs' type='submit'>Enviar</Button>
         </form>}
       </div>
-      <div className='conversations'>
-        {convos.map((convo, key) => (<div key={key} className='conversation-popout'>{renderNewChat(convo)}</div>))}
-      </div>
+      {user.admin && <div className='conversations'>
+        {convos.map((tgt, key) => {
+          const convo = [...msgList].filter(msg => msg.byAdmin && msg.target === tgt || msg.name === tgt).slice(-1)[0].name;
+          if (tgt === target) return <div key={key} className='conversation-popout'>{renderNewChat(tgt)}</div>
+          else return <div key={key} style={{ cursor: 'pointer', backgroundColor: convo === tgt ? 'red' : 'black' }} className='chat-min' onClick={() => setTarget(tgt)}>{tgt}</div>
+        })}
+      </div>}
     </div>
   )
 }
