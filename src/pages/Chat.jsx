@@ -18,14 +18,14 @@ const Chat = () => {
       </div> :
       <>
         {!user.admin ? 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', padding: '0px 10px' }}>
+          <div className="chat-box">
             {user.tickets.map(ticket => {
               if (ticket.open && ticket.messages.length > 0) return (
                 <MainChat ticket={ticket} key={ticket._id} />
               )
             })}
           </div> : 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', padding: '0px 10px' }}>
+          <div className="chat-box">
             {user.chats.map(ticket => {
               if (ticket.open) return (
                 <MainChat ticket={ticket} key={ticket._id} />

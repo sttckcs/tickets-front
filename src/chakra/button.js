@@ -10,7 +10,7 @@ export const Button = {
   },
   sizes: {
     sm: {
-      fontSize: '8pt'
+      fontSize: '9pt'
     },
     md: {
       fontSize: '10pt'

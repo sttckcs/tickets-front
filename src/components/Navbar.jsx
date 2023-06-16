@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <div className='nav-container'>
-      <h1 style={{ fontSize: '24px' }}><b>Staxx Tickets CS:GO</b></h1>
+      <h1 style={{ fontSize: '28px' }}><b>Staxx Tickets CS:GO</b></h1>
       <nav id='nav'>
         {!user ? 
         <>

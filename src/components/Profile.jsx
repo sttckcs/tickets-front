@@ -1,7 +1,7 @@
 const Profile = ({ user }) => {
   return (
     <>
-      <strong>Perfil</strong>
+      <strong style={{ fontSize: '18pt' }}>Perfil</strong>
       <div style={{ margin: '10px 0 20px 0' }}>
       <h2><b>Nick:</b> {user.nick}</h2>
       <h2><b>Nombre:</b> {user.name}</h2>

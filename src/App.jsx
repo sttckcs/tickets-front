@@ -50,7 +50,7 @@ function App() {
                     startTransition(() => {
                       setLoad(prev => !prev);
                     })
-                  }}><b>Necesitas ayuda?</b></button>
+                  }}><p><b>Necesitas ayuda?</b></p></button>
               </div>
             }
             <footer className="footer">

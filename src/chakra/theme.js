@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react"
 import { Button } from './button'
+import { Modal } from './modal'
 
 // 2. Call `extendTheme` and pass your custom values
 export const theme = extendTheme({
@@ -9,16 +10,17 @@ export const theme = extendTheme({
     },
   },
   fonts: {
-    body: 'Open Sans'
+    body: 'Segoe UI'
   },
   styles: {
     global: () => ({
       main: {
-        bg: 'grey.200',
+        bg: 'gray.400',
       }
     })
   },
   components: {
-    Button
+    Button,
+    Modal
   }
 })

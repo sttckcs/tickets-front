@@ -95,7 +95,7 @@ const ChatRoom = ({ tId, handleChat }) => {
   }
 
   return (
-    <>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
       {loading ?
         <div className={`${tId ? 'modal-loader' : 'loader'}`}>
           <Waveform />
@@ -128,7 +128,7 @@ const ChatRoom = ({ tId, handleChat }) => {
           </div>
         : ''
       }
-    </>
+    </div>
   )
 }
 

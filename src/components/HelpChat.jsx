@@ -65,15 +65,21 @@ const HelpChat = () => {
       setConvos((prev) =>
         prev.filter((convo) => convo !== tgt)
       );
-      setMsgList(prev => prev.filter(msg => msg.name !== tgt))
+      setMsgList(prev => prev.filter(msg => {
+        if (msg.name === tgt) return false
+        if (msg.target === tgt) return false;
+        return true;
+      }))
     };
 
     return (        
       <Draggable>
         <div className='chat-popout'>
-          <h1><b>{tgt}</b></h1>
-          <button onClick={() => setTarget('')} style={{ fontSize: '15pt', position: 'absolute', top: '-8px', right: '32px' }}>_</button>
-          <button onClick={handlePopoutClose} style={{ position: 'absolute', top: '4px', right: '12px' }}>X</button>
+          <div style={{ backgroundColor: '#2D3748', color: '#CBD5E0', padding: '6px' }}>
+            <h1><b>{tgt}</b></h1>
+            <button onClick={() => setTarget('')} style={{ fontSize: '17pt', position: 'absolute', top: '-10px', right: '34px' }}>_</button>
+            <button onClick={handlePopoutClose} style={{ position: 'absolute', top: '4px', right: '12px' }}><b>X</b></button>
+          </div>
           <div className="help-chat">
             <div className='help-chat--chat'>
               <ul style={{ listStyleType: 'none' }}>
@@ -83,7 +89,7 @@ const HelpChat = () => {
                     {date === 'Invalid Date Invalid Date' ?
                       '' : 
                       <>
-                        <b>{msg.name} </b><span style={{ fontSize: '12px' }} >{date}</span><h5>{msg.msg}</h5>
+                        <b>{msg.name} </b><span style={{ fontSize: '12px', color: '#CBD5E0' }} >{date}</span><h5>{msg.msg}</h5>
                       </>
                     }
                   </li>
@@ -92,7 +98,7 @@ const HelpChat = () => {
             </div>
             {target === tgt && <form onSubmit={newMessageSubmit} style={{ display: 'flex', alignItems: 'center' }}>
               <input type='text' name='msg' value={chatMessage.msg} onChange={handleChange} required />
-              <Button variant='green' size='xs' type='submit'>Enviar</Button>
+              <Button variant='blue' size='sm' type='submit'>Enviar</Button>
             </form>}
           </div>
         </div>
@@ -111,7 +117,7 @@ const HelpChat = () => {
                 {date === 'Invalid Date Invalid Date' ?
                   '' : 
                   <>
-                    <b style={{ cursor: 'pointer' }} onClick={() => handleNewChat(msg.name)}>{msg.name} </b><span style={{ fontSize: '12px' }} >{date}</span><h5>{msg.msg}</h5>
+                    <b style={{ cursor: 'pointer' }} onClick={() => handleNewChat(msg.name)}>{msg.name} </b><span style={{ fontSize: '12px', color: '#CBD5E0' }} >{date}</span><h5 style={{ color: 'white' }}>{msg.msg}</h5>
                   </>
                 }
               </li>
@@ -119,15 +125,15 @@ const HelpChat = () => {
           </ul>
         </div>
         {!user.admin && <form onSubmit={newMessageSubmit} style={{ display: 'flex', alignItems: 'center' }}>
-          <input type='text' name='msg' value={chatMessage.msg} onChange={handleChange} required />
-          <Button variant='green' size='xs' type='submit'>Enviar</Button>
+          <input type='text' style={{ color: 'black' }} name='msg' value={chatMessage.msg} onChange={handleChange} required />
+          <Button variant='blue' size='sm' type='submit'>Enviar</Button>
         </form>}
       </div>
       {user.admin && <div className='conversations'>
         {convos.map((tgt, key) => {
           const convo = [...msgList].filter(msg => msg.byAdmin && msg.target === tgt || msg.name === tgt).slice(-1)[0].name;
           if (tgt === target) return <div key={key} className='conversation-popout'>{renderNewChat(tgt)}</div>
-          else return <div key={key} style={{ cursor: 'pointer', backgroundColor: convo === tgt ? 'red' : 'black' }} className='chat-min' onClick={() => setTarget(tgt)}>{tgt}</div>
+          else return <div className={`chat-min ${convo === tgt ? 'blink' : ''}`} key={key} style={{ cursor: 'pointer', backgroundColor: convo === tgt ? '#C53030' : '#1A202C' }} onClick={() => setTarget(tgt)}>{tgt}</div>
         })}
       </div>}
     </div>
