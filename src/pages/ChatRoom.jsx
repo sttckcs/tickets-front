@@ -103,9 +103,9 @@ const ChatRoom = ({ tId, handleChat }) => {
         access ? 
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
             {tId ? '' : <div>
-              <h2><b>Chat de</b> {_id.substring(0,8)} <b>Ticket de</b> {owner}</h2>
+              <h2><b>Chat de</b><span style={{ fontWeight: '600', color: 'white' }}> {_id.substring(0,8)}</span> <b>-</b> <b> Ticket de</b> <span style={{ fontWeight: '600', color: 'white' }}>{owner}</span></h2>
             </div>}
-            <h1><b>Mensajes</b></h1>
+            <h1 style={{ fontSize: '24px', margin: '10px' }}><b>Mensajes</b></h1>
             <div id={`${tId ? 'chatMessagesTicket' : 'chatMessagesWindow'}`}>
               <ul style={{ listStyleType: 'none' }}>
                 {msgList.map((msg, index) => {
