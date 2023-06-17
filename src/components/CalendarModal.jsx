@@ -1,4 +1,4 @@
-import { useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody } from '@chakra-ui/react'
+import { LightMode, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody } from '@chakra-ui/react'
 import { DateRangePicker } from 'react-date-range'
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
@@ -12,10 +12,11 @@ const CalendarModal = ({ open, setOpen, selectionRange, handleSelect }) => {
   }
   
   return (
+    <LightMode>
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW='610px' top='100px'>
-        <ModalHeader>Escoge intervalo de fechas</ModalHeader>
+        <ModalHeader color='black'>Escoge intervalo de fechas</ModalHeader>
         <ModalCloseButton color='black' />
         <ModalBody>
         <DateRangePicker
@@ -27,6 +28,7 @@ const CalendarModal = ({ open, setOpen, selectionRange, handleSelect }) => {
         </ModalBody>
       </ModalContent>
     </Modal>
+    </LightMode>
   )
 }
 

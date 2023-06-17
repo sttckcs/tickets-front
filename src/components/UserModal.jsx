@@ -85,7 +85,7 @@ const UserModal = ({ open, setOpen, mode }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{mode === 'login' ? 'Inciar sesión' : 'Registro'}</ModalHeader>
-        <ModalCloseButton color='black' />
+        <ModalCloseButton />
         <ModalBody>
           {mode === 'login' &&
             <div>

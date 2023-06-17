@@ -40,7 +40,7 @@ const TermsModal = ({ openTerms, setOpenTerms, acceptedTerms, setAcceptedTerms }
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Términos y condiciones</ModalHeader>
-        <ModalCloseButton color='black' />
+        <ModalCloseButton />
         <ModalBody  
           ref={modalContentRef} 
           onScroll={handleScroll} 

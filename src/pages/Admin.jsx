@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { API } from "../services/services";
-import { Button, Select, Box } from "@chakra-ui/react"
+import { Button, Input, Select, Box, useColorModeValue } from "@chakra-ui/react"
 import { Waveform } from "@uiball/loaders";
 import CalendarModal from "../components/CalendarModal";
 import { useDebounce } from "@uidotdev/usehooks";
@@ -10,6 +10,8 @@ import MailModal from "../components/MailModal";
 
 const Admin = () => {
   const { user, setTicket } = useAuth();
+  const textColor = useColorModeValue('#E2E8F0', '#2D3748')
+  const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
   const [calOpen, setCalOpen] = useState(false)
   const [detailOpen, setDetailOpen] = useState(false)
   const [mailOpen, setMailOpen] = useState(false)
@@ -138,7 +140,7 @@ const Admin = () => {
           </Select>
         </Box>
         <Box w='230px'>
-          <input style={{ height: '38px', paddingLeft: '8px', width: '220px' }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value.toLowerCase())} />
+          <Input style={{ height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value.toLowerCase())} />
         </Box>
         <Box w='90px'>
           <Button onClick={() => setCalOpen(true)}>Fechas</Button>

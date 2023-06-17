@@ -1,5 +1,6 @@
 import { useTransition, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useColorModeValue } from '@chakra-ui/react'
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
@@ -20,8 +21,10 @@ function App() {
   const [, startTransition] = useTransition();
   const [load, setLoad] = useState(false);
   const { user, loading } = useAuth();
+  const bg = useColorModeValue('#E2E8F0', '#718096')
+  
   return (
-    <main>
+    <main style={{ backgroundColor: bg }}>
       {loading ? 
         <div className="loader">
           <Waveform />

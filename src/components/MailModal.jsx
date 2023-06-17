@@ -57,7 +57,7 @@ return (
     <ModalOverlay />
     <ModalContent>
       <ModalHeader>Envia un correo</ModalHeader>
-      <ModalCloseButton color='black' />
+      <ModalCloseButton />
       <ModalBody>
         {loading ?
           <div className='loader'>

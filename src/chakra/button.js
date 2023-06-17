@@ -1,7 +1,7 @@
 export const Button = {
   baseStyle: {
-    borderRadius: '10px',
-    color: 'white',
+    borderRadius: '20px',
+    color: 'black',
     fontSize: '10pt',
     fontWeight: 700,
     _focus: {

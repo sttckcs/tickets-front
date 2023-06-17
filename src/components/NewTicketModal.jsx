@@ -84,7 +84,7 @@ const NewTicketModal = ({ open, setOpen }) => {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Nuevo Ticket</ModalHeader>
-        <ModalCloseButton color='black' />
+        <ModalCloseButton />
         <ModalBody>
           <div>
             <form onSubmit={handleTicket}>

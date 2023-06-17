@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useParams } from 'react-router-dom';
 import { API } from '../services/services';
 import { Waveform } from '@uiball/loaders';
-import { Button } from '@chakra-ui/react'
+import { Button, useColorModeValue, Input } from '@chakra-ui/react'
 
 const socket = io('http://localhost:3001');
 
@@ -12,6 +12,8 @@ const ChatRoom = ({ tId, handleChat }) => {
   const { id } = useParams();
   const _id = tId ? tId : id
   const { user, loading, ticket, setTicket, notis, setNotis, setInChat } = useAuth()
+  const textColor = useColorModeValue('#E2E8F0', '#2D3748')
+  const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
   const [owner, setOwner] = useState(null)
   const [access, setAccess] = useState(false)  
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
@@ -103,7 +105,7 @@ const ChatRoom = ({ tId, handleChat }) => {
         access ? 
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
             {tId ? '' : <div>
-              <h2><b>Chat de</b><span style={{ fontWeight: '600', color: 'white' }}> {_id.substring(0,8)}</span> <b>-</b> <b> Ticket de</b> <span style={{ fontWeight: '600', color: 'white' }}>{owner}</span></h2>
+              <h2><b>Chat de</b><span style={{ fontWeight: '600' }}> {_id.substring(0,8)}</span> <b>-</b> <b> Ticket de</b> <span style={{ fontWeight: '600' }}>{owner}</span></h2>
             </div>}
             <h1 style={{ fontSize: '24px', margin: '10px' }}><b>Mensajes</b></h1>
             <div id={`${tId ? 'chatMessagesTicket' : 'chatMessagesWindow'}`}>
@@ -121,9 +123,9 @@ const ChatRoom = ({ tId, handleChat }) => {
                 })}
               </ul>
             </div>
-            <form onSubmit={newMessageSubmit}>
-              <input type='text' name='msg' value={chatMessage.msg} onChange={handleChange} required />
-              <Button variant='green' type='submit'>Enviar</Button>
+            <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Input type='text' style={{ backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
+              <Button type='submit'>Enviar</Button>
             </form>
           </div>
         : ''

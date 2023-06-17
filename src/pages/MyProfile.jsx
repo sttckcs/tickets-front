@@ -27,7 +27,7 @@ const MyProfile = () => {
         </div> :
         <>
           <Profile user={user} />
-          <Button style={{ backgroundColor: '#dddddd', padding: '0px 20px' }} onClick={logout}>Salir</Button>
+          <Button style={{ padding: '0px 20px', color: 'black' }} onClick={logout}>Salir</Button>
         </>
       }
     </>

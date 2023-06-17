@@ -1,4 +1,4 @@
-import { Button } from '@chakra-ui/react'
+import { Button, useColorModeValue } from '@chakra-ui/react'
 import { io } from 'socket.io-client'
 import { useAuth } from '../contexts/AuthContext'
 import { useState } from 'react';
@@ -8,6 +8,8 @@ import Draggable from 'react-draggable';
 const socket = io('http://localhost:3001');
 
 const HelpChat = () => {
+  const textColor = useColorModeValue('#E2E8F0', '#2D3748')
+  const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
   const { user } = useAuth();
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', byAdmin: user.admin, room: 'HelpChat' })
   const [convos, setConvos] = useState([])
@@ -125,7 +127,7 @@ const HelpChat = () => {
           </ul>
         </div>
         {!user.admin && <form onSubmit={newMessageSubmit} style={{ display: 'flex', alignItems: 'center' }}>
-          <input type='text' style={{ color: 'black' }} name='msg' value={chatMessage.msg} onChange={handleChange} required />
+          <input type='text' style={{ backgroundColor: bgColor, color: textColor }} name='msg' value={chatMessage.msg} onChange={handleChange} required />
           <Button variant='blue' size='sm' type='submit'>Enviar</Button>
         </form>}
       </div>

@@ -28,7 +28,7 @@ const Tickets = () => {
         </div> :
         <>
           <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Button style={{ backgroundColor: '#dddddd', margin: '10px', color: 'black' }} onClick={() => setNewOpen(true)}>Nuevo Ticket</Button>
+            <Button style={{ margin: '10px', color: 'black' }} onClick={() => setNewOpen(true)}>Nuevo Ticket</Button>
           </nav>
           <div className="tickets">
             {[...user.tickets].reverse().map((ticket) => 

@@ -14,7 +14,6 @@ main {
   display: flex;
   justify-content: center;
   align-items: start;
-  background-color: var(--color-gray-light);
   -webkit-user-select: none;
   user-select: none;
 }
@@ -23,7 +22,17 @@ main {
   width: 50vw;
 }
 
+.calendar {
+  color: black;
+}
+
+.calendar input {
+  width: 75px;
+  background-color: white;
+}
+
 .nav-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,6 +40,12 @@ main {
   padding: 10px;
 }
 
+.toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 20px;
+}
 
 #chatMessagesWindow {
   display: flex;
@@ -118,7 +133,7 @@ textarea {
 }
 
 #nav a.active {
-  background-color: var(--chakra-colors-gray-700);
+  background-color: var(--chakra-colors-gray-400);
 }
 
 #nav a, #nav button {
@@ -126,7 +141,6 @@ textarea {
   font-size: 12pt;
   font-weight: 700;
   text-align: center;
-  color: white;
   position: relative;
 }
 

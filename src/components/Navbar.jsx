@@ -3,9 +3,13 @@ import UserModal from './UserModal';
 import { API } from '../services/services';
 import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useColorMode } from '@chakra-ui/react'
+import moon from '../../public/moon.svg'
+import sun from '../../public/sun.png'
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { colorMode, toggleColorMode } = useColorMode()
   const { setAuth, user, notis } = useAuth()
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState(null)
@@ -27,7 +31,8 @@ const Navbar = () => {
   return (
     <div className='nav-container'>
       <h1 style={{ fontSize: '28px' }}><b>Staxx Tickets CS:GO</b></h1>
-      <nav id='nav'>
+      <img onClick={toggleColorMode} src={`${colorMode === 'light' ? moon : sun}`} className='toggle' alt='toggle' />
+      <nav id='nav' style={{ aActive: 'red' }}>
         {!user ? 
         <>
           <button style={{ padding: '4px 10px' }} onClick={() => handleClick('login')}>Login</button>

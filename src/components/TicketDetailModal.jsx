@@ -42,7 +42,7 @@ const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, ha
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Detalles del ticket</ModalHeader>
-          <ModalCloseButton color='black' />
+          <ModalCloseButton />
           <ModalBody>
             {ticket &&
               <>
