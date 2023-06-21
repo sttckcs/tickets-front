@@ -64,7 +64,7 @@ return (
             <Waveform />
           </div> : 
           <form onSubmit={handleEmail}>
-            <input style={{ width: '500px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />
+            <input style={{ width: '500px', paddingLeft: '8px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />
             <textarea maxLength='800' value={message} style={{ resize: 'none', height: '150px' }} placeholder="Asunto" onChange={(e) => setMessage(e.target.value)} required />
             <ModalFooter>
               <Button colorScheme='blue' type='submit'>Enviar</Button>

@@ -50,7 +50,7 @@ const UserProfile = () => {
           </div>
           </>
            : 
-          <strong>Error 404: User not found</strong>
+          <strong>Error 404: Usuario no encontrado</strong>
       }
     </>
   )

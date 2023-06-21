@@ -12,8 +12,10 @@ const ChatRoom = ({ tId, handleChat }) => {
   const { id } = useParams();
   const _id = tId ? tId : id
   const { user, loading, ticket, setTicket, notis, setNotis, setInChat } = useAuth()
-  const textColor = useColorModeValue('#E2E8F0', '#2D3748')
-  const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
+  // const textColor = useColorModeValue('#E2E8F0', '#2D3748')
+  // const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
+  const textColor = useColorModeValue('#2D3748', '#E2E8F0')
+  const bgColor = useColorModeValue('#E2E8F0', '#2D3748')
   const [owner, setOwner] = useState(null)
   const [access, setAccess] = useState(false)  
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })

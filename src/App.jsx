@@ -21,7 +21,7 @@ function App() {
   const [, startTransition] = useTransition();
   const [load, setLoad] = useState(false);
   const { user, loading } = useAuth();
-  const bg = useColorModeValue('#E2E8F0', '#718096')
+  const bg = useColorModeValue('#C2E8F0', '#1A202C')
   
   return (
     <main style={{ backgroundColor: bg }}>

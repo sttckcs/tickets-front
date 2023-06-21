@@ -35,7 +35,7 @@ const ChangePassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (pwd1 !== pwd2) {
-      alert('Passwords must be equal')
+      alert('Las contraseñas deben coincidir')
       setPwd1('')
       setPwd2('')
       return
@@ -45,12 +45,12 @@ const ChangePassword = () => {
         'user/password', 
         { nick, password: pwd1 }
       );
-      if (res.data === 'password changed') alert('Password changed! You may log in')
+      if (res.data === 'password changed') alert('Contraseña cambiada! Ya puedes iniciar sesión')
       setPwd1('')
       setPwd2('')
       navigate('/');
     } catch (error) {
-      alert(`Error changing the password: ${error.response.data.message}`);
+      alert(`Error cambiando la contraseña: ${error.response.data.message}`);
     }
   }
 
@@ -65,14 +65,14 @@ const ChangePassword = () => {
             <form onSubmit={handleSubmit}>
               <input
                 type="password"
-                placeholder="Enter your new password"
+                placeholder="Entra tu nueva contraseña"
                 value={pwd1}
                 onChange={(e) => setPwd1(e.target.value)}
                 required
               />
               <input
                 type="password"
-                placeholder="Confirm your new password"
+                placeholder="Confirma tu nueva contraseña"
                 value={pwd2}
                 onChange={(e) => setPwd2(e.target.value)}
                 required
@@ -82,7 +82,7 @@ const ChangePassword = () => {
               </Button>
             </form>
             : 
-            <h1>Error trying to change your password</h1>
+            <h1>Ha habido un error al intentar cambiar tu contraseña</h1>
             }
         </div>
         }

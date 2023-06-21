@@ -99,7 +99,7 @@ const HelpChat = () => {
               </ul>
             </div>
             {target === tgt && <form onSubmit={newMessageSubmit} style={{ display: 'flex', alignItems: 'center' }}>
-              <input type='text' name='msg' value={chatMessage.msg} onChange={handleChange} required />
+              <input type='text' style={{ backgroundColor: bgColor, color: textColor }} name='msg' value={chatMessage.msg} onChange={handleChange} required />
               <Button variant='blue' size='sm' type='submit'>Enviar</Button>
             </form>}
           </div>

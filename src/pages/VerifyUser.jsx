@@ -34,7 +34,7 @@ const VerifyUser = () => {
           <Waveform />
         </div> :
         <div>
-          <h1>{success ? 'Account verified! You may log in now' : 'Error verifying your account'}</h1>
+          <h1>{success ? 'Cuenta verificada! Ya puedes iniciar sesión' : 'Ha habido un error al verificar tu cuenta'}</h1>
         </div>
         }
     </div>

@@ -10,8 +10,10 @@ import MailModal from "../components/MailModal";
 
 const Admin = () => {
   const { user, setTicket } = useAuth();
-  const textColor = useColorModeValue('#E2E8F0', '#2D3748')
-  const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
+  // const textColor = useColorModeValue('#E2E8F0', '#2D3748')
+  // const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
+  const textColor = useColorModeValue('#2D3748', '#E2E8F0')
+  const bgColor = useColorModeValue('#E2E8F0', '#2D3748')
   const [calOpen, setCalOpen] = useState(false)
   const [detailOpen, setDetailOpen] = useState(false)
   const [mailOpen, setMailOpen] = useState(false)
@@ -134,13 +136,13 @@ const Admin = () => {
           </Select>
         </Box>
         <Box w='210px'>
-          <Select isRequired={true} variant='filled' onChange={(e) => setOrder(e.target.value)}>
+          <Select isRequired={true} colorScheme="twitter" variant='filled' onChange={(e) => setOrder(e.target.value)}>
             <option value='newest'>Más recientes</option>
             <option value='oldest'>Más antiguos</option>
           </Select>
         </Box>
         <Box w='230px'>
-          <Input style={{ height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value.toLowerCase())} />
+          <Input style={{ borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value.toLowerCase())} />
         </Box>
         <Box w='90px'>
           <Button onClick={() => setCalOpen(true)}>Fechas</Button>

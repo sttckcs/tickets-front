@@ -3,7 +3,10 @@ import { useAuth } from '../contexts/AuthContext'
 import { Text, Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react'
 import { API } from '../services/services'
 import TermsModal from './TermsModal'
+import { useNavigate } from 'react-router-dom'
 const UserModal = ({ open, setOpen, mode }) => {
+
+  const navigate = useNavigate();
   const { setAuth } = useAuth();
   const { onClose } = useDisclosure({ defaultIsOpen: true })
   const [nick, setNick] = useState('');
@@ -38,9 +41,10 @@ const UserModal = ({ open, setOpen, mode }) => {
         setAuth(true);
       }
       handleClose();
+      navigate('/');
     } catch (error) {
       console.log(error);
-      alert(`Failed to login: ${error.response.data.message}`);
+      alert(`Error con el login: ${error.response.data.message}`);
     }
   };
 
@@ -55,10 +59,10 @@ const UserModal = ({ open, setOpen, mode }) => {
         email,
         password
       });
-      alert('User created! Check your email to verify your account')
+      alert('Usuario creado! Verifica tu correo para iniciar sesión')
       handleClose();
     } catch (error) {
-      alert(`Failed to register: ${error.response.data.message}`);
+      alert(`Error en el registro: ${error.response.data.message}`);
     }
   };
 
@@ -73,10 +77,10 @@ const UserModal = ({ open, setOpen, mode }) => {
       await API.post('user/recovery', {
         email,
       });
-      alert('Recovery mail send! Check your inbox')
+      alert('Correo de recuperación enviado! Comprueba tu bandeja')
       handleClose();
     } catch (error) {
-      alert(`Error sending email: ${error.response.data.message}`);
+      alert(`Error enviando el correo: ${error.response.data.message}`);
     }
   }
   
