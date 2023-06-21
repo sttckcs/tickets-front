@@ -22,7 +22,7 @@ const NewTicketModal = ({ open, setOpen }) => {
     En caso de que el cliente no tenga ningún artículo para listar y proceder a la transacción, puedo solicitar por soporte el abono manual de la cuantía, este proceso suele tardar 2 días desde la emisión de la solicitud, y buff.163 se reserva el derecho a rechazar la solicitud ( no ha ocurrido todavia, pero lo dejan abierto a que pueda suceder)
     -En caso de que quieras VENDER saldo, tienes que indicarme la cantidad que quieres vender, y te informaré de cuanto te podría pagar por ese balance, el proceso és el mismo que en las compras, por lo que tengo que listar a vender una skin para que me la compres, y a los 8 días me la tienes que regresar.`,
     'sell' : `Buenas ${user.nick}, soy Aregodas, la persona que se encarga de hacer los trades, este ticket es un espacio seguro donde solo tenemos acceso nosotros dos, y los admins que entran a ayudar en cualquier tipo de duda que pueda haber hasta que atienda el ticket, así que a la hora de compartir cualquier dato para proceder a los pagos, puedes estar tranquilo que tu información no se verá comprometida. Atenderé tu petición lo antes posible.
-    Este es mi steam: ${<a href='https://steamcommunity.com/id/Aregodas'>Aregodas</a>} (no tengo segundas cuentas , ni hay gente que me ayude con los trades, si alguien te contacta va a querer scamearte, si esto ocurre porfavor haznos llegar la información de esa persona a mi o a los moderadores para banearla y asi evitar scams)
+    Este es mi steam: https://steamcommunity.com/id/Aregodas (no tengo segundas cuentas , ni hay gente que me ayude con los trades, si alguien te contacta va a querer scamearte, si esto ocurre porfavor haznos llegar la información de esa persona a mi o a los moderadores para banearla y asi evitar scams)
     En este ticket podrás vender tus skins, para ello voy a necesitar que hagas lo siguiente:
     1- En este mismo ticket dime que vas a querer vender, el nombre de la skin junto a su estado y en caso de que sea StaTrack debes indicarmelo. O si quieres vender todo el inventario también puedes pedirmelo y te doy precio por todo.
     2- Enviame una solicitud a steam, arriba te he facilitado el link a mi perfil. Y comentame en el perfil el motivo de la solicitud ( ej: hola buenas tardes, te he enviado una solicitud de amistad porque quiero venderte mi cuchillo)
@@ -31,7 +31,7 @@ const NewTicketModal = ({ open, setOpen }) => {
     Recuerda haber leído el FAQ de tradeo o tu ticket puede ser eliminado`,
     'buy' : `Buenas ${user.nick}, soy Aregodas, la persona que se encarga de hacer los trades, este ticket es un espacio seguro donde solo tenemos acceso nosotros dos y los Admins que entran a ayudar en cualquier tipo de duda que pueda haber hasta que atienda el ticket.
     Así que a la hora de compartir cualquier dato para proceder a los pagos, puedes estar tranquilo que tu información no se verá comprometida. Atenderé tu petición lo antes posible.
-    Este es mi steam: ${<a href='https://steamcommunity.com/id/Aregodas'>Aregodas</a>}
+    Este es mi steam: https://steamcommunity.com/id/Aregodas
     (No tengo segundas cuentas ni hay gente que me ayude con los trades, si alguien te contacta va a querer scamearte, si esto ocurre porfavor haznos llegar la información de esa persona a mi o a los moderadores para banearla y asi evitar scams)
     
     • En este ticket tendrás acceso a comprar skins.
