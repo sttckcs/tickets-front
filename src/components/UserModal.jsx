@@ -101,7 +101,7 @@ const UserModal = ({ open, setOpen, mode }) => {
 
   const handleUserSubmit = async (e) => {
     e.preventDefault();
-    if (pwd1 !== '' || pwd2 === '') {
+    if (pwd1 !== '' || pwd2 !== '') {
       if (pwd1 !== pwd2) {
         alert('Las contraseñas deben coincidir')
         setPwd1('')
