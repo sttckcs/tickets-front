@@ -101,25 +101,26 @@ const UserModal = ({ open, setOpen, mode }) => {
 
   const handleUserSubmit = async (e) => {
     e.preventDefault();
-    if (pwd1 !== pwd2) {
-      alert('Las contraseñas deben coincidir')
-      setPwd1('')
-      setPwd2('')
-      return
-    }
+    if (pwd1 !== '' || pwd2 === '') {
+      if (pwd1 !== pwd2) {
+        alert('Las contraseñas deben coincidir')
+        setPwd1('')
+        setPwd2('')
+        return
+      }
 
-    try {
-      await API.post('user/password', { 
-        nick: user.nick, 
-        password: pwd1 
-      });
-      setPwd1('')
-      setPwd2('')
-    } catch (error) {
-      alert(`Error cambiando la contraseña: ${error.response.data.message}`);
-      return
-    }
-
+      try {
+        await API.post('user/password', { 
+          nick: user.nick, 
+          password: pwd1 
+        });
+        setPwd1('')
+        setPwd2('')
+      } catch (error) {
+        alert(`Error cambiando la contraseña: ${error.response.data.message}`);
+        return
+      }
+    } 
     try {
       await API.put('user/edit', {
         _id: user._id,
