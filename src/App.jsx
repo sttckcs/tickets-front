@@ -16,6 +16,9 @@ import ChatRoom from "./pages/ChatRoom";
 import VerifyUser from "./pages/VerifyUser";
 import ChangePassword from "./pages/ChangePassword";
 import HelpChat from './components/HelpChat';
+import Sell from './pages/Sell';
+import Links from './pages/Links';
+import { NavLink } from 'react-router-dom';
 
 function App() {
   const [, startTransition] = useTransition();
@@ -33,31 +36,43 @@ function App() {
             <Navbar />
             <div className="container">
               <Routes>
-                <Route path='/' element={<Home></Home>}></Route>
-                <Route path='/faq' element={<Faq></Faq>}></Route>
-                <Route path='/admin' element={user?.admin ? <Admin></Admin> : <NotFound></NotFound>}></Route>
-                <Route path='/admin/:id/profile' element={user?.admin? <UserProfile></UserProfile> : <NotFound></NotFound>}></Route>
-                <Route path='/profile' element={user && !user.admin ? <MyProfile></MyProfile> : <NotFound></NotFound>}></Route>
-                <Route path='/tickets' element={user && !user.admin ? <Tickets></Tickets> : <NotFound></NotFound>}></Route>
-                <Route path='/chat' element={user ? <Chat></Chat> : <NotFound></NotFound>}></Route>
-                <Route path='/chat/:id' element={user ? <ChatRoom></ChatRoom> : <NotFound></NotFound>}></Route>
-                <Route path='/verify/:nick/:token' element={!user ? <VerifyUser></VerifyUser> : <NotFound></NotFound>}></Route>
-                <Route path='/recover/:nick/:token' element={!user ? <ChangePassword></ChangePassword> : <NotFound></NotFound>}></Route>
-                <Route path='*' element={<NotFound></NotFound>}></Route>
+                <Route path='/' element={user?.admin ? <Admin /> : <Home />}></Route>
+                <Route path='/faq' element={user ? <Faq /> : <NotFound />}></Route>
+                <Route path='/sell' element={user ? <Sell /> : <NotFound />}></Route>
+                <Route path='/links' element={user ? <Links /> : <NotFound />}></Route>
+                <Route path='/:id/profile' element={user?.admin? <UserProfile /> : <NotFound />}></Route>
+                <Route path='/profile' element={user && !user.admin ? <MyProfile /> : <NotFound />}></Route>
+                <Route path='/tickets' element={user && !user.admin ? <Tickets /> : <NotFound />}></Route>
+                <Route path='/chat' element={user ? <Chat /> : <NotFound />}></Route>
+                <Route path='/chat/:id' element={user ? <ChatRoom /> : <NotFound />}></Route>
+                <Route path='/verify/:nick/:token' element={!user ? <VerifyUser /> : <NotFound />}></Route>
+                <Route path='/recover/:nick/:token' element={!user ? <ChangePassword /> : <NotFound />}></Route>
+                <Route path='*' element={<NotFound />}></Route>
               </Routes>
             </div>
+            {(user && !user.admin) && 
+              <div className='faq-container'>
+                <NavLink to={'/faq'}>FAQ</NavLink>
+              </div>
+            }
             {user && 
               <div className='help'>
-              {load && <HelpChat />}
+                {load && <HelpChat />}
                   <button onClick={() => {
                     startTransition(() => {
                       setLoad(prev => !prev);
                     })
-                  }}><p><b>Necesitas ayuda?</b></p></button>
+                  }}>
+                    <svg width="124px" height="124px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M20 11a8 8 0 10-16 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+                      <path d="M2 15.438v-1.876a2 2 0 011.515-1.94l1.74-.436a.6.6 0 01.745.582v5.463a.6.6 0 01-.746.583l-1.74-.435A2 2 0 012 15.439zM22 15.438v-1.876a2 2 0 00-1.515-1.94l-1.74-.436a.6.6 0 00-.745.582v5.463a.6.6 0 00.745.583l1.74-.435A2 2 0 0022 15.439zM20 18v.5a2 2 0 01-2 2h-3.5" strokeWidth="1.5"></path>
+                      <path d="M13.5 22h-3a1.5 1.5 0 010-3h3a1.5 1.5 0 010 3z"strokeWidth="1.5"></path>
+                    </svg>
+                  </button>
               </div>
             }
             <footer className="footer">
-              <b>2023 Staxx Tickets CS-GO</b>
+              <b>© 2023 TODOSKINS. Todos los derechos reservados.</b>
             </footer>
           </Router>
       }

@@ -4,8 +4,9 @@ import { API } from '../services/services';
 import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useColorMode } from '@chakra-ui/react'
-import moon from '../../public/moon.svg'
-import sun from '../../public/sun.png'
+import logo from '../logo.png'
+import moon from '../moon.svg'
+import sun from '../sun.png'
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Navbar = () => {
   const { setAuth, user, notis } = useAuth()
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState(null)
+  const [notisBox, setNotisBox] = useState(false)
 
   const handleClick = (mode) => {
     setOpen(true);
@@ -30,8 +32,28 @@ const Navbar = () => {
 
   return (
     <div className='nav-container'>
-      <h1 style={{ fontSize: '28px' }}><b>Staxx Tickets CS:GO</b></h1>
-      <img onClick={toggleColorMode} src={`${colorMode === 'light' ? moon : sun}`} className='toggle' alt='toggle' />
+      <div className='nav-items'>
+        <img className="nav-title" src={logo} onClick={() => navigate('/')} alt="todoskins" />
+        <img onClick={toggleColorMode} src={`${colorMode === 'light' ? moon : sun}`} className='toggle' alt='toggle' />
+        {(user && !user.admin) && <NavLink to={'/profile'}>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className='user-icon'>
+            <path strokeWidth="1.75" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </NavLink>}
+        {user && 
+          <>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className='notis-icon' onClick={() => setNotisBox(prev => !prev)}>
+              <path strokeWidth="1.75" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            </svg>
+            {notis.length < 1 ? '' : <div className='noti'>{notis.length}</div>}
+            {notis.length > 0 && notisBox && 
+              <div className='notis'>
+                {notis.map(noti => <NavLink to={`/chat/${noti}`} key={noti} onClick={() => setNotisBox(false)}>Nuevo mensaje del ticket {noti.substring(0, 8)}</NavLink>)}
+              </div>
+            }
+          </>
+        }
+      </div>
       <nav id='nav' style={{ aActive: 'red' }}>
         {!user ? 
         <>
@@ -39,10 +61,12 @@ const Navbar = () => {
           <button style={{ padding: '4px 10px' }} onClick={() => handleClick('register')}>Registo</button>
         </> :
         <>
-          {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
-          {user.admin ? <NavLink to={'/admin'}>Admin</NavLink> : <NavLink to={'/profile'}>Perfil</NavLink>}
+          {user.admin && <NavLink to={'/'}>Admin</NavLink>}
           {!user.admin && <NavLink to={'/tickets'}>Tickets</NavLink>}
-          <NavLink to={'/chat'}>Chat{notis.length < 1 ? '' : <div className='noti'>{notis.length}</div>}</NavLink>
+          <NavLink to={'/chat'}>Chat</NavLink>
+          {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
+          {!user.admin && <NavLink to={'/sell'}>Venta</NavLink>}
+          {!user.admin && <NavLink to={'/links'}>Enlaces</NavLink>}
           {user.admin && <button style={{ padding: '4px 10px' }} onClick={logout}>Salir</button>}
         </>
         }

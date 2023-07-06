@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import { Text, Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react'
+import { Text, Button, Select, Box, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react'
 import { API } from '../services/services'
 import TermsModal from './TermsModal'
 import { useNavigate } from 'react-router-dom'
 const UserModal = ({ open, setOpen, mode }) => {
 
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const { user, setUser, setAuth } = useAuth();
   const { onClose } = useDisclosure({ defaultIsOpen: true })
+  const [newUser, setNewUser] = useState(user);
   const [nick, setNick] = useState('');
   const [name, setName] = useState('');
   const [steam, setSteam] = useState('');
@@ -16,8 +17,11 @@ const UserModal = ({ open, setOpen, mode }) => {
   const [email, setEmail] = useState('');
   const [forgotten, setForgotten] = useState(false);
   const [password, setPassword] = useState('');
+  const [pwd1, setPwd1] = useState('')
+  const [pwd2, setPwd2] = useState('')
   const [openTerms, setOpenTerms] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [editF, setEditF] = useState('nick');
 
   useEffect(() => {
     setNick('')
@@ -69,6 +73,10 @@ const UserModal = ({ open, setOpen, mode }) => {
   const handleClose = () => {
     onClose();
     setOpen(false);
+    if (mode === 'edit') {
+      setNewUser(user);
+      setEditF('nick');
+    }
   }
   
   const handleForgotten = async (e) => {
@@ -83,12 +91,56 @@ const UserModal = ({ open, setOpen, mode }) => {
       alert(`Error enviando el correo: ${error.response.data.message}`);
     }
   }
+
+  const handleUserEdit = (e) => {
+    setNewUser(prev => ({
+      ...prev,
+      [e.target.id]: e.target.id === 'nick' ? e.target.value.toLowerCase() : e.target.value
+    }))
+  }
+
+  const handleUserSubmit = async (e) => {
+    e.preventDefault();
+    if (pwd1 !== pwd2) {
+      alert('Las contraseñas deben coincidir')
+      setPwd1('')
+      setPwd2('')
+      return
+    }
+
+    try {
+      await API.post('user/password', { 
+        nick: user.nick, 
+        password: pwd1 
+      });
+      setPwd1('')
+      setPwd2('')
+    } catch (error) {
+      alert(`Error cambiando la contraseña: ${error.response.data.message}`);
+      return
+    }
+
+    try {
+      await API.put('user/edit', {
+        _id: user._id,
+        newUser
+      });
+      setUser({...newUser, _id: user._id})
+      alert('Usuario editado correctamente!')
+      handleClose();
+    } catch (error) {
+      console.log(Object.keys(error.response.data.keyValue)[0])
+      if (Object.keys(error.response.data.keyValue)[0] === 'email') alert(`Error editando el usuario: El email ya existe`);
+      else if (Object.keys(error.response.data.keyValue)[0] === 'nick') alert(`Error editando el usuario: El nick ya existe`);
+    }
+  };
+
   
   return (
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{mode === 'login' ? 'Inciar sesión' : 'Registro'}</ModalHeader>
+        <ModalHeader>{mode === 'login' ? 'Inciar sesión' : mode === 'register' ? 'Registro' : 'Editar perfil'}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           {mode === 'login' &&
@@ -146,10 +198,14 @@ const UserModal = ({ open, setOpen, mode }) => {
                   required
                 />
                 <input
-                  type="number" 
+                  type="tel" 
                   placeholder="Número de teléfono" 
                   value={phone} 
-                  onChange={(e) => setPhone(e.target.value)} 
+                  onChange={(e) => {
+                    const num = e.target.value.replace(/\D/g, '')
+                    e.target.value = num
+                    if (num.length <= 9) setPhone(e.target.value)
+                    }} 
                   required   
                 />
                 <input 
@@ -173,6 +229,83 @@ const UserModal = ({ open, setOpen, mode }) => {
                 <ModalFooter mt={2}>
                   <Button colorScheme='blue' type='submit' mr={3} isDisabled={!acceptedTerms}>
                     Registrar
+                  </Button>
+                </ModalFooter>
+              </form>
+            </div>
+          }
+          {mode === 'edit' &&
+            <div>
+            <Box w='150px' mb='20px' ml='10px'>
+              <Select isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
+                <option value='nick'>Nick</option>
+                <option value='name'>Nombre</option>
+                <option value='steam'>Steam</option>
+                <option value='phone'>Teléfono</option>
+                <option value='email'>Email</option>
+                <option value='password'>Contraseña</option>
+              </Select>
+            </Box>
+              <form onSubmit={handleUserSubmit}>
+                {editF === 'nick' && <input 
+                  type="text" 
+                  value={newUser.nick} 
+                  id="nick"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'name' && <input
+                  type="text" 
+                  value={newUser.name} 
+                  id="name"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'steam' && <input 
+                  type="text" 
+                  value={newUser.steam} 
+                  id="steam"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'phone' && <input
+                  type="tel" 
+                  value={newUser.phone} 
+                  id="phone"
+                  onChange={(e) => {
+                    const num = e.target.value.replace(/\D/g, '')
+                    e.target.value = num;
+                    if (num.length <= 9) handleUserEdit(e)}} 
+                  required 
+                />}
+                {editF === 'email' && <input 
+                  type="text" 
+                  value={newUser.email} 
+                  id="email"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'password' && 
+                  <>
+                    <input
+                      type="password"
+                      placeholder="Entra tu nueva contraseña"
+                      value={pwd1}
+                      onChange={(e) => setPwd1(e.target.value)}
+                      required
+                    />
+                    <input
+                      type="password"
+                      placeholder="Confirma tu nueva contraseña"
+                      value={pwd2}
+                      onChange={(e) => setPwd2(e.target.value)}
+                      required
+                    />
+                  </>
+                }
+                <ModalFooter mt={2}>
+                  <Button colorScheme='blue' type='submit' mr={3}>
+                    Guardar
                   </Button>
                 </ModalFooter>
               </form>

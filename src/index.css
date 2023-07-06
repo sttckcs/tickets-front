@@ -52,6 +52,51 @@ form input {
   width: 24px;
 }
 
+.user-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 18px;
+  right: 110px;
+  width: 28px;
+}
+
+.notis-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 18px;
+  right: 65px;
+  width: 28px;
+}
+
+.notis {
+  display: flex;
+  position: absolute;
+  top: 50px;
+  right: 65px;
+  flex-direction: column;
+  padding: 5px;
+  background-color: var(--chakra-colors-gray-400);
+  color: black;
+  font-weight: 600;
+  font-size: 14px;
+  gap: 5px;
+  z-index: 999;
+}
+
+.notis > a {
+  padding: 5px;
+}
+
+.notis > a:hover {
+  background-color: var(--chakra-colors-gray-500)
+}
+
+.nav-title {
+  cursor: pointer;
+  font-size: 28px;
+  width: 30vw;
+}
+
 #chatMessagesWindow {
   display: flex;
   flex-direction: column-reverse;
@@ -60,7 +105,7 @@ form input {
   overflow-y: auto;
   width: 100%;
   margin-bottom: 10px;
-  padding: 0px 10px;
+  padding: 0px 20px;
 }
 
 #chatMessagesTicket{
@@ -70,7 +115,7 @@ form input {
   height: 145px;
   overflow-y: auto;
   width: 100%;
-  padding: 0px 10px;
+  padding: 0px 20px;
 }
 
 .loader {
@@ -83,8 +128,8 @@ form input {
 
 .noti {
   position: absolute;
-  top: -6px;
-  right: -10px;
+  top: 10px;
+  right: 55px;
   width: 20px;
   height: 20px;
   color: white;
@@ -117,7 +162,7 @@ textarea {
 }
 
 #nav {
-  padding: 10px 0px;
+  padding: 8px 0px;
   width: 98vw;
   display: flex;
   justify-content: center;
@@ -137,11 +182,11 @@ textarea {
   align-items: center;
 }
 
-#nav a.active {
+#nav a.active, .faq-container a.active {
   background-color: var(--chakra-colors-gray-400);
 }
 
-#nav a, #nav button {
+#nav a, #nav button, .faq-container a {
   padding: 8px 15px;
   font-size: 12pt;
   font-weight: 700;
@@ -209,7 +254,7 @@ textarea {
 .help {
   position: absolute;
   bottom: 35px;
-  right: 15px;
+  right: 20px;
   z-index: 99;
   display: flex;
   flex-direction: column;
@@ -247,6 +292,10 @@ textarea {
   align-items: center;
 }
 
+form > input {
+  padding-left: 10px;
+}
+
 .chat-ticket h1 {
   font-size: 20px;
   margin: 5px auto;
@@ -254,7 +303,7 @@ textarea {
 
 .chat-window {
   margin-top: 20px;
-  height: 70vh;
+  height: 65vh;
   max-width: 800px;
   display: flex;
   flex-direction: column;
@@ -271,13 +320,33 @@ textarea {
   max-height: 71vh;
   margin: 0 auto;
   overflow-y: auto;
-  padding: 10px;
+  padding: 10px 20px;
   text-align: center;
 }
 
-.faq > h1 {
+.links {
+  max-width: 600px;
+  padding: 10px 20px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.links > a {
+  font-weight: 600;
+}
+
+.faq-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.faq > h1, .links > h1 {
   font-weight: 700;
   margin-bottom: 10px;
+  font-size: 20px;
 }
 
 .faq > p {
@@ -334,5 +403,53 @@ textarea {
 @keyframes blinker {
   50% {
     background-color: #1A202C;
+  }
+}
+
+.home {
+  position: relative;
+}
+
+.home-text {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.home-text.active {
+  opacity: 1;
+}
+
+.faq-container {
+  position: absolute;
+  bottom: 85px;
+  left: 20px;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+@media screen and (max-width: 500px) {
+  .nav-title {
+    visibility: hidden;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .nav-title {
+    visibility: hidden;
+  }
+
+  .nav-items {
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .home-text {
+    left: 10vw;
   }
 }

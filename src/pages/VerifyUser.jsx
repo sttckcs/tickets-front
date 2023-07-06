@@ -28,16 +28,16 @@ const VerifyUser = () => {
   }, [nick, token]);
 
   return (
-    <div>
+    <>
       {loading ?
         <div className="loader">
           <Waveform />
         </div> :
-        <div>
+        <div style={{ margin: '20px' }}>
           <h1>{success ? 'Cuenta verificada! Ya puedes iniciar sesión' : 'Ha habido un error al verificar tu cuenta'}</h1>
         </div>
         }
-    </div>
+    </>
   )
 }
 
