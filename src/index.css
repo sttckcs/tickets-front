@@ -253,7 +253,7 @@ textarea {
 
 .help {
   position: absolute;
-  bottom: 35px;
+  bottom: 55px;
   right: 20px;
   z-index: 99;
   display: flex;

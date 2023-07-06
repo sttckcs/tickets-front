@@ -65,7 +65,6 @@ const Navbar = () => {
           {!user.admin && <NavLink to={'/tickets'}>Tickets</NavLink>}
           <NavLink to={'/chat'}>Chat</NavLink>
           {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
-          {!user.admin && <NavLink to={'/sell'}>Venta</NavLink>}
           {!user.admin && <NavLink to={'/links'}>Enlaces</NavLink>}
           {user.admin && <button style={{ padding: '4px 10px' }} onClick={logout}>Salir</button>}
         </>
