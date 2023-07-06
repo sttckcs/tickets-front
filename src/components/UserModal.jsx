@@ -74,7 +74,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     onClose();
     setOpen(false);
     if (mode === 'edit') {
-      setNewUser(user);
+      setNewUser(newUser);
       setEditF('nick');
     }
   }
@@ -133,6 +133,7 @@ const UserModal = ({ open, setOpen, mode }) => {
       console.log(Object.keys(error.response.data.keyValue)[0])
       if (Object.keys(error.response.data.keyValue)[0] === 'email') alert(`Error editando el usuario: El email ya existe`);
       else if (Object.keys(error.response.data.keyValue)[0] === 'nick') alert(`Error editando el usuario: El nick ya existe`);
+      setNewUser(user)
     }
   };
 
