@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client'
 import { useAuth } from '../contexts/AuthContext';
 import { useParams } from 'react-router-dom';
-import { API } from '../services/services';
+import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
 import { Button, useColorModeValue, Input } from '@chakra-ui/react'
 
-const socket = io('http://localhost:3001');
+const socket = io(socketURL);
 
 const ChatRoom = ({ tId, handleChat }) => {
   const { id } = useParams();

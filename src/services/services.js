@@ -23,3 +23,5 @@ export const API = axios.create({
     timeout: 6000,
     headers : APIHeaders
 });
+
+export const socketURL = 'http://localhost:3001'

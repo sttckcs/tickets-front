@@ -4,8 +4,9 @@ import { useAuth } from '../contexts/AuthContext'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Draggable from 'react-draggable';
+import { socketURL } from '../services/services';
 
-const socket = io('http://localhost:3001');
+const socket = io(socketURL);
 
 const HelpChat = () => {
   const textColor = useColorModeValue('#E2E8F0', '#2D3748')
