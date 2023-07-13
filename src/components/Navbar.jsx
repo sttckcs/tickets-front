@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useColorMode } from '@chakra-ui/react'
 import logo from '../logo.png'
-import moon from '../moon.svg'
+import moon from '../moon-25.svg'
 import sun from '../sun.png'
 
 const Navbar = () => {
