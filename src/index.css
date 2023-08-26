@@ -112,10 +112,10 @@ form input {
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-start;
-  height: 145px;
+  height: 100%;
   overflow-y: auto;
   width: 100%;
-  padding: 0px 20px;
+  padding: 20px;
 }
 
 .loader {
@@ -274,7 +274,7 @@ textarea {
 }
 
 .chat-ticket {
-  height: 200px;
+  height: 65vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

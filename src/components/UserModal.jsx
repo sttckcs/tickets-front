@@ -157,16 +157,16 @@ const UserModal = ({ open, setOpen, mode }) => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />}
-                <ModalFooter mt={2}>
+                <ModalFooter mt={2} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                   {!forgotten ?
-                    <>
-                      <Button colorScheme='green' onClick={() => setForgotten(true)} mr={3}>
-                        Contraseña olvidada?
-                      </Button>
-                      <Button colorScheme='blue' type='submit'>
+                    <div>
+                      <Button colorScheme='blue' type='submit' mr={3}>
                         Iniciar
                       </Button>
-                    </> :
+                      <Button colorScheme='green' onClick={() => setForgotten(true)}>
+                        Contraseña olvidada?
+                      </Button>
+                    </div> :
                     <Button colorScheme='blue' onClick={handleForgotten}>
                       Enviar
                     </Button>
