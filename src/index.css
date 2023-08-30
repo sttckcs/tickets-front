@@ -274,7 +274,7 @@ textarea {
 }
 
 .chat-ticket {
-  height: 65vh;
+  height: 68vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -283,7 +283,7 @@ textarea {
 
 .chat-ticket input[type=text] {
   width: 440px;
-  margin-left: 0;
+  margin-left: 20px;
 }
 
 .chat-ticket form {
