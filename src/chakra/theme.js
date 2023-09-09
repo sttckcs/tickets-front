@@ -3,7 +3,7 @@ import { Button } from './button'
 import { Modal } from './modal'
 
 const config = {
-  initialColorMode: 'light',
+  initialColorMode: 'dark',
   useSystemColorMode: false,
   colors: {
     brand: {
