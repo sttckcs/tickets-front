@@ -229,7 +229,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                 </div>
                 <TermsModal openTerms={openTerms} setOpenTerms={setOpenTerms} acceptedTerms={acceptedTerms} setAcceptedTerms={setAcceptedTerms} />
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={3} isDisabled={!acceptedTerms}>
+                  <Button colorScheme='blue' type='submit' mr={3} isDisabled={!acceptedTerms || phone.length <9}>
                     Registrar
                   </Button>
                 </ModalFooter>

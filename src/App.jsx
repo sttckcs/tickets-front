@@ -18,7 +18,6 @@ import ChangePassword from "./pages/ChangePassword";
 import HelpChat from './components/HelpChat';
 import Sell from './pages/Sell';
 import Links from './pages/Links';
-import { NavLink } from 'react-router-dom';
 
 function App() {
   const [, startTransition] = useTransition();
