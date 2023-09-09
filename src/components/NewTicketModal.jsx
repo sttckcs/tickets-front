@@ -91,7 +91,7 @@ const NewTicketModal = ({ open, setOpen }) => {
               <Select isRequired={true} variant='filled' placeholder='Elige categoría' onChange={handleCategory}>
                 <option value='buy'>Compra</option>
                 <option value='sell'>Venta</option>
-                <option value='buff'>Buff</option>
+                <option value='buff'>Balance</option>
               </Select>
               <Checkbox mt={3} isChecked={notify} onChange={() => setNotify(!notify)}>Recibe notificaciones por correo</Checkbox>
               <ModalFooter style={{ padding: '12px 0px' }}>

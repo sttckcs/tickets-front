@@ -132,7 +132,7 @@ const Admin = () => {
             <option value=''>Todas las categorías</option>
             <option value='sell'>Venta</option>
             <option value='buy'>Compra</option>
-            <option value='buff'>Buff</option>
+            <option value='buff'>Balance</option>
           </Select>
         </Box>
         <Box w='210px'>

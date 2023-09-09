@@ -48,7 +48,7 @@ const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, ha
               <>
                 <h1>Id: {ticket._id.substring(0,8)}</h1>
                 {user.admin && <h1>Creado por: <NavLink to={`${ticket.user._id}/profile`}><strong>{ticket.user.nick}</strong></NavLink></h1>}
-                <h2>Categoría: {ticket.category === 'sell' ? 'venta' : ticket.category === 'buy' ? 'compra' : 'buff'}</h2>
+                <h2>Categoría: {ticket.category === 'sell' ? 'venta' : ticket.category === 'buy' ? 'compra' : 'balance'}</h2>
                 <h2>Fecha: {new Date(ticket.createdAt).toLocaleDateString('es-ES')} {new Date(ticket.createdAt).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}</h2>
                 <h2>Estado: {user.admin ? ticket.open && !ticket.adminLast ? 'Pendiente' : ticket.open && ticket.adminLast ? 'Leído' : 'Cerrado' : ticket.open ? 'Abierto' : 'Cerrado'}</h2>
                 <Checkbox isChecked={notify} onChange={handleNotify}>Recibe notificaciones por correo</Checkbox>
