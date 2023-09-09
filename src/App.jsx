@@ -50,11 +50,6 @@ function App() {
                 <Route path='*' element={<NotFound />}></Route>
               </Routes>
             </div>
-            {(user && !user.admin) && 
-              <div className='faq-container'>
-                <NavLink to={'/faq'}>FAQ</NavLink>
-              </div>
-            }
             {user && 
               <div className='help'>
                 {load && <HelpChat />}
