@@ -47,7 +47,7 @@ const Navbar = () => {
             </svg>
             {notis.length < 1 ? '' : <div className='noti'>{notis.length}</div>}
             {notis.length > 0 && notisBox && 
-              <div className='notis' style={ colorMode === 'dark' ? { textColor: 'white'} : {}}>
+              <div className='notis' style={ colorMode === 'dark' ? { textColor: 'white' } : {} }>
                 {notis.map(noti => <NavLink to={`/chat/${noti}`} key={noti} onClick={() => setNotisBox(false)}>Nuevo mensaje del ticket {noti.substring(0, 8)}</NavLink>)}
               </div>
             }
