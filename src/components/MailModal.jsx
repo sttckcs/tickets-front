@@ -67,7 +67,7 @@ return (
             <input style={{ width: '500px', paddingLeft: '8px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />
             <textarea maxLength='800' value={message} style={{ resize: 'none', height: '150px' }} placeholder="Asunto" onChange={(e) => setMessage(e.target.value)} required />
             <ModalFooter>
-              <Button colorScheme='blue' type='submit'>Enviar</Button>
+              <Button colorScheme='blue' type='submit' mr={-1}>Enviar</Button>
             </ModalFooter>
           </form>
         }

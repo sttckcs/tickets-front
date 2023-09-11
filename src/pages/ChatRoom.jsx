@@ -114,11 +114,11 @@ const ChatRoom = ({ tId, handleChat }) => {
               <ul style={{ listStyleType: 'none' }}>
                 {msgList.map((msg, index) => {
                   const date = `${new Date(msg.time).toLocaleDateString('es-ES', {day: '2-digit', month:'2-digit', year:'2-digit'})} ${new Date(msg.time).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`
-                  return <li key={index}>
+                  return <li key={index} style={{ padding: '5px 0px' }}>
                     {date === 'Invalid Date Invalid Date' ?
                       '' : 
                       <>
-                        <b>{msg.name} </b><span style={{ fontSize: '12px' }} >{date}</span><h5>{msg.msg}</h5>
+                        <div style={{ margin: '6px 0px 1px 0px' }}><b>{msg.name} </b><span style={{ fontSize: '12px' }} >{date}</span></div><h5 style={{ textAlign: 'justify' }}>{msg.msg}</h5>
                       </>
                     }
                   </li>
@@ -126,7 +126,7 @@ const ChatRoom = ({ tId, handleChat }) => {
               </ul>
             </div>
             <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Input type='text' style={{ backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
+              <Input type='text' style={{ backgroundColor: bgColor, color: textColor, width: '90.3vw', marginRight: '20px' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
               <Button type='submit'>Enviar</Button>
             </form>
           </div>

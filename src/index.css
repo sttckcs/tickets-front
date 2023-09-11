@@ -19,7 +19,7 @@ main {
 }
 
 .chat input[type=text] {
-  width: 50vw;
+  width: 10vw;
 }
 
 form input {
@@ -32,6 +32,10 @@ form input {
 
 .calendar input {
   width: 75px;
+  background-color: white;
+}
+
+.calendar option {
   background-color: white;
 }
 
@@ -76,7 +80,6 @@ form input {
   flex-direction: column;
   padding: 5px;
   background-color: var(--chakra-colors-gray-400);
-  color: black;
   font-weight: 600;
   font-size: 14px;
   gap: 5px;
@@ -108,7 +111,7 @@ form input {
   padding: 0px 20px;
 }
 
-#chatMessagesTicket{
+#chatMessagesTicket {
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-start;
@@ -274,7 +277,7 @@ textarea {
 }
 
 .chat-ticket {
-  height: 68vh;
+  max-height: 68vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -304,11 +307,11 @@ form > input {
 .chat-window {
   margin-top: 20px;
   height: 65vh;
-  max-width: 800px;
+  max-width: 80vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  text-align: center;
+  text-align: left;
 }
 
 .chat-window > h5 {
