@@ -60,7 +60,7 @@ const ChangePassword = () => {
         <div className="loader">
           <Waveform />
         </div> :
-        <div style={{ margin: '20px' }}>
+        <div style={{ margin: '20px auto', width: '400px' }}>
           {success ?
             <form onSubmit={handleSubmit}>
               <input
@@ -77,8 +77,8 @@ const ChangePassword = () => {
                 onChange={(e) => setPwd2(e.target.value)}
                 required
               />
-              <Button colorScheme='blue' type='submit' mr={3}>
-                Change
+              <Button colorScheme='blue' type='submit' mt={3}>
+                Cambiar
               </Button>
             </form>
             : 
