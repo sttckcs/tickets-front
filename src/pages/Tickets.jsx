@@ -24,11 +24,11 @@ const Tickets = () => {
     <>
       {loading ?
         <div className="loader">
-          <Waveform />
+          <Waveform color="white" />
         </div> :
         <>
           <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Button style={{ margin: '10px' }} onClick={() => setNewOpen(true)}>Nuevo Ticket</Button>
+            <Button style={{ margin: '10px', fontSize: '1.5rem' }} onClick={() => setNewOpen(true)}>Nuevo Ticket</Button>
           </nav>
           <div className="tickets">
             {[...user.tickets].reverse().map((ticket) => 

@@ -142,7 +142,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{mode === 'login' ? 'Inciar sesión' : mode === 'register' ? 'Registro' : 'Editar perfil'}</ModalHeader>
+        <ModalHeader>{mode === 'login' ? 'Iniciar sesión' : mode === 'register' ? 'Registro' : 'Editar perfil'}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           {mode === 'login' &&

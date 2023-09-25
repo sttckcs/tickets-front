@@ -14,7 +14,7 @@ const Chat = () => {
     <>
     {loading ?
       <div className="loader">
-        <Waveform/>
+        <Waveform color="white" />
       </div> :
       <>
         {!user.admin ? 

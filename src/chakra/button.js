@@ -2,7 +2,7 @@ export const Button = {
   baseStyle: {
     borderRadius: '20px',
     color: 'black',
-    fontSize: '10pt',
+    fontSize: '20pt',
     fontWeight: 700,
     _focus: {
       boxShadow: 'none'
@@ -10,13 +10,13 @@ export const Button = {
   },
   sizes: {
     sm: {
-      fontSize: '9pt'
+      fontSize: '40pt'
     },
     md: {
-      fontSize: '10pt'
+      fontSize: '40pt'
     },
     lg: {
-      fontSize: '12pt'
+      fontSize: '40pt'
     },
   },
   variants: {

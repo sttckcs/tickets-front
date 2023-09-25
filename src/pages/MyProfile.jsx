@@ -26,12 +26,12 @@ const MyProfile = () => {
       <>
       {loading ? 
         <div className="loader">
-          <Waveform />
+          <Waveform color="white" />
         </div> :
         <>
           <Profile user={user} />
-          <Button style={{ padding: '0px 20px', margin: '10px' }} onClick={() => setOpen(true)}>Editar</Button>
-          <Button style={{ padding: '0px 20px', margin: '10px' }} onClick={logout}>Salir</Button>
+          <Button style={{ padding: '3px 20px 0px 20px', margin: '10px', fontSize: '1.5rem' }} onClick={() => setOpen(true)}>Editar</Button>
+          <Button style={{ padding: '3px 20px 0px 20px', margin: '10px', fontSize: '1.5rem' }} onClick={logout}>Salir</Button>
           <UserModal open={open} setOpen={setOpen} mode={'edit'} />
         </>
       }

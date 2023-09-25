@@ -31,7 +31,7 @@ const VerifyUser = () => {
     <>
       {loading ?
         <div className="loader">
-          <Waveform />
+          <Waveform color="white" />
         </div> :
         <div style={{ margin: '20px' }}>
           <h1>{success ? 'Cuenta verificada! Ya puedes iniciar sesión' : 'Ha habido un error al verificar tu cuenta'}</h1>

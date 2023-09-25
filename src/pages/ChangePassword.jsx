@@ -58,7 +58,7 @@ const ChangePassword = () => {
     <div>
       {loading ?
         <div className="loader">
-          <Waveform />
+          <Waveform color="white" />
         </div> :
         <div style={{ margin: '20px auto', width: '400px' }}>
           {success ?

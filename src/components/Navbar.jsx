@@ -58,7 +58,7 @@ const Navbar = () => {
         {!user ? 
         <>
           <button style={{ padding: '4px 10px' }} onClick={() => handleClick('login')}>Login</button>
-          <button style={{ padding: '4px 10px' }} onClick={() => handleClick('register')}>Registo</button>
+          <button style={{ padding: '4px 10px' }} onClick={() => handleClick('register')}>Registro</button>
         </> :
         <>
           {user.admin && <NavLink to={'/'}>Admin</NavLink>}

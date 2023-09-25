@@ -1,4 +1,5 @@
 import { extendTheme } from "@chakra-ui/react"
+import { modalTheme } from "../components/ModalTheme"
 import { Button } from './button'
 import { Modal } from './modal'
 
@@ -11,7 +12,7 @@ const config = {
     },
   },
   fonts: {
-    body: 'Segoe UI'
+    body: 'Teko-Regular'
   },
   styles: {
     global: () => ({
@@ -25,5 +26,4 @@ const config = {
   },
 }
 
-// 2. Call `extendTheme` and pass your custom values
-export const theme = extendTheme({ config })
+export const theme = extendTheme({ config, components: { Modal: modalTheme } })

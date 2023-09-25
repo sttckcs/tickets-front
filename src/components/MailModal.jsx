@@ -61,7 +61,7 @@ return (
       <ModalBody>
         {loading ?
           <div className='loader'>
-            <Waveform />
+            <Waveform color="white" />
           </div> : 
           <form onSubmit={handleEmail}>
             <input style={{ width: '500px', paddingLeft: '8px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />

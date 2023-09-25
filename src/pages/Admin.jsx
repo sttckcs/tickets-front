@@ -153,8 +153,8 @@ const Admin = () => {
         <CalendarModal open={calOpen} setOpen={setCalOpen} selectionRange={selectionRange} handleSelect={handleSelect} />
       </nav>
       {loading ? 
-        <div className="loader">
-          <Waveform />
+        <div className="loader-sm">
+          <Waveform color="white" />
         </div> : 
         <>
           <div className="tickets">

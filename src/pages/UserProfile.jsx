@@ -31,12 +31,12 @@ const UserProfile = () => {
     <>
       {loading ?
         <div className="loader">
-          <Waveform />
+          <Waveform color="white" />
         </div> :
         user ?
           <>
             <Profile user={user} />
-            <h2><b>Tickets:</b></h2>
+            <h2 style={{ fontSize: '2.25rem' }}><b>Tickets</b></h2>
             <div className="tickets">
             {[...user.tickets].reverse().map((ticket) => 
               <div 

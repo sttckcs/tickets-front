@@ -6,7 +6,7 @@ const Home = () => {
   const { user } = useAuth();
   const [currentText, setCurrentText] = useState(0)
   const texts = [
-    'Te gustaria saber cuánto podrias ganar vendiendo tu inventario de CS:GO? Abre un ticket y el trader te responderá muy pronto dándote el mejor precio que puedes obtener por tus skins.','Te gustaría comprar skins de CS:GO? no dudes en consultar el precio de la skin que más te gusta abriendo un ticket aquí, y te conseguiremos la skin de tus sueños al mejor precio de mercado'
+    '¿Te gustaría comprar skins de Counter Strike? ¡Consulta el precio de tu skin favorita abriendo un ticket aquí! Conseguiremos la skin de tus sueños al mejor precio.'
   ]
 
   useEffect(() => {
@@ -22,13 +22,13 @@ const Home = () => {
   return (
     <div style={{ padding: '10px 20px'}}> 
       {!user 
-      ? <strong>
+      ? <strong style={{ fontSize: '2rem' }}>
         Bienvenido a Todoskins, tu mercado de confianza donde podrás vender,
         comprar, intercambiar skins de CS:GO y comprar balance de buff.163 al mejor precio
         </strong>
       :
         <div className="home">
-          {texts.map((text, index) => (
+          {/* {texts.map((text, index) => (
             <strong 
               key={index} 
               className={`home-text ${index === currentText ? 'active' : ''}`}
@@ -36,7 +36,10 @@ const Home = () => {
               {text}
             </strong>
           ))
-          }
+          } */}
+          <h1>¿Te gustaría comprar skins de <b>Counter Strike?</b></h1>
+          <p>¡Consulta el precio de tu <strong className="strong-pink">skin favorita</strong> abriendo un ticket aquí!</p> 
+          <p>Conseguiremos la skin de tus sueños al <strong className="strong-orange">mejor precio</strong></p>
         </div>
        }
     </div>

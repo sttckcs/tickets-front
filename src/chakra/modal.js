@@ -2,7 +2,7 @@ export const Modal = {
   baseStyle: {
     dialog: {
     borderRadius: '7px',
-    fontSize: '11pt',
+    fontSize: '40pt',
     _focus: {
       boxShadow: 'none'
     }
@@ -10,13 +10,13 @@ export const Modal = {
   },
   sizes: {
     sm: {
-      fontSize: '8pt'
+      fontSize: '40pt'
     },
     md: {
-      fontSize: '10pt'
+      fontSize: '40pt'
     },
     lg: {
-      fontSize: '12pt'
+      fontSize: '40pt'
     },
   },
 }
