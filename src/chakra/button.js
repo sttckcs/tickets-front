@@ -1,8 +1,8 @@
 export const Button = {
   baseStyle: {
-    borderRadius: '20px',
-    color: 'black',
-    fontSize: '20pt',
+    borderRadius: '5px',
+    backgroundColor: 'red',
+    fontSize: '50px',
     fontWeight: 700,
     _focus: {
       boxShadow: 'none'
@@ -10,13 +10,14 @@ export const Button = {
   },
   sizes: {
     sm: {
-      fontSize: '40pt'
+      fontSize: '100pt'
     },
     md: {
-      fontSize: '40pt'
+      fontSize: '16pt',
+      fontWeight: '100',
     },
     lg: {
-      fontSize: '40pt'
+      fontSize: '100pt'
     },
   },
   variants: {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useEffect } from "react";
+import skins from "/images/skins.png";
 
 const Home = () => {
   const { user } = useAuth();
@@ -42,6 +43,7 @@ const Home = () => {
           <p>Conseguiremos la skin de tus sueños al <strong className="strong-orange">mejor precio</strong></p>
         </div>
        }
+       <img src={skins} alt="skins" className='skins' />
     </div>
   )
 }

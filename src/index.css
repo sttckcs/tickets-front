@@ -21,9 +21,9 @@
 }
 
 main {
-  cursor: url('../public/images/cursor-sm.png'), auto;
+  cursor: url('/images/cursor-sm.png'), auto;
   color: rgb(75, 87, 218);
-  background-image: url('../public/images/background2.png');
+  background-image: url('/images/background.png');
   background-size: cover;
   background-position: center;
   margin: 0;
@@ -67,7 +67,7 @@ form input {
   padding: 10px;
 }
 
-.toggle {
+.settings {
   cursor: pointer;
   position: absolute;
   top: 20px;
@@ -80,13 +80,13 @@ form input {
   position: absolute;
   top: 18px;
   right: 105px;
-  width: 28px;
+  width: 24px;
 }
 
 .notis-icon {
   cursor: pointer;
   position: absolute;
-  top: 18px;
+  top: 22px;
   right: 60px;
   width: 28px;
 }
@@ -208,10 +208,11 @@ textarea {
 #nav-filters {
   max-width: 1150px;
   margin: 0 auto;
-  width: 100vw;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  gap: 20px;
 }
 
 #nav a.active, .faq-container a.active {
@@ -255,7 +256,8 @@ textarea {
   height: 300px;
   width: 300px;
   padding: 2px 8px;
-  background-color: #4A5568;
+  background-color: rgb(16, 14, 82);
+  font-size: 1.25rem;
   z-index: 99;
   color: white;
 }
@@ -310,9 +312,10 @@ textarea {
 .skins {
   position: absolute;
   bottom: 0;
-  width: 80vw;
-  left: 10vw;
   z-index: 0;
+  object-fit: cover;
+  max-width: 80vw;
+  left: 10vw;
 }
 
 .help {
@@ -338,7 +341,7 @@ textarea {
 }
 
 .chat-ticket {
-  max-height: 68vh;
+  max-height: 57.8vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -367,7 +370,7 @@ form > input {
 
 .chat-window {
   margin-top: 20px;
-  height: 65vh;
+  height: 60vh;
   max-width: 80vw;
   display: flex;
   flex-direction: column;
@@ -379,6 +382,10 @@ form > input {
 
 .chat-window > h5 {
   padding: 20px 5px;
+}
+
+option {
+  font-weight: 700;
 }
 
 .faq {
@@ -466,8 +473,9 @@ form > input {
   margin: 6px;
   order: 1;
   border-radius: 4px;
-  padding: 5px;
+  padding: 3px 10px;
   color: white;
+  font-size: 1.5rem;
 }
 
 .chat-popout:focus {
@@ -487,6 +495,7 @@ form > input {
 
 .home {
   position: relative;
+  z-index: 1;
 }
 
 .home h1 {

@@ -79,9 +79,9 @@ const HelpChat = () => {
       <Draggable>
         <div className='chat-popout'>
           <div style={{ backgroundColor: '#2D3748', color: '#CBD5E0', padding: '6px' }}>
-            <h1><b>{tgt}</b></h1>
-            <button onClick={() => setTarget('')} style={{ fontSize: '17pt', position: 'absolute', top: '-10px', right: '34px' }}>_</button>
-            <button onClick={handlePopoutClose} style={{ position: 'absolute', top: '4px', right: '12px' }}><b>X</b></button>
+            <h1 style={{ fontSize: '1.25rem', padding: '4px 0px 0px 4px' }}><b>{tgt}</b></h1>
+            <button onClick={() => setTarget('')} style={{ fontSize: '1.5rem', position: 'absolute', top: '-2px', right: '36px' }}>_</button>
+            <button onClick={handlePopoutClose} style={{ position: 'absolute', top: '10px', right: '14px', fontSize: '1.25rem' }}><b>X</b></button>
           </div>
           <div className="help-chat">
             <div className='help-chat--chat'>
@@ -92,7 +92,7 @@ const HelpChat = () => {
                     {date === 'Invalid Date Invalid Date' ?
                       '' : 
                       <>
-                        <b>{msg.name} </b><span style={{ fontSize: '12px', color: '#CBD5E0' }} >{date}</span><h5>{msg.msg}</h5>
+                        <b>{msg.name} </b><span style={{ fontSize: '0.9rem', color: '#CBD5E0', marginLeft: '5px' }}>{date}</span><h5>{msg.msg}</h5>
                       </>
                     }
                   </li>
@@ -101,7 +101,7 @@ const HelpChat = () => {
             </div>
             {target === tgt && <form onSubmit={newMessageSubmit} style={{ display: 'flex', alignItems: 'center' }}>
               <input type='text' style={{ backgroundColor: bgColor, color: textColor }} name='msg' value={chatMessage.msg} onChange={handleChange} required />
-              <Button variant='blue' size='sm' type='submit'>Enviar</Button>
+              <Button style={{ fontSize: '1.5rem' }} type='submit'>Enviar</Button>
             </form>}
           </div>
         </div>
@@ -129,7 +129,7 @@ const HelpChat = () => {
         </div>
         {!user.admin && <form onSubmit={newMessageSubmit} style={{ display: 'flex', alignItems: 'center' }}>
           <input type='text' style={{ backgroundColor: bgColor, color: textColor }} name='msg' value={chatMessage.msg} onChange={handleChange} required />
-          <Button variant='blue' size='sm' type='submit'>Enviar</Button>
+          <Button style={{ fontSize: '1.5rem' }} type='submit'>Enviar</Button>
         </form>}
       </div>
       {user.admin && <div className='conversations'>

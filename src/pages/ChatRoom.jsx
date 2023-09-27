@@ -106,10 +106,10 @@ const ChatRoom = ({ tId, handleChat }) => {
         </div> :
         access ? 
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
-            {tId ? '' : <div>
+            {tId ? '' : <div style={{ fontSize: '2rem' }}>
               <h2><b>Chat de</b><span style={{ fontWeight: '600' }}> {_id.substring(0,8)}</span> <b>-</b> <b> Ticket de</b> <span style={{ fontWeight: '600' }}>{owner}</span></h2>
             </div>}
-            <h1 style={{ fontSize: '24px', margin: '10px' }}><b>Mensajes</b></h1>
+            <h1 style={{ fontSize: '1.75rem', margin: '10px' }}><b>Mensajes</b></h1>
             <div id={`${tId ? 'chatMessagesTicket' : 'chatMessagesWindow'}`}>
               <ul style={{ listStyleType: 'none' }}>
                 {msgList.map((msg, index) => {
@@ -118,7 +118,7 @@ const ChatRoom = ({ tId, handleChat }) => {
                     {date === 'Invalid Date Invalid Date' ?
                       '' : 
                       <>
-                        <div style={{ margin: '6px 0px 1px 0px' }}><b>{msg.name} </b><span style={{ fontSize: '12px' }} >{date}</span></div><h5 style={{ textAlign: 'justify' }}>{msg.msg}</h5>
+                        <div style={{ margin: '6px 0px 1px 0px' }}><b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span></div><h5 style={{ textAlign: 'justify' }}>{msg.msg}</h5>
                       </>
                     }
                   </li>
@@ -126,7 +126,7 @@ const ChatRoom = ({ tId, handleChat }) => {
               </ul>
             </div>
             <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Input type='text' style={{ backgroundColor: bgColor, color: textColor, width: '90.3vw', marginRight: '20px' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
+              <Input type='text' style={{ backgroundColor: bgColor, color: textColor, width: '90.3vw', marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
               <Button type='submit'>Enviar</Button>
             </form>
           </div>

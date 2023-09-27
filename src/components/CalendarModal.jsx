@@ -13,7 +13,7 @@ const CalendarModal = ({ open, setOpen, selectionRange, handleSelect }) => {
   
   return (
     <LightMode>
-    <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
+    <Modal lockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
       <ModalOverlay />
       <ModalContent maxW='610px' top='100px'>
         <ModalHeader color='black'>Escoge intervalo de fechas</ModalHeader>

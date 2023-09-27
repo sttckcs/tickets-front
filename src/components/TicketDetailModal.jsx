@@ -45,7 +45,7 @@ const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, ha
           <ModalCloseButton />
           <ModalBody>
             {ticket &&
-              <div style={{ fontSize: '1.56rem' }}>
+              <div style={{ fontSize: '1.5rem' }}>
                 <h1>Id: {ticket._id.substring(0,8)}</h1>
                 {user.admin && <h1>Creado por: <NavLink to={`${ticket.user._id}/profile`}><strong>{ticket.user.nick}</strong></NavLink></h1>}
                 <h2>Categoría: {ticket.category === 'sell' ? 'venta' : ticket.category === 'buy' ? 'compra' : 'balance'}</h2>

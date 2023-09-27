@@ -12,9 +12,9 @@ const MainChat = ({ ticket }) => {
             return <li style={{ listStyleType: 'none' }} key={index}>
               {date === 'Invalid Date' ?
               '' : 
-              <>
+              <div style={{ color: 'white' }}>
                 <b>{msg.name} </b><span style={{ fontSize: '12px' }} >{date}</span><h5>{msg.msg}</h5>
-              </>
+              </div>
               }
             </li>
           })}

@@ -4,13 +4,16 @@ import { API } from '../services/services';
 import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useColorMode } from '@chakra-ui/react'
-import logo from '../logo.png'
-import moon from '../moon-25.svg'
-import sun from '../sun.png'
+import logo from '/images/Logo-Con-Glow.png'
+import userIcon from '/images/Icono-User.png'
+import notisIcon from '/images/Icono-Correo.png'
+import settingsIcon from '/images/Icono-Settings.png'
+// import moon from '../moon-25.svg'
+// import sun from '../sun.png'
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { colorMode, toggleColorMode } = useColorMode()
+  const { colorMode } = useColorMode()
   const { setAuth, user, notis } = useAuth()
   const [open, setOpen] = useState(false)
   const [mode, setMode] = useState(null)
@@ -34,17 +37,13 @@ const Navbar = () => {
     <div className='nav-container'>
       <div className='nav-items'>
         <img className="nav-title" src={logo} onClick={() => navigate('/')} alt="todoskins" />
-        <img onClick={toggleColorMode} src={`${colorMode === 'light' ? moon : sun}`} className='toggle' alt='toggle' />
+        <img src={settingsIcon} className='settings' alt='settings' />
         {(user && !user.admin) && <NavLink to={'/profile'}>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className='user-icon'>
-            <path strokeWidth="1.75" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+          <img src={userIcon} alt='user logo' className='user-icon' />
         </NavLink>}
         {user && 
           <>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className='notis-icon' onClick={() => setNotisBox(prev => !prev)}>
-              <path strokeWidth="1.75" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-            </svg>
+            <img src={notisIcon} alt='mail logo' className='notis-icon' />
             {notis.length < 1 ? '' : <div className='noti'>{notis.length}</div>}
             {notis.length > 0 && notisBox && 
               <div className='notis' style={ colorMode === 'dark' ? { textColor: 'white' } : {} }>

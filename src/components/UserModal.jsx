@@ -225,7 +225,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   required
                 />
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '10px'}}>
-                  <Button colorScheme='green' onClick={() => setOpenTerms(true)}>Términos y condiciones</Button><Text fontSize='md' style={{ fontWeight: '600' }}>{acceptedTerms ? 'Aceptados' : 'Sin aceptar'}</Text>
+                  <Button style={{ backgroundColor: 'rgb(20, 100, 45)', color: 'white' }} onClick={() => setOpenTerms(true)}>Términos y condiciones</Button><Text fontSize='xl' style={{ fontWeight: '600' }}>{acceptedTerms ? 'Aceptados' : 'Sin aceptar'}</Text>
                 </div>
                 <TermsModal openTerms={openTerms} setOpenTerms={setOpenTerms} acceptedTerms={acceptedTerms} setAcceptedTerms={setAcceptedTerms} />
                 <ModalFooter mt={2}>

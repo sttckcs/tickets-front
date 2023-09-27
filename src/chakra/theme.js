@@ -2,9 +2,10 @@ import { extendTheme } from "@chakra-ui/react"
 import { modalTheme } from "../components/ModalTheme"
 import { Button } from './button'
 import { Modal } from './modal'
+import { buttonTheme } from "../components/ButtonTheme"
 
 const config = {
-  initialColorMode: 'dark',
+  initialColorMode: 'light',
   useSystemColorMode: false,
   colors: {
     brand: {
@@ -26,4 +27,4 @@ const config = {
   },
 }
 
-export const theme = extendTheme({ config, components: { Modal: modalTheme } })
+export const theme = extendTheme({ config, components: { Modal: modalTheme, Button: buttonTheme } })

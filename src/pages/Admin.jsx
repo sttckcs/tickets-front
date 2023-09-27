@@ -120,7 +120,7 @@ const Admin = () => {
     <>
       <nav id='nav-filters' style={{ paddingTop: 0 }}>
         <Box w='210px'>
-          <Select isRequired={true} variant='filled' onChange={(e) => setStatus(e.target.value)}>
+          <Select isRequired={true} fontSize='1.25rem' variant='filled' onChange={(e) => setStatus(e.target.value)}>
             <option value=''>Todos los estados</option>
             <option value='open'>Ver pendientes</option>
             <option value='read'>Ver leídos</option>
@@ -128,7 +128,7 @@ const Admin = () => {
           </Select>
         </Box>
         <Box w='210px'>
-          <Select isRequired={true} variant='filled' onChange={(e) => setCategory(e.target.value)}>
+          <Select isRequired={true} fontSize='1.25rem' variant='filled' onChange={(e) => setCategory(e.target.value)}>
             <option value=''>Todas las categorías</option>
             <option value='sell'>Venta</option>
             <option value='buy'>Compra</option>
@@ -136,13 +136,13 @@ const Admin = () => {
           </Select>
         </Box>
         <Box w='210px'>
-          <Select isRequired={true} colorScheme="twitter" variant='filled' onChange={(e) => setOrder(e.target.value)}>
+          <Select isRequired={true} fontSize='1.25rem' colorScheme="twitter" variant='filled' onChange={(e) => setOrder(e.target.value)}>
             <option value='newest'>Más recientes</option>
             <option value='oldest'>Más antiguos</option>
           </Select>
         </Box>
         <Box w='230px'>
-          <Input style={{ borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value.toLowerCase())} />
+          <Input style={{ fontSize: '1.25rem', borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value.toLowerCase())} />
         </Box>
         <Box w='90px'>
           <Button onClick={() => setCalOpen(true)}>Fechas</Button>

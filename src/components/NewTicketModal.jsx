@@ -88,12 +88,12 @@ const NewTicketModal = ({ open, setOpen }) => {
         <ModalBody>
           <div>
             <form onSubmit={handleTicket}>
-              <Select isRequired={true} variant='filled' placeholder='Elige categoría' onChange={handleCategory}>
+              <Select isRequired={true} fontSize='1.25rem' variant='filled' placeholder='Elige categoría' onChange={handleCategory}>
                 <option value='buy'>Compra</option>
                 <option value='sell'>Venta</option>
                 <option value='buff'>Balance</option>
               </Select>
-              <Checkbox mt={3} isChecked={notify} onChange={() => setNotify(!notify)}>Recibe notificaciones por correo</Checkbox>
+              <Checkbox mt={5} isChecked={notify} onChange={() => setNotify(!notify)}><p style={{ fontSize: '1.1rem' }}>Recibe notificaciones por correo</p></Checkbox>
               <ModalFooter style={{ padding: '12px 0px' }}>
                 <Button variant='blue' type='submit'>
                   Añadir ticket
