@@ -39,7 +39,7 @@ const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, ha
   return (
     <>
       <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose} size='full'>
-        <ModalOverlay />
+        <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
         <ModalContent>
           <ModalHeader>Detalles del ticket</ModalHeader>
           <ModalCloseButton />

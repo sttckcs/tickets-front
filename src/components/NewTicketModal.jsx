@@ -81,7 +81,7 @@ const NewTicketModal = ({ open, setOpen }) => {
 
   return (
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose} size='xl'>
-      <ModalOverlay />
+      <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
       <ModalContent>
         <ModalHeader>Nuevo Ticket</ModalHeader>
         <ModalCloseButton />

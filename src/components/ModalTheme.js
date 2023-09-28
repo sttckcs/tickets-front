@@ -18,6 +18,7 @@ const baseStyle = definePartsStyle({
     fontSize: '1.5rem',
     borderRadius: 'md',
     bg: `rgb(6, 4, 22)`,
+    color: 'rgb(75, 87, 218)'
   },
 })
 

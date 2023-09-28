@@ -37,7 +37,7 @@ const TermsModal = ({ openTerms, setOpenTerms, acceptedTerms, setAcceptedTerms }
   
   return (
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={openTerms} onClose={handleClose} right='100px'>
-      <ModalOverlay />
+      <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
       <ModalContent>
         <ModalHeader>Términos y condiciones</ModalHeader>
         <ModalCloseButton />

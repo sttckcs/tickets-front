@@ -54,7 +54,7 @@ const handleEmail = async (e) => {
 
 return (
   <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose} size='xl'>
-    <ModalOverlay />
+    <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
     <ModalContent>
       <ModalHeader>Envia un correo</ModalHeader>
       <ModalCloseButton />

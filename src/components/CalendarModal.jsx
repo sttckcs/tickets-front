@@ -12,12 +12,11 @@ const CalendarModal = ({ open, setOpen, selectionRange, handleSelect }) => {
   }
   
   return (
-    <LightMode>
     <Modal lockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
-      <ModalOverlay />
+      <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
       <ModalContent maxW='610px' top='100px'>
-        <ModalHeader color='black'>Escoge intervalo de fechas</ModalHeader>
-        <ModalCloseButton color='black' />
+        <ModalHeader>Escoge intervalo de fechas</ModalHeader>
+        <ModalCloseButton />
         <ModalBody>
         <DateRangePicker
           className='calendar'
@@ -28,7 +27,6 @@ const CalendarModal = ({ open, setOpen, selectionRange, handleSelect }) => {
         </ModalBody>
       </ModalContent>
     </Modal>
-    </LightMode>
   )
 }
 

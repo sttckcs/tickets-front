@@ -44,11 +44,6 @@ main {
 form input {
   width: 90%;
 }
-
-.calendar {
-  color: black;
-}
-
 .calendar input {
   width: 75px;
   background-color: white;

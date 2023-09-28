@@ -140,7 +140,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   
   return (
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
-      <ModalOverlay />
+      <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
       <ModalContent>
         <ModalHeader>{mode === 'login' ? 'Iniciar sesión' : mode === 'register' ? 'Registro' : 'Editar perfil'}</ModalHeader>
         <ModalCloseButton />
