@@ -239,7 +239,7 @@ const UserModal = ({ open, setOpen, mode }) => {
           {mode === 'edit' &&
             <div>
             <Box w='150px' mb='20px' ml='10px'>
-              <Select isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
+              <Select fontSize='1.25rem' isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
                 <option value='nick'>Nick</option>
                 <option value='name'>Nombre</option>
                 <option value='steam'>Steam</option>
