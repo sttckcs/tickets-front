@@ -1,11 +1,11 @@
 @font-face {
   font-family: Teko-Regular;
-  src: url('../public/fonts/teko/Teko-Regular.ttf')
+  src: url('/fonts/teko/Teko-Regular.ttf')
 }
 
 @font-face {
   font-family: Teko-Medium;
-  src: url('../public/fonts/teko/Teko-Medium.ttf')
+  src: url('/fonts/teko/Teko-Medium.ttf')
 }
 
 :root {
