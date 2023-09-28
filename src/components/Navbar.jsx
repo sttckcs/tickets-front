@@ -43,7 +43,7 @@ const Navbar = () => {
         </NavLink>}
         {user && 
           <>
-            <img src={notisIcon} alt='mail logo' className='notis-icon' />
+            <img src={notisIcon} alt='mail logo' className='notis-icon' onClick={() => setNotisBox(prev => !prev)} />
             {notis.length < 1 ? '' : <div className='noti'>{notis.length}</div>}
             {notis.length > 0 && notisBox && 
               <div className='notis' style={ colorMode === 'dark' ? { textColor: 'white' } : {} }>
