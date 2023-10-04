@@ -125,8 +125,8 @@ const ChatRoom = ({ tId, handleChat }) => {
                 })}
               </ul>
             </div>
-            <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Input type='text' style={{ backgroundColor: bgColor, color: textColor, width: '90.3vw', marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
+            <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+              <Input type='text' style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
               <Button type='submit'>Enviar</Button>
             </form>
           </div>

@@ -112,6 +112,7 @@ form input {
   cursor: pointer;
   font-size: 28px;
   width: 30vw;
+  min-width: 200px;
 }
 
 #chatMessagesWindow {
@@ -195,9 +196,9 @@ textarea {
   background-color: transparent;
   align-items: center;
   border: 3px solid #171c5f;
-  border-left: 400px solid transparent;
-  border-right: 400px solid transparent;
   background-color: rgb(3, 3, 21);
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
 }
 
 #nav-filters {
@@ -311,6 +312,7 @@ textarea {
   object-fit: cover;
   max-width: 80vw;
   left: 10vw;
+  visibility: hidden;
 }
 
 .help {
@@ -344,7 +346,7 @@ textarea {
 }
 
 .chat-ticket input[type=text] {
-  width: 440px;
+  width: 100%;
   margin-left: 20px;
 }
 
@@ -547,20 +549,31 @@ option {
   .nav-title {
     visibility: hidden;
   }
-}
-
-@media screen and (max-width: 500px) {
-  .nav-title {
-    visibility: hidden;
-  }
 
   .nav-items {
     margin-bottom: 10px;
+  }
+
+  #nav a, #nav button, .faq-container a {
+    margin: 2px 0px;
+    padding: 3px 15px;
+    font-size: 1.25rem;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .skins {
+    visibility: visible;
   }
 }
 
 @media screen and (min-width: 1400px) {
   .home-text {
     left: 10vw;
+  }
+
+  #nav {
+    border-left: 400px solid transparent;
+    border-right: 400px solid transparent;
   }
 }
