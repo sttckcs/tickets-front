@@ -8,7 +8,7 @@ import { socketURL } from '../services/services';
 
 const socket = io(socketURL);
 
-const HelpChat = () => {
+const HelpChat = ({ load, setLoad }) => {
   const textColor = useColorModeValue('#E2E8F0', '#2D3748')
   const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
   const { user } = useAuth();
@@ -29,7 +29,10 @@ const HelpChat = () => {
 
 
   socket.on("newMessage", newMessage => {
-    if (user.admin || newMessage.byAdmin || newMessage.name === user.nick) setMsgList([...msgList, { name: newMessage.name, msg: newMessage.msg, byAdmin: newMessage.byAdmin, room: 'HelpChat', target: newMessage.target}])
+    if (user.admin || newMessage.byAdmin || newMessage.name === user.nick) {
+      setMsgList([...msgList, { name: newMessage.name, msg: newMessage.msg, byAdmin: newMessage.byAdmin, room: 'HelpChat', target: newMessage.target}])
+      setLoad(true);
+    }
   })
 
 
@@ -75,7 +78,7 @@ const HelpChat = () => {
       }))
     };
 
-    return (        
+    return (     
       <Draggable>
         <div className='chat-popout'>
           <div style={{ backgroundColor: '#2D3748', color: '#CBD5E0', padding: '6px' }}>
@@ -110,7 +113,7 @@ const HelpChat = () => {
   }
 
   return (
-    <div>
+    <div style={{ display: `${load ? 'block' : 'none'}` }}>
       <div className="help-chat">
         <div className='help-chat--chat'>
           <ul style={{ listStyleType: 'none' }}>

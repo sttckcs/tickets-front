@@ -25,6 +25,10 @@ function App() {
   const [load, setLoad] = useState(false);
   const { user, loading } = useAuth();
   const bg = useColorModeValue('#C2E8F0', '#1A202C')
+
+  const changeLoad = () => {
+    setLoad(true)
+  }
   
   return (
     <>
@@ -53,7 +57,7 @@ function App() {
               </div>
               {user && 
                 <div className='help'>
-                  {load && <HelpChat />}
+                  {<HelpChat load={load} setLoad={changeLoad} />}
                     <button onClick={() => {
                       startTransition(() => {
                         setLoad(prev => !prev);
