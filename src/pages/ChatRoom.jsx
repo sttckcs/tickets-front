@@ -118,7 +118,7 @@ const ChatRoom = ({ tId, handleChat }) => {
                     {date === 'Invalid Date Invalid Date' ?
                       '' : 
                       <>
-                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}` }}><b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span></div><h5 style={{ textAlign: 'justify' }}>{msg.msg}</h5>
+                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}` }}><b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span></div><h5 style={{ textAlign: 'justify', color: 'white' }}>{msg.msg}</h5>
                       </>
                     }
                   </li>
