@@ -18,6 +18,7 @@ import ChangePassword from "./pages/ChangePassword";
 import HelpChat from './components/HelpChat';
 import Sell from './pages/Sell';
 import Links from './pages/Links';
+import Twitter from '../public/images/x1.png';
 // import skins from '../public/images/skins.png'
 
 function App() {
@@ -71,6 +72,13 @@ function App() {
                     </button>
                 </div>
               }
+              <a 
+                href="http://www.twitter.com/todoskins" 
+                target="_blank" 
+                rel="noreferrer"
+              >
+                <img className='rrss' src={Twitter} alt='Logo Twitter' />
+              </a>
               <footer className="footer">
                 <b>© 2023 TODOSKINS. Todos los derechos reservados.</b>
               </footer>

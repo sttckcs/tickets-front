@@ -545,6 +545,15 @@ option {
   align-items: flex-end;
 }
 
+.rrss {
+  cursor: pointer;
+  width: 32px;
+  position: absolute;
+  bottom: 115px;
+  left: 20px;
+  z-index: 99;
+}
+
 @media screen and (max-width: 500px) {
   .nav-title {
     visibility: hidden;
