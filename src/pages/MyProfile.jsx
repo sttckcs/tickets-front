@@ -10,6 +10,7 @@ import UserModal from "../components/UserModal";
 const MyProfile = () => {
   const { user, loading, setAuth } = useAuth(); 
   const [open, setOpen] = useState(false)
+  const [openFact, setOpenFact] = useState(false)
   const navigate = useNavigate()
 
   const logout = async () => {
@@ -28,12 +29,16 @@ const MyProfile = () => {
         <div className="loader">
           <Waveform color="white" />
         </div> :
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Profile user={user} />
-          <Button style={{ margin: '10px' }} onClick={() => setOpen(true)}>Editar</Button>
-          <Button style={{ margin: '10px' }} onClick={logout}>Salir</Button>
+          {!user.admin && <Button style={{ margin: '10px', width: '230px' }} onClick={() => setOpenFact(true)}>Datos de facturación</Button>}
+          <div>
+            <Button style={{ margin: '10px' }} onClick={() => setOpen(true)}>Editar</Button>
+            <Button style={{ margin: '10px' }} onClick={logout}>Salir</Button>
+          </div>
           <UserModal open={open} setOpen={setOpen} mode={'edit'} />
-        </>
+          <UserModal open={openFact} setOpen={setOpenFact} mode={'billing'} />
+        </div>
       }
     </>
   )

@@ -47,7 +47,10 @@ const Navbar = () => {
             {notis.length < 1 ? '' : <div className='noti'>{notis.length}</div>}
             {notis.length > 0 && notisBox && 
               <div className='notis' style={ colorMode === 'dark' ? { textColor: 'white' } : {} }>
-                {notis.map(noti => <NavLink to={`/chat/${noti}`} key={noti} onClick={() => setNotisBox(false)}>Nuevo mensaje del ticket {noti.substring(0, 8)}</NavLink>)}
+                {notis.map(noti => {
+                  if (noti === 'xx21') return <NavLink to={`/profile`} key={noti} onClick={() => setNotisBox(false)}>Necesitas añadir los datos de facturación</NavLink>
+                  else return <NavLink to={`/chat/${noti}`} key={noti} onClick={() => setNotisBox(false)}>Nuevo mensaje del ticket {noti.substring(0, 8)}</NavLink>
+                })}
               </div>
             }
           </>

@@ -2,7 +2,7 @@ const Profile = ({ user }) => {
   return (
     <>
       <strong style={{ fontSize: '3rem' }}>Perfil</strong>
-      <div style={{ margin: '10px 0 20px 0', fontSize: '1.75rem', lineHeight: '35px' }}>
+      <div style={{ margin: '10px 0 10px 0', fontSize: '1.75rem', lineHeight: '35px' }}>
         {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}} >
           <h2><b>Avatar:</b></h2>
           <img src={user.picture} alt={user.nick} style={{ margin: '10px', width: '100px'}} />

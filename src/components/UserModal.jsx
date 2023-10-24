@@ -137,12 +137,29 @@ const UserModal = ({ open, setOpen, mode }) => {
     }
   };
 
+  const handleBillingSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await API.put('user/billing', {
+        _id: user._id,
+        newUser
+      });
+      setUser({...newUser, _id: user._id})
+      alert('Datos de facturación añadidos correctamente!')
+      handleClose();
+    } catch (error) {
+      console.log(error)
+      alert('Error añadiendo los datos de facturación')
+      setNewUser(user)
+    }
+  };
+
   
   return (
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
       <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
       <ModalContent>
-        <ModalHeader>{mode === 'login' ? 'Iniciar sesión' : mode === 'register' ? 'Registro' : 'Editar perfil'}</ModalHeader>
+        <ModalHeader>{mode === 'login' ? 'Iniciar sesión' : mode === 'register' ? 'Registro' : mode === 'billing' ? 'Datos de facturación' : 'Editar perfil'}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           {mode === 'login' &&
@@ -231,6 +248,86 @@ const UserModal = ({ open, setOpen, mode }) => {
                 <ModalFooter mt={2}>
                   <Button colorScheme='blue' type='submit' mr={3} isDisabled={!acceptedTerms || phone.length <9}>
                     Registrar
+                  </Button>
+                </ModalFooter>
+              </form>
+            </div>
+          }
+          {mode === 'billing' &&
+            <div>
+            <Box w='150px' mb='20px' ml='10px'>
+              <Select fontSize='1.25rem' isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
+                <option value='empresa'>Empresa?</option>
+                <option value='razonSocial'>Razón Social</option>
+                <option value='nif'>NIF</option>
+                <option value='direccionFacturacion'>Dirección</option>
+                <option value='poblacionFacturacion'>Población</option>
+                <option value='codigoPostalacturacion'>Código Postal</option>
+                <option value='provinciaFacturacion'>Provincia</option>
+                <option value='paisFacturacion'>País</option>
+              </Select>
+            </Box>
+              <form onSubmit={handleBillingSubmit}>
+                {editF === 'empresa' && <input 
+                  type="checkbox"
+                  style={{ width: '30px', height: '30px' }}
+                  value={newUser.empresa} 
+                  id="empresa"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'razonSocial' && <input
+                  type="text" 
+                  value={newUser.razonSocial} 
+                  id="razonSocial"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'nif' && <input 
+                  type="text" 
+                  value={newUser.nif} 
+                  id="nif"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'direccionFacturacion' && <input 
+                  type="text" 
+                  value={newUser.direccionFacturacion} 
+                  id="direccionFacturacion"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'poblacionFacturacion' && <input 
+                  type="text" 
+                  value={newUser.poblacionFacturacion} 
+                  id="poblacionFacturacion"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'codigoPostalacturacion' && <input 
+                  type="text" 
+                  value={newUser.codigoPostalacturacion} 
+                  id="codigoPostalacturacion"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}
+                {editF === 'provinciaFacturacion' && <input 
+                  type="text" 
+                  value={newUser.provinciaFacturacion} 
+                  id="provinciaFacturacion"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}  
+                {editF === 'paisFacturacion' && <input 
+                  type="text" 
+                  value={newUser.paisFacturacion} 
+                  id="paisFacturacion"
+                  onChange={(e) => handleUserEdit(e)} 
+                  required 
+                />}             
+                <ModalFooter mt={2}>
+                  <Button colorScheme='blue' type='submit' mr={3}>
+                    Guardar
                   </Button>
                 </ModalFooter>
               </form>
