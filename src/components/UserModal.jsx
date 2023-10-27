@@ -21,7 +21,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   const [pwd2, setPwd2] = useState('')
   const [openTerms, setOpenTerms] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [editF, setEditF] = useState('nick');
+  const [editF, setEditF] = useState('empresa');
 
   useEffect(() => {
     setNick('')
@@ -32,6 +32,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     setPassword('')
     setAcceptedTerms(false)
     setForgotten(false)
+    mode === 'billing' ? setEditF('empresa') : setEditF('nick');
   }, [open])
 
   const handleLogin = async (e) => {
@@ -73,10 +74,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   const handleClose = () => {
     onClose();
     setOpen(false);
-    if (mode === 'edit') {
-      setNewUser(newUser);
-      setEditF('nick');
-    }
+    if (mode === 'edit' || mode === 'billing') setNewUser(user);
   }
   
   const handleForgotten = async (e) => {
@@ -138,6 +136,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   };
 
   const handleBillingSubmit = async (e) => {
+    console.log(newUser);
     e.preventDefault();
     try {
       await API.put('user/billing', {
