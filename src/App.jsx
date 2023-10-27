@@ -18,7 +18,7 @@ import ChangePassword from "./pages/ChangePassword";
 import HelpChat from './components/HelpChat';
 import Sell from './pages/Sell';
 import Links from './pages/Links';
-import Twitter from '../public/images/x1.png';
+import Twitter from '/images/x1.png';
 // import skins from '../public/images/skins.png'
 
 function App() {
