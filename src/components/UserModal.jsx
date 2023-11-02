@@ -33,6 +33,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     setAcceptedTerms(false)
     setForgotten(false)
     mode === 'billing' ? setEditF('empresa') : setEditF('nick');
+    console.log('user', user);
   }, [open])
 
   const handleLogin = async (e) => {
@@ -91,10 +92,30 @@ const UserModal = ({ open, setOpen, mode }) => {
   }
 
   const handleUserEdit = (e) => {
-    setNewUser(prev => ({
-      ...prev,
-      [e.target.id]: e.target.id === 'nick' ? e.target.value.toLowerCase() : e.target.value
-    }))
+    const { id, value, checked } = e.target;
+
+    setNewUser(prev => {
+      if (id === 'nick') {
+        return {
+          ...prev,
+          [id]: value.toLowerCase()
+        }
+      }
+
+      else if (id === 'empresa') {
+        return {
+          ...prev,
+          [id]: checked
+        }
+      }
+
+      else {
+        return {
+          ...prev,
+          [id]: value
+        }
+      }
+    })
   }
 
   const handleUserSubmit = async (e) => {
@@ -136,8 +157,12 @@ const UserModal = ({ open, setOpen, mode }) => {
   };
 
   const handleBillingSubmit = async (e) => {
-    console.log(newUser);
     e.preventDefault();
+    if (newUser.nif.length < 9) {
+      alert('Error en el NIF');
+      return;
+    }
+  
     try {
       await API.put('user/billing', {
         _id: user._id,
@@ -257,11 +282,11 @@ const UserModal = ({ open, setOpen, mode }) => {
             <Box w='150px' mb='20px' ml='10px'>
               <Select fontSize='1.25rem' isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
                 <option value='empresa'>Empresa?</option>
-                <option value='razonSocial'>Razón Social</option>
+                <option value='apellidos'>Apellidos</option>
                 <option value='nif'>NIF</option>
                 <option value='direccionFacturacion'>Dirección</option>
                 <option value='poblacionFacturacion'>Población</option>
-                <option value='codigoPostalacturacion'>Código Postal</option>
+                <option value='codigoPostalFacturacion'>Código Postal</option>
                 <option value='provinciaFacturacion'>Provincia</option>
                 <option value='paisFacturacion'>País</option>
               </Select>
@@ -270,15 +295,14 @@ const UserModal = ({ open, setOpen, mode }) => {
                 {editF === 'empresa' && <input 
                   type="checkbox"
                   style={{ width: '30px', height: '30px' }}
-                  value={newUser.empresa} 
+                  checked={newUser.empresa} 
                   id="empresa"
                   onChange={(e) => handleUserEdit(e)} 
-                  required 
                 />}
-                {editF === 'razonSocial' && <input
+                {editF === 'apellidos' && <input
                   type="text" 
-                  value={newUser.razonSocial} 
-                  id="razonSocial"
+                  value={newUser.apellidos} 
+                  id="apellidos"
                   onChange={(e) => handleUserEdit(e)} 
                   required 
                 />}
@@ -286,7 +310,9 @@ const UserModal = ({ open, setOpen, mode }) => {
                   type="text" 
                   value={newUser.nif} 
                   id="nif"
-                  onChange={(e) => handleUserEdit(e)} 
+                  onChange={(e) => {
+                    if (e.target.value.length <= 9) handleUserEdit(e);
+                  }}
                   required 
                 />}
                 {editF === 'direccionFacturacion' && <input 
@@ -303,11 +329,15 @@ const UserModal = ({ open, setOpen, mode }) => {
                   onChange={(e) => handleUserEdit(e)} 
                   required 
                 />}
-                {editF === 'codigoPostalacturacion' && <input 
-                  type="text" 
-                  value={newUser.codigoPostalacturacion} 
-                  id="codigoPostalacturacion"
-                  onChange={(e) => handleUserEdit(e)} 
+                {editF === 'codigoPostalFacturacion' && <input 
+                  type="tel" 
+                  value={newUser.codigoPostalFacturacion} 
+                  id="codigoPostalFacturacion"
+                  onChange={(e) => {
+                    const num = e.target.value.replace(/\D/g, '')
+                    e.target.value = num
+                    if (num.length <= 5) handleUserEdit(e)
+                    }} 
                   required 
                 />}
                 {editF === 'provinciaFacturacion' && <input 
