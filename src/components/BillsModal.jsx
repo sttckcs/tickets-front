@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import { Text, Button, Select, Box, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react';
+import { useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react';
 import descargaIcon from '/images/descarga.png'
 const BillsModal = ({ open, setOpen }) => {
 
   const { user } = useAuth();
   const { onClose } = useDisclosure({ defaultIsOpen: true })
-
-  useEffect(() => {
-  }, [])
 
   const handleClose = () => {
     onClose();
