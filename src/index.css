@@ -86,6 +86,11 @@ form input {
   width: 28px;
 }
 
+.descarga-icon {
+  cursor: pointer;
+  height: 24px;
+}
+
 .notis {
   display: flex;
   position: absolute;
