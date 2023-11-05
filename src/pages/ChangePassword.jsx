@@ -60,7 +60,7 @@ const ChangePassword = () => {
         <div className="loader">
           <Waveform color="white" />
         </div> :
-        <div style={{ margin: '20px auto', width: '400px' }}>
+        <div style={{ margin: '20px auto', width: '400px', fontSize: '1.5rem' }}>
           {success ?
             <form onSubmit={handleSubmit}>
               <input
