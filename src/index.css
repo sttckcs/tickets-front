@@ -322,7 +322,7 @@ textarea {
 
 .help {
   position: absolute;
-  bottom: 55px;
+  bottom: 95px;
   right: 20px;
   z-index: 99;
   display: flex;
@@ -559,6 +559,23 @@ option {
   z-index: 99;
 }
 
+.lista-facturas {
+  display: flex;
+  align-items: center;
+  gap: 20px; 
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.factura {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.5rem;
+  width: 430px;
+}
+
 @media screen and (max-width: 500px) {
   .nav-title {
     visibility: hidden;
@@ -573,11 +590,39 @@ option {
     padding: 3px 15px;
     font-size: 1.25rem;
   }
+
+  .lista-facturas, .factura {
+    font-size: 1rem;
+  }
+
+  .factura {
+    width: 100%;
+  }
+  
+  .descarga-icon {
+    height: 16px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .faq {
+    max-height: 55vh;
+  }
 }
 
 @media screen and (min-width: 1200px) {
   .skins {
     visibility: visible;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1500px) {
+  .skins {
+    visibility: visible;
+  }
+
+  .faq {
+    max-height: 65vh;
   }
 }
 
