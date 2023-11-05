@@ -26,7 +26,7 @@ const BillsModal = ({ open, setOpen }) => {
                 <p>Importe</p>
                 <p>Descargar</p>
               </div>
-              {user.facturas.map(factura =>
+              {user.facturas.reverse().map(factura =>
               <div key={factura._id} style={{ display: 'flex', alignItems: 'center', padding: '0px 17px', justifyContent: 'flex-start', gap: '48px' }}>
                 <span style={{ marginRight: '9px' }}>{factura.numero}</span> <span>{factura.fecha}</span><span style={{ marginRight: '40px' }}>{factura.totalImporte} €</span><a href={factura.ruta} target="_blank" rel="noreferrer"><img className='descarga-icon' src={descargaIcon} alt='descargar' loading="lazy" /></a>
               </div>)}
