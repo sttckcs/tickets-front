@@ -320,6 +320,14 @@ const UserModal = ({ open, setOpen, mode }) => {
                   onChange={(e) => handleUserEdit(e)}
                   required
                 />
+                <input
+                  type="text"
+                  placeholder="País"
+                  id="paisFacturacion"
+                  value={newUser.paisFacturacion}
+                  onChange={(e) => handleUserEdit(e)}
+                  required
+                />
                 <div style={{ display: 'flex', alignItems: 'center', marginLeft: '10px', marginTop: '6px' }}>
                   <p>Persona Física</p>
                   <input 
