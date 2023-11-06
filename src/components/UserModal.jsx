@@ -320,7 +320,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   onChange={(e) => handleUserEdit(e)}
                   required
                 />
-                <div style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft: '10px', marginTop: '6px' }}>
                   <p>Persona Física</p>
                   <input 
                     type="checkbox"
