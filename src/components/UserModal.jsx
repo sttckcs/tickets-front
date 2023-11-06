@@ -11,7 +11,6 @@ const UserModal = ({ open, setOpen, mode }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
   const [newUser, setNewUser] = useState(user);
   const [nick, setNick] = useState('');
-  const [name, setName] = useState('');
   const [steam, setSteam] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -21,19 +20,18 @@ const UserModal = ({ open, setOpen, mode }) => {
   const [pwd2, setPwd2] = useState('')
   const [openTerms, setOpenTerms] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const [editF, setEditF] = useState('empresa');
+  const [editF, setEditF] = useState('nick');
 
   useEffect(() => {
     setNick('')
-    setName('')
     setSteam('')
     setPhone('')
     setEmail('')
     setPassword('')
     setAcceptedTerms(false)
     setForgotten(false)
-    mode === 'billing' ? setEditF('empresa') : setEditF('nick');
-    console.log('user', user);
+    setEditF('nick')
+    setNewUser(user);
   }, [open])
 
   const handleLogin = async (e) => {
@@ -73,9 +71,9 @@ const UserModal = ({ open, setOpen, mode }) => {
   };
 
   const handleClose = () => {
+    if (mode === 'edit' || mode === 'billing') setNewUser(user);
     onClose();
     setOpen(false);
-    if (mode === 'edit' || mode === 'billing') setNewUser(user);
   }
   
   const handleForgotten = async (e) => {
@@ -102,10 +100,17 @@ const UserModal = ({ open, setOpen, mode }) => {
         }
       }
 
-      else if (id === 'empresa') {
+      else if (id === 'empresaF') {
         return {
           ...prev,
-          [id]: checked
+          ['empresa']: !checked
+        }
+      }
+
+      else if (id === 'empresaT') {
+        return {
+          ...prev,
+          ['empresa']: checked
         }
       }
 
@@ -201,7 +206,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                 <ModalFooter mt={2} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                   {!forgotten ?
                     <div>
-                      <Button colorScheme='blue' type='submit' mr={3}>
+                      <Button colorScheme='blue' type='submit' mr={1}>
                         Iniciar
                       </Button>
                       <Button colorScheme='green' onClick={() => setForgotten(true)}>
@@ -224,13 +229,6 @@ const UserModal = ({ open, setOpen, mode }) => {
                   placeholder="Nick" 
                   value={nick} 
                   onChange={(e) => setNick(e.target.value.toLowerCase())} 
-                  required 
-                />
-                <input
-                  type="text" 
-                  placeholder="Nombre" 
-                  value={name} 
-                  onChange={(e) => setName(e.target.value)} 
                   required 
                 />
                 <input 
@@ -270,7 +268,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                 </div>
                 <TermsModal openTerms={openTerms} setOpenTerms={setOpenTerms} acceptedTerms={acceptedTerms} setAcceptedTerms={setAcceptedTerms} />
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={3} isDisabled={!acceptedTerms || phone.length <9}>
+                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={!acceptedTerms || phone.length <9}>
                     Registrar
                   </Button>
                 </ModalFooter>
@@ -279,84 +277,72 @@ const UserModal = ({ open, setOpen, mode }) => {
           }
           {mode === 'billing' &&
             <div>
-            <Box w='150px' mb='20px' ml='10px'>
-              <Select fontSize='1.25rem' isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
-                <option value='empresa'>Empresa?</option>
-                <option value='apellidos'>Apellidos</option>
-                <option value='nif'>NIF</option>
-                <option value='direccionFacturacion'>Dirección</option>
-                <option value='poblacionFacturacion'>Población</option>
-                <option value='codigoPostalFacturacion'>Código Postal</option>
-                <option value='provinciaFacturacion'>Provincia</option>
-                <option value='paisFacturacion'>País</option>
-              </Select>
-            </Box>
               <form onSubmit={handleBillingSubmit}>
-                {editF === 'empresa' && <input 
-                  type="checkbox"
-                  style={{ width: '30px', height: '30px' }}
-                  checked={newUser.empresa} 
-                  id="empresa"
-                  onChange={(e) => handleUserEdit(e)} 
-                />}
-                {editF === 'apellidos' && <input
+                <input 
                   type="text" 
-                  value={newUser.apellidos} 
-                  id="apellidos"
+                  placeholder="Nombre"
+                  id="name"
+                  value={newUser.name} 
                   onChange={(e) => handleUserEdit(e)} 
                   required 
-                />}
-                {editF === 'nif' && <input 
+                />
+                <input 
                   type="text" 
-                  value={newUser.nif} 
+                  placeholder="Apellidos"
+                  id="apellidos"
+                  value={newUser.apellidos} 
+                  onChange={(e) => handleUserEdit(e)} 
+                  required
+                />
+                <input
+                  type="text" 
+                  placeholder="NIF/CIF"
                   id="nif"
+                  value={newUser.nif} 
                   onChange={(e) => {
                     if (e.target.value.length <= 9) handleUserEdit(e);
-                  }}
-                  required 
-                />}
-                {editF === 'direccionFacturacion' && <input 
+                  }} 
+                  required
+                />
+                <input 
                   type="text" 
-                  value={newUser.direccionFacturacion} 
+                  placeholder="Dirección" 
                   id="direccionFacturacion"
+                  value={newUser.direccionFacturacion} 
                   onChange={(e) => handleUserEdit(e)} 
                   required 
-                />}
-                {editF === 'poblacionFacturacion' && <input 
-                  type="text" 
-                  value={newUser.poblacionFacturacion} 
-                  id="poblacionFacturacion"
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
-                />}
-                {editF === 'codigoPostalFacturacion' && <input 
-                  type="tel" 
-                  value={newUser.codigoPostalFacturacion} 
+                />
+                <input
+                  type="text"
+                  placeholder="Código Postal"
                   id="codigoPostalFacturacion"
-                  onChange={(e) => {
-                    const num = e.target.value.replace(/\D/g, '')
-                    e.target.value = num
-                    if (num.length <= 5) handleUserEdit(e)
-                    }} 
-                  required 
-                />}
-                {editF === 'provinciaFacturacion' && <input 
-                  type="text" 
-                  value={newUser.provinciaFacturacion} 
-                  id="provinciaFacturacion"
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
-                />}  
-                {editF === 'paisFacturacion' && <input 
-                  type="text" 
-                  value={newUser.paisFacturacion} 
-                  id="paisFacturacion"
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
-                />}             
+                  value={newUser.codigoPostalFacturacion}
+                  onChange={(e) => handleUserEdit(e)}
+                  required
+                />
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
+                  <p>Persona Física</p>
+                  <input 
+                    type="checkbox"
+                    style={{ width: '30px', height: '30px' }}
+                    checked={!newUser.empresa} 
+                    id="empresaF"
+                    onChange={(e) => handleUserEdit(e)} 
+                  />
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
+                  <p>Persona Jurídica (Empresa)</p>
+                  <input 
+                    type="checkbox"
+                    style={{ width: '30px', height: '30px' }}
+                    checked={newUser.empresa} 
+                    id="empresaT"
+                    onChange={(e) => handleUserEdit(e)} 
+                  />
+                </div>
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={3}>
-                    Guardar
+                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={newUser.nif.length < 9}>
+                    Aceptar
                   </Button>
                 </ModalFooter>
               </form>
@@ -432,7 +418,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   </>
                 }
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={3}>
+                  <Button colorScheme='blue' type='submit' mr={1}>
                     Guardar
                   </Button>
                 </ModalFooter>
