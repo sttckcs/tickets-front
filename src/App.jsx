@@ -80,7 +80,7 @@ function App() {
                 <img className='rrss' src={Twitter} alt='Logo Twitter' />
               </a>
               <footer className="footer">
-                <b>© 2023 TODOSKINS. Todos los derechos reservados.</b>
+                <b>© 2023 SKINDREAM, SL. Todos los derechos reservados.</b>
               </footer>
             </Router>
         }
