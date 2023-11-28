@@ -34,7 +34,7 @@ const MyProfile = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Profile user={user} />
           {!user.admin && <Button style={{ margin: '10px', width: '230px' }} onClick={() => setOpenFact(true)}>Datos de facturación</Button>}
-          {!user.admin && user.facturas.length > 0 && <Button style={{ margin: '10px', width: '230px' }} onClick={() => setOpenBills(true)}>Ver facturas</Button>}
+          {!user.admin && user.facturas.length > 0 && <Button style={{ margin: '10px', width: '230px' }} onClick={() => setOpenBills(true)}>Ver transacciones</Button>}
           <div>
             <Button style={{ margin: '10px' }} onClick={() => setOpen(true)}>Editar</Button>
             <Button style={{ margin: '10px' }} onClick={logout}>Salir</Button>

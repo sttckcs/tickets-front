@@ -15,7 +15,7 @@ const BillsModal = ({ open, setOpen }) => {
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose} >
       <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
       <ModalContent maxW='500px'>
-        <ModalHeader>Facturas</ModalHeader>
+        <ModalHeader>Transacciones</ModalHeader>
         <ModalCloseButton />
         <ModalBody> 
           {user.facturas.length > 0 ?
