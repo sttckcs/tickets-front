@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
           'user/current'
         );
         let newNotis = [];
-        newNotis.push('xx21')
+        if (!res.data.idNeverlate) newNotis.push('xx21');
         if (!inChat) {
           if (res.data.admin) res.data.chats.map((chat) => {
             if (!chat.adminLast && chat.open) return newNotis.push(chat._id)
