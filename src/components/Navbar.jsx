@@ -65,7 +65,7 @@ const Navbar = () => {
         <>
           {user.admin && <NavLink to={'/'}>Admin</NavLink>}
           {!user.admin && <NavLink to={'/tickets'}>Tickets</NavLink>}
-          <NavLink to={'/chat'}>Chat</NavLink>
+          {user.admin && <NavLink to={'/chat'}>Chat</NavLink>}
           <NavLink to={'/permissions'}>Permisos</NavLink>
           {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
           {!user.admin && <NavLink to={'/links'}>Enlaces</NavLink>}
