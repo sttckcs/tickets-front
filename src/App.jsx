@@ -19,7 +19,7 @@ import HelpChat from './components/HelpChat';
 import Sell from './pages/Sell';
 import Links from './pages/Links';
 import Twitter from '/images/x1.png';
-import Permissions from './pages/Permissions';
+import Users from './pages/Users';
 // import skins from '../public/images/skins.png'
 
 function App() {
@@ -48,7 +48,7 @@ function App() {
                   <Route path='/sell' element={user ? <Sell /> : <NotFound />}></Route>
                   <Route path='/links' element={user ? <Links /> : <NotFound />}></Route>
                   <Route path='/:id/profile' element={user?.admin? <UserProfile /> : <NotFound />}></Route>
-                  <Route path='/permissions' element={user?.admin? <Permissions /> : <NotFound />}></Route>
+                  <Route path='/users' element={user?.admin? <Users /> : <NotFound />}></Route>
                   <Route path='/profile' element={user && !user.admin ? <MyProfile /> : <NotFound />}></Route>
                   <Route path='/tickets' element={user && !user.admin ? <Tickets /> : <NotFound />}></Route>
                   <Route path='/chat' element={user ? <Chat /> : <NotFound />}></Route>
