@@ -178,7 +178,7 @@ const UserModal = ({ open, setOpen, mode }) => {
       handleClose();
     } catch (error) {
       console.log(error)
-      alert('Error añadiendo los datos de facturación')
+      alert('Error añadiendo los datos de facturación', error);
       setNewUser(user)
     }
   };

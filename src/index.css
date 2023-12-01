@@ -442,13 +442,16 @@ option {
 
 .chat-box {
   text-align: center;
+  width: 91vw;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
-  padding: 0px 10px;
-  max-height: 126px;
-  overflow-y: hidden;
+  padding: 0px 20px;
+  max-height: 53vh;
+  overflow-y: scroll;
   font-size: 1.5rem;
+  margin: 10px auto;
 }
 .conversations {
   display: flex;
