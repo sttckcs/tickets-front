@@ -328,6 +328,10 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  h1 {
+    font-size: 1.5rem;
+  }
 }
 
 .help p {

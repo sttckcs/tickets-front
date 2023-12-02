@@ -41,7 +41,14 @@ const Admin = () => {
       setLoading(false)
     };
 
-    getTickets();
+    const fetchTicketsPeriodically = () => {
+      getTickets();
+      const intervalId = setInterval(getTickets, 5000); 
+  
+      return () => clearInterval(intervalId);
+    };
+  
+    fetchTicketsPeriodically();
     setTicket(true)
   }, []);
 

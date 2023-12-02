@@ -66,11 +66,12 @@ function App() {
                         setLoad(prev => !prev);
                       })
                     }}>
-                      <svg width="124px" height="124px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <svg width="90px" height="90px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20 11a8 8 0 10-16 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
                         <path d="M2 15.438v-1.876a2 2 0 011.515-1.94l1.74-.436a.6.6 0 01.745.582v5.463a.6.6 0 01-.746.583l-1.74-.435A2 2 0 012 15.439zM22 15.438v-1.876a2 2 0 00-1.515-1.94l-1.74-.436a.6.6 0 00-.745.582v5.463a.6.6 0 00.745.583l1.74-.435A2 2 0 0022 15.439zM20 18v.5a2 2 0 01-2 2h-3.5" strokeWidth="1.5"></path>
                         <path d="M13.5 22h-3a1.5 1.5 0 010-3h3a1.5 1.5 0 010 3z"strokeWidth="1.5"></path>
                       </svg>
+                      <h1>SOPORTE</h1>
                     </button>
                 </div>
               }

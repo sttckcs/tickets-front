@@ -7,8 +7,17 @@ const Chat = () => {
   const { user, setTicket, loading } = useAuth();
 
   useEffect(() => {
+    console.log('chats', user.chats[0].messages[user.chats[0].messages.length - 1].time);
     setTicket(true)
   }, [setTicket])
+
+  const formatTickets = (tickets) => {
+    return tickets.sort((a, b) => {
+      const dateA = new Date(a.messages[a.messages.length - 1].time);
+      const dateB = new Date(b.messages[b.messages.length - 1].time);
+      return dateB - dateA
+      }).sort((a, b) => a.adminLast - b.adminLast)
+  }
 
   return (
     <>
@@ -19,14 +28,14 @@ const Chat = () => {
       <>
         {!user.admin ? 
           <div className="chat-box">
-            {user.tickets.map(ticket => {
+            {formatTickets(user.tickets).map(ticket => {
               if (ticket.open && ticket.messages.length > 0) return (
                 <MainChat ticket={ticket} key={ticket._id} />
               )
             })}
           </div> : 
           <div className="chat-box">
-            {user.chats.map(ticket => {
+            {formatTickets(user.chats).map(ticket => {
               if (ticket.open) return (
                 <MainChat ticket={ticket} key={ticket._id} />
               )

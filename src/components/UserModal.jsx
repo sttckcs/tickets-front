@@ -89,6 +89,21 @@ const UserModal = ({ open, setOpen, mode }) => {
     }
   }
 
+  const handleVerify = async (e) => {
+    e.preventDefault();
+    try {
+      await API.post('user/sendverify', {
+        email,
+      });
+      alert('Verificación de cuenta enviada! Comprueba tu bandeja');
+      handleClose();
+    } catch (error) {
+      if (error.response.status === 304) alert(`El usuario ya está verificado`);
+      else if (error.response.status === 404) alert(`Usuario no encontrado`);
+      else alert('Error enviando el correo', error.response.data.message);
+    }
+  }
+
   const handleUserEdit = (e) => {
     const { id, value, checked } = e.target;
 
@@ -194,9 +209,9 @@ const UserModal = ({ open, setOpen, mode }) => {
           {mode === 'login' &&
             <div>
               <form onSubmit={handleLogin}>
-                <input type="email" style={{ width: '300px' }} placeholder={forgotten ? "Introduce tu correo" : "Correo"} value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="email" style={{ width: '350px' }} placeholder={forgotten ? "Introduce tu correo" : "Correo"} value={email} onChange={(e) => setEmail(e.target.value)} required />
                 {!forgotten && <input
-                  style={{ width: '300px' }}
+                  style={{ width: '350px' }}
                   type="password"
                   placeholder="Contraseña"
                   value={password}
@@ -206,16 +221,21 @@ const UserModal = ({ open, setOpen, mode }) => {
                 <ModalFooter mt={2} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                   {!forgotten ?
                     <div>
-                      <Button colorScheme='blue' type='submit' mr={1}>
+                      <Button colorScheme='blue' type='submit' mr={4}>
                         Iniciar
                       </Button>
-                      <Button colorScheme='green' onClick={() => setForgotten(true)}>
-                        Contraseña olvidada?
+                      <Button colorScheme='green' ml={4} onClick={() => setForgotten(true)}>
+                        No puedes entrar?
                       </Button>
                     </div> :
-                    <Button colorScheme='blue' onClick={handleForgotten}>
-                      Enviar
-                    </Button>
+                    <div style={{ display: 'flex', marginLeft: '15%', flexDirection: 'column' }}>
+                      <Button colorScheme='blue' onClick={handleVerify} mb={2}>
+                        Verificar cuenta
+                      </Button>
+                      <Button colorScheme='blue' onClick={handleForgotten} mt={2}>
+                        Recuperar contraseña
+                      </Button>
+                    </div>
                   }
                 </ModalFooter>
               </form>
