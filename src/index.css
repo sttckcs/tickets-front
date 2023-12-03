@@ -593,6 +593,15 @@ option {
 }
 
 @media screen and (max-width: 500px) {
+  .home h1 {
+    font-size: 2.5rem;
+  }
+  
+  .home p {
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 35px;
+  }
   .chat-window {
     height: 55vh;
   }
@@ -631,6 +640,15 @@ option {
 }
 
 @media screen and (max-width: 1200px) {
+  .home h1 {
+    font-size: 3rem;
+  }
+  
+  .home p {
+    text-align: center;
+    font-size: 1.625rem;
+    line-height: 35px;
+  }
   .help {
     bottom: 55px;
   
