@@ -115,7 +115,7 @@ const ChatRoom = ({ tId, handleChat }) => {
         </div> :
         access ? 
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
-            {tId ? '' : <div style={{ fontSize: '2rem' }}>
+            {tId || !user.admin ? '' : <div style={{ fontSize: '2rem' }}>
               <h2><b>Chat de</b><span style={{ fontWeight: '600' }}> {_id.substring(0,8)}</span> <b>-</b> <b> Ticket de</b> <span style={{ fontWeight: '600' }}>{owner}</span></h2>
             </div>}
             <h1 style={{ fontSize: '1.75rem', margin: '10px' }}><b>Mensajes</b></h1>

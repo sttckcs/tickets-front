@@ -587,8 +587,15 @@ option {
   font-size: 2rem;
 }
 
-@media screen and (max-width: 500px) {
+.support {
+  width: 90px;
+  height: 90px;
+}
 
+@media screen and (max-width: 500px) {
+  .chat-window {
+    height: 55vh;
+  }
   .footer {
     font-size: 1rem;
   }
@@ -624,8 +631,22 @@ option {
 }
 
 @media screen and (max-width: 1200px) {
+  .help {
+    bottom: 55px;
+  
+    h1 {
+      font-size: 1rem;
+    }
+  }
+  .rrss {
+    bottom: 65px;
+  }
   .faq {
     max-height: 55vh;
+  }
+  .support {
+    width: 60px;
+    height: 60px;
   }
 }
 
