@@ -49,12 +49,21 @@ const ChatRoom = ({ tId, handleChat }) => {
         console.log(error)
       }
     };
+
     setInChat(true);
     if (notis.includes(_id)) {
       setNotis(notis.filter(id => id !== _id))
     }
     verifyAccess();
-    getMessages();
+    
+    const getMessagesPeriodically = () => {
+      getMessages();
+      const intervalId = setInterval(getMessages, 1000); 
+  
+      return () => clearInterval(intervalId);
+    };
+    
+    getMessagesPeriodically();
     socket.emit('userJoin', { username:user.nick, id: _id })
     return () => setInChat(false)
   }, [_id, user.admin, user.nick, user.tickets, loading, ticket])

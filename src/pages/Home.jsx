@@ -23,9 +23,10 @@ const Home = () => {
   return (
     <div style={{ padding: '10px 20px'}}> 
       {!user 
-      ? <strong style={{ fontSize: '2rem' }}>
-        Bienvenido a Todoskins, tu mercado de confianza donde podrás vender,
-        comprar, intercambiar skins de CS:GO y comprar balance de buff.163 al mejor precio
+      ? 
+        <strong className='home-font'>
+          Bienvenido a Todoskins, tu mercado de confianza donde podrás vender,
+          comprar, intercambiar skins de CS:GO y comprar balance de buff.163 al mejor precio
         </strong>
       :
         <div className="home">

@@ -209,9 +209,9 @@ const UserModal = ({ open, setOpen, mode }) => {
           {mode === 'login' &&
             <div>
               <form onSubmit={handleLogin}>
-                <input type="email" style={{ width: '350px' }} placeholder={forgotten ? "Introduce tu correo" : "Correo"} value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="email" style={{ width: '300px' }} placeholder={forgotten ? "Introduce tu correo" : "Correo"} value={email} onChange={(e) => setEmail(e.target.value)} required />
                 {!forgotten && <input
-                  style={{ width: '350px' }}
+                  style={{ width: '300px' }}
                   type="password"
                   placeholder="Contraseña"
                   value={password}
@@ -221,10 +221,10 @@ const UserModal = ({ open, setOpen, mode }) => {
                 <ModalFooter mt={2} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                   {!forgotten ?
                     <div>
-                      <Button colorScheme='blue' type='submit' mr={4}>
+                      <Button colorScheme='blue' type='submit' mr={8}>
                         Iniciar
                       </Button>
-                      <Button colorScheme='green' ml={4} onClick={() => setForgotten(true)}>
+                      <Button colorScheme='green' onClick={() => setForgotten(true)}>
                         No puedes entrar?
                       </Button>
                     </div> :
