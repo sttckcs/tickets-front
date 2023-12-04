@@ -23,7 +23,6 @@ const ChatRoom = ({ tId, handleChat }) => {
   const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
-    console.log('e', e);
     setImage(e.target.files[0]);
   };
 
