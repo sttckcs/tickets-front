@@ -587,6 +587,11 @@ option {
   font-size: 2rem;
 }
 
+.imagen-chat {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .support {
   width: 90px;
   height: 90px;

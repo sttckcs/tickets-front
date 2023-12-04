@@ -20,6 +20,40 @@ const ChatRoom = ({ tId, handleChat }) => {
   const [access, setAccess] = useState(false)  
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
   const [msgList, setMsgList] = useState([])
+  const [image, setImage] = useState(null);
+  const [imageURL, setImageURL] = useState('');
+
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
+  const handleImageUpload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('image', image);
+
+      const res = await API.post(
+        'ticket/image',
+         formData,
+        { headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      const newMessage = {
+        name: chatMessage.name,
+        email: user.email,
+        msg: res.data.imageUrl,
+        room: _id,
+        byAdmin: user.admin
+      }
+
+      handleNewMessage(newMessage);
+    } catch (error) {
+      console.error('Error subiendo la imagen:', error.response.data.message);
+    }
+  };
+
 
   useEffect(() => {
     const verifyAccess = async () => {
@@ -40,13 +74,13 @@ const ChatRoom = ({ tId, handleChat }) => {
     }
 
     const getMessages = async () => {
-      try {
-        const res = await API.post(
-          'ticket/messages', { id: _id }
-        );
-        setMsgList(res.data.messages)
-      } catch (error) {
-        console.log(error)
+        try {
+          const res = await API.post(
+            'ticket/messages', { id: _id }
+          );
+          setMsgList(res.data.messages)
+        } catch (error) {
+          console.log(error)
       }
     };
 
@@ -75,17 +109,8 @@ const ChatRoom = ({ tId, handleChat }) => {
   const handleChange = (e) => {
     setChatMessage({ ...chatMessage, [e.target.name]: e.target.value })
   }
-
-  const newMessageSubmit = async (e) => {
-    e.preventDefault();
-    const newMessage = {
-      name: chatMessage.name,
-      email: user.email,
-      msg: chatMessage.msg,
-      room: _id,
-      byAdmin: user.admin
-    }
-
+  
+  const handleNewMessage = async (newMessage) => {
     try {
       await API.post('ticket/newmessage', {
         newMessage
@@ -105,6 +130,20 @@ const ChatRoom = ({ tId, handleChat }) => {
     handleChat(_id)
     
     setTicket(true)
+    setImageURL('')
+  }
+
+  const newMessageSubmit = (e) => {
+    e.preventDefault();
+    const newMessage = {
+      name: chatMessage.name,
+      email: user.email,
+      msg: chatMessage.msg,
+      room: _id,
+      byAdmin: user.admin
+    }
+
+    handleNewMessage(newMessage);
   }
 
   return (
@@ -127,7 +166,8 @@ const ChatRoom = ({ tId, handleChat }) => {
                     {date === 'Invalid Date Invalid Date' ?
                       '' : 
                       <>
-                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}` }}><b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span></div><h5 style={{ textAlign: 'justify', color: 'white' }}>{msg.msg}</h5>
+                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}` }}><b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span></div>
+                        {msg.msg.startsWith('https://res.cloudinary.com/') ? <img className='imagen-chat' src={msg.msg} alt='imagen' /> : <h5 style={{ textAlign: 'justify', color: 'white' }}>{msg.msg}</h5>}
                       </>
                     }
                   </li>
@@ -138,6 +178,10 @@ const ChatRoom = ({ tId, handleChat }) => {
               <Input type='text' style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
               <Button type='submit'>Enviar</Button>
             </form>
+            <div>
+              <input type="file" accept="image/*" onChange={handleImageChange} />
+              <button onClick={handleImageUpload}>Subir imagen</button>
+            </div>
           </div>
         : ''
       }

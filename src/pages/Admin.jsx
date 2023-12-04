@@ -34,16 +34,17 @@ const Admin = () => {
         const res = await API.get(
           'ticket/all'
         );
+        console.log('tickets', res.data);
         setTickets(res.data);
       } catch (error) {
-        setTickets(null);
+        setTickets([]);
       }
       setLoading(false)
     };
 
     const fetchTicketsPeriodically = () => {
       getTickets();
-      const intervalId = setInterval(getTickets, 5000); 
+      const intervalId = setInterval(getTickets, 10000); 
   
       return () => clearInterval(intervalId);
     };
