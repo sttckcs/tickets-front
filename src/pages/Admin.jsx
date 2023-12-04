@@ -34,7 +34,6 @@ const Admin = () => {
         const res = await API.get(
           'ticket/all'
         );
-        console.log('tickets', res.data);
         if(res.data !== tickets) setTickets(res.data);
       } catch (error) {
         setTickets([]);
@@ -116,9 +115,11 @@ const Admin = () => {
 
   let filteredTickets = tickets.filter(ticket => {
     const ticketDate = new Date(ticket.createdAt)
+    if (!status && !ticket.open) return false;
     if (category && ticket.category !== category) return false;
-    if (status && ((ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast) && status === 'open') || ((!ticket.open || !ticket.adminLast) && status === 'read'))) return false;
+    if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast) && status === 'open') || ((!ticket.open || !ticket.adminLast) && status === 'read'))) return false;
     if (debouncedSearch && ticket.user.nick !== debouncedSearch) return false;
+
     return (ticketDate >= startDate && ticketDate <= endDate)
   })
   
