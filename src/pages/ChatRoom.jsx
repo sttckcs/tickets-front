@@ -23,6 +23,7 @@ const ChatRoom = ({ tId, handleChat }) => {
   const [image, setImage] = useState(null);
 
   const handleImageChange = (e) => {
+    console.log('e', e);
     setImage(e.target.files[0]);
   };
 
@@ -176,9 +177,11 @@ const ChatRoom = ({ tId, handleChat }) => {
               <Input type='text' style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
               <Button type='submit'>Enviar</Button>
             </form>
-            <div>
-              <input type="file" accept="image/*" onChange={handleImageChange} />
-              <button onClick={handleImageUpload}>Subir imagen</button>
+            <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
+              <label htmlFor="image-upload" style={{ cursor: 'pointer' }}>Selecciona una imagen</label>
+              <p>{image.name}</p>
+              <input type="file" id="image-upload" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
+              <Button onClick={handleImageUpload}>Subir imagen</Button>
             </div>
           </div>
         : ''
