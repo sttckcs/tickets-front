@@ -248,7 +248,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   type="text" 
                   placeholder="Nick" 
                   value={nick} 
-                  onChange={(e) => setNick(e.target.value.toLowerCase())} 
+                  onChange={(e) => setNick(e.target.value)} 
                   required 
                 />
                 <input 
@@ -267,7 +267,6 @@ const UserModal = ({ open, setOpen, mode }) => {
                     e.target.value = num
                     if (num.length <= 9) setPhone(e.target.value)
                     }} 
-                  required   
                 />
                 <input 
                   type="email" 
@@ -288,7 +287,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                 </div>
                 <TermsModal openTerms={openTerms} setOpenTerms={setOpenTerms} acceptedTerms={acceptedTerms} setAcceptedTerms={setAcceptedTerms} />
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={!acceptedTerms || phone.length <9}>
+                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={!acceptedTerms}>
                     Registrar
                   </Button>
                 </ModalFooter>
