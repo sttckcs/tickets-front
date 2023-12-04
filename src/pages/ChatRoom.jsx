@@ -21,7 +21,6 @@ const ChatRoom = ({ tId, handleChat }) => {
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
   const [msgList, setMsgList] = useState([])
   const [image, setImage] = useState(null);
-  const [imageURL, setImageURL] = useState('');
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -130,7 +129,6 @@ const ChatRoom = ({ tId, handleChat }) => {
     handleChat(_id)
     
     setTicket(true)
-    setImageURL('')
   }
 
   const newMessageSubmit = (e) => {
