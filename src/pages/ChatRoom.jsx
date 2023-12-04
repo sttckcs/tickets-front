@@ -20,16 +20,35 @@ const ChatRoom = ({ tId, handleChat }) => {
   const [access, setAccess] = useState(false)  
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
   const [msgList, setMsgList] = useState([])
-  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [blob, setBlob] = useState(null);
 
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+  const handlePaste = (e) => {
+    const items = e.clipboardData.items;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        const blob = items[i].getAsFile();
+        const imageUrl = URL.createObjectURL(blob);
+        setBlob(blob);
+        setPreviewImage(imageUrl);
+        console.log('imageURL', imageUrl);
+        break;
+      }
+    }
   };
+
+
+  const clearImagePreview = () => {
+    setPreviewImage(null);
+    setBlob(null);
+  };
+
 
   const handleImageUpload = async () => {
     try {
       const formData = new FormData();
-      formData.append('image', image);
+      formData.append('image', blob);
 
       const res = await API.post(
         'ticket/image',
@@ -129,19 +148,24 @@ const ChatRoom = ({ tId, handleChat }) => {
     handleChat(_id)
     
     setTicket(true)
+    setPreviewImage(null)
+    setBlob(null)
   }
 
   const newMessageSubmit = (e) => {
     e.preventDefault();
-    const newMessage = {
-      name: chatMessage.name,
-      email: user.email,
-      msg: chatMessage.msg,
-      room: _id,
-      byAdmin: user.admin
-    }
+    if (previewImage) handleImageUpload()
+    else if (chatMessage.msg) {
+      const newMessage = {
+        name: chatMessage.name,
+        email: user.email,
+        msg: chatMessage.msg,
+        room: _id,
+        byAdmin: user.admin
+      }
 
-    handleNewMessage(newMessage);
+      handleNewMessage(newMessage);
+    }
   }
 
   return (
@@ -173,14 +197,28 @@ const ChatRoom = ({ tId, handleChat }) => {
               </ul>
             </div>
             <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-              <Input type='text' style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} required />
+              <Input type='text' onPaste={handlePaste} style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} />
               <Button type='submit'>Enviar</Button>
             </form>
-            <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
+            {/* <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
               <label htmlFor="image-upload" style={{ cursor: 'pointer' }}>Selecciona una imagen</label>
-              <p>{image.name}</p>
+              {image && <p>{image.name}</p>}
               <input type="file" id="image-upload" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
               <Button onClick={handleImageUpload}>Subir imagen</Button>
+            </div> */}
+            <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
+              {previewImage && (
+                <div>
+                  <img
+                    src={previewImage}
+                    alt="Pasted Preview"
+                    className="preview-image"
+                  />
+                  <button onClick={clearImagePreview} className="remove-preview-button">
+                    Eliminar
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         : ''

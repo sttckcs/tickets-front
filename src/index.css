@@ -291,6 +291,11 @@ textarea {
   right: 2px;
 }
 
+.preview-image {
+  max-width: 200px;
+  max-height: 200px;
+}
+
 .footer {
   font-size: 1.5rem;
   width: 100%;

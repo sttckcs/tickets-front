@@ -53,11 +53,11 @@ const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, ha
                 <h2>Estado: {user.admin ? ticket.open && !ticket.adminLast ? 'Pendiente' : ticket.open && ticket.adminLast ? 'Leído' : 'Cerrado' : ticket.open ? 'Abierto' : 'Cerrado'}</h2>
                 <Checkbox isChecked={notify} onChange={handleNotify}><p style={{ fontSize: '1.25rem' }} >Recibe notificaciones por correo</p></Checkbox>
                 {ticket.open && <ChatRoom handleChat={handleChat} tId={ticket._id} />}
-                <ModalFooter style={{ padding: '8px 0px' }}>
+                <ModalFooter style={{ padding: '0px' }}>
                   {user.admin &&
                     <>
-                      <Button variant='blue' onClick={() => handleCloseT(ticket._id, ticket.open)} style={{ margin: '4px' }}>{ticket.open ? 'Cerrar' : 'Abrir'}</Button>
-                      <Button variant='red' onClick={() => handleDelete(ticket._id)} style={{ margin: '4px' }}>Eliminar</Button>
+                      <Button variant='blue' onClick={() => handleCloseT(ticket._id, ticket.open)} style={{ margin: '0px 10px 0px 4px' }}>{ticket.open ? 'Cerrar' : 'Abrir'}</Button>
+                      <Button variant='red' onClick={() => handleDelete(ticket._id)} style={{ margin: '4px 0px' }}>Eliminar</Button>
                     </>
                   }
                 </ModalFooter>
