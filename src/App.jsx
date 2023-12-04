@@ -43,14 +43,14 @@ function App() {
               <Navbar />
               <div className="container">
                 <Routes>
-                  <Route path='/' element={user?.admin ? <Admin /> : <Home />}></Route>
+                  <Route path='/' element={<Home />}></Route>
                   <Route path='/faq' element={user ? <Faq /> : <NotFound />}></Route>
                   <Route path='/sell' element={user ? <Sell /> : <NotFound />}></Route>
                   <Route path='/links' element={user ? <Links /> : <NotFound />}></Route>
-                  <Route path='/:id/profile' element={user?.admin? <UserProfile /> : <NotFound />}></Route>
+                  <Route path='/tickets/:id/profile' element={user?.admin? <UserProfile /> : <NotFound />}></Route>
                   <Route path='/users' element={user?.admin? <Users /> : <NotFound />}></Route>
                   <Route path='/profile' element={user && !user.admin ? <MyProfile /> : <NotFound />}></Route>
-                  <Route path='/tickets' element={user && !user.admin ? <Tickets /> : <NotFound />}></Route>
+                  <Route path='/tickets' element={user && !user.admin ? <Tickets /> : user && user.admin ? <Admin /> : <NotFound />}></Route>
                   <Route path='/chat' element={user ? <Chat /> : <NotFound />}></Route>
                   <Route path='/chat/:id' element={user ? <ChatRoom /> : <NotFound />}></Route>
                   <Route path='/verify/:nick/:token' element={!user ? <VerifyUser /> : <NotFound />}></Route>

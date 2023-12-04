@@ -63,8 +63,7 @@ const Navbar = () => {
           <button style={{ padding: '4px 10px' }} onClick={() => handleClick('register')}>Registro</button>
         </> :
         <>
-          {user.admin && <NavLink to={'/'}>Tickets</NavLink>}
-          {!user.admin && <NavLink to={'/tickets'}>Tickets</NavLink>}
+          <NavLink to={'/tickets'}>Tickets</NavLink>
           {user.admin && <NavLink to={'/chat'}>Chat</NavLink>}
           {user.admin && <NavLink to={'/users'}>Usuarios</NavLink>}
           {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
