@@ -35,7 +35,7 @@ const Admin = () => {
           'ticket/all'
         );
         console.log('tickets', res.data);
-        setTickets(res.data);
+        if(res.data !== tickets) setTickets(res.data);
       } catch (error) {
         setTickets([]);
       }
