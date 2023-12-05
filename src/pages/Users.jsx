@@ -19,7 +19,7 @@ const Users = () => {
       try {
         const res = await API.put(
           'user/permissions', 
-          { email }
+          { email, id: user._id }
         );
         res.data.admin ? alert(`Se han dado permisos a ${res.data.nick}`) : alert(`Se han quitado permisos a ${res.data.nick}`)
       } catch (error) {
@@ -29,7 +29,7 @@ const Users = () => {
       try {
         const res = await API.put(
           'user/verifyAdmin', 
-          { email }
+          { email, id: user._id }
         );
         alert(`Se ha verificado a ${res.data.nick}`)
       } catch (error) {
