@@ -150,7 +150,8 @@ const UserModal = ({ open, setOpen, mode }) => {
 
       try {
         await API.post('user/password', { 
-          nick: user.nick, 
+          nick: user.nick,
+          id: user._id,
           password: pwd1 
         });
         setPwd1('')

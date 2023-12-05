@@ -60,10 +60,8 @@ const ChatRoom = ({ tId, handleChat }) => {
 
       const newMessage = {
         name: chatMessage.name,
-        email: user.email,
         msg: res.data.imageUrl,
         room: _id,
-        byAdmin: user.admin
       }
 
       handleNewMessage(newMessage);
@@ -131,7 +129,7 @@ const ChatRoom = ({ tId, handleChat }) => {
   const handleNewMessage = async (newMessage) => {
     try {
       await API.post('ticket/newmessage', {
-        newMessage
+        newMessage, id: user._id
       });
 
     } catch (error) {
@@ -158,10 +156,8 @@ const ChatRoom = ({ tId, handleChat }) => {
     else if (chatMessage.msg) {
       const newMessage = {
         name: chatMessage.name,
-        email: user.email,
         msg: chatMessage.msg,
         room: _id,
-        byAdmin: user.admin
       }
 
       handleNewMessage(newMessage);

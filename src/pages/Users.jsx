@@ -2,11 +2,13 @@ import { useState } from "react"
 import { API } from "../services/services"
 import { Button } from '@chakra-ui/react'
 import { useAuth } from "../contexts/AuthContext"
+import AdminsModal from "../components/AdminsModal"
 
 const Users = () => {
   const { user } = useAuth()
   const [email, setEmail] = useState('')
   const [action, setAction] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,6 +61,12 @@ const Users = () => {
               Verificar
             </Button>
           </form>
+          <div>
+            <Button colorScheme='blue' type='submit' mt={5} ml={2} onClick={() => setOpen(true)}>
+              Ver admins
+            </Button>
+          </div>
+          <AdminsModal open={open} setOpen={setOpen} />
       </div>
     </div>
   )

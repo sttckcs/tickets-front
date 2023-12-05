@@ -6,7 +6,7 @@ import { Button } from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom"
 
 const ChangePassword = () => {
-  const { token, nick } = useParams()
+  const { token, nick, id } = useParams()
   const [success, setSuccess] = useState(null)
   const [loading, setLoading] = useState(true)
   const [pwd1, setPwd1] = useState('')
@@ -18,7 +18,7 @@ const ChangePassword = () => {
       try {
         const res = await API.post(
           'user/recover', 
-          { token, nick }
+          { token, nick, id }
         );
         if (res.data === 'confirmed') setSuccess(true);
         else setSuccess(false)
@@ -43,7 +43,7 @@ const ChangePassword = () => {
     try {
       const res = await API.post(
         'user/password', 
-        { nick, password: pwd1 }
+        { nick, id, password: pwd1 }
       );
       if (res.data === 'password changed') alert('Contraseña cambiada! Ya puedes iniciar sesión')
       setPwd1('')

@@ -8,8 +8,8 @@ import { useAuth } from "../contexts/AuthContext";
 
 const UserProfile = () => {
   const { id } = useParams();
-  const { setTicket } = useAuth();
-  const [user, setUser] = useState(null)
+  const { user, setTicket } = useAuth();
+  const [profileUser, setProfileUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [detailOpen, setDetailOpen] = useState(false)
   const [currentTicket, setCurrentTicket] = useState(null);
@@ -22,9 +22,9 @@ const UserProfile = () => {
           'user/id',
           { id }
         );
-        setUser(res.data);
+        setProfileUser(res.data);
       } catch (error) {
-        setUser(null);
+        setProfileUser(null);
       }
       setLoading(false)
     };
@@ -32,7 +32,7 @@ const UserProfile = () => {
     const getTickets = async () => {
       try {
         const res = await API.get(
-          'ticket/all'
+          'ticket/all', { id: user._id }
         );
         if(res.data !== tickets) setTickets(res.data);
       } catch (error) {
@@ -51,7 +51,7 @@ const UserProfile = () => {
     const _id = ticket.user;
     const updatedTicket = {
       _id: _id,
-      nick: user.nick
+      nick: profileUser.nick
     }
     ticket.user = updatedTicket;
     console.log('updatedTicket', updatedTicket);
@@ -86,7 +86,7 @@ const UserProfile = () => {
   const handleChat = async (_id) => {
     const updatedTickets = tickets.map(ticket => {
       if(ticket._id === _id) {
-        return { ...ticket, adminLast: user.admin }
+        return { ...ticket, adminLast: profileUser.admin }
       }
       return ticket;
     })
@@ -100,12 +100,12 @@ const UserProfile = () => {
         <div className="loader">
           <Waveform color="white" />
         </div> :
-        user ?
+        profileUser ?
           <>
-            <Profile user={user} />
+            <Profile user={profileUser} />
             <h2 style={{ fontSize: '2.25rem' }}><b>Tickets</b></h2>
             <div className="tickets">
-            {[...user.tickets].reverse().map((ticket) => 
+            {[...profileUser.tickets].reverse().map((ticket) => 
               <div 
                 key={ticket._id} 
                 className="ticket" 

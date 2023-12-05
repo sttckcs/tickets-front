@@ -31,8 +31,8 @@ const Admin = () => {
   useEffect(() => {
     const getTickets = async () => {
       try {
-        const res = await API.get(
-          'ticket/all'
+        const res = await API.post(
+          'ticket/all', { id: user._id }
         );
         if(res.data !== tickets) setTickets(res.data);
       } catch (error) {
@@ -61,8 +61,9 @@ const Admin = () => {
     try {
       await API.post(
         'ticket/close',
-        {_id,
-        open}
+        { _id,
+        admin: user._id,
+        open }
       );
       const updatedTickets = tickets.map(ticket => {
         if(ticket._id === _id) {
@@ -81,7 +82,7 @@ const Admin = () => {
     try {
       await API.post(
         'ticket/delete',
-        {_id}
+        { _id, admin: user._id }
       );
       const updatedTickets = tickets.filter(ticket => ticket._id !== _id)
       setTickets(updatedTickets)
