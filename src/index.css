@@ -94,6 +94,8 @@ form input {
 .notis {
   display: flex;
   position: absolute;
+  max-height: 139px;
+  overflow-y: scroll;
   top: 50px;
   right: 65px;
   flex-direction: column;
@@ -593,8 +595,8 @@ option {
 }
 
 .imagen-chat {
-  width: 90%;
-  margin: 0 auto;
+  margin: 10px 0px;
+  max-width: 50%;
 }
 
 

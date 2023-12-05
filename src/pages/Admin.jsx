@@ -151,7 +151,7 @@ const Admin = () => {
           </Select>
         </Box>
         <Box w='230px'>
-          <Input style={{ fontSize: '1.25rem', borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value.toLowerCase())} />
+          <Input style={{ fontSize: '1.25rem', borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value)} />
         </Box>
         <Box w='90px'>
           <Button onClick={() => setCalOpen(true)}>Fechas</Button>
