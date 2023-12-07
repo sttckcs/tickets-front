@@ -138,11 +138,6 @@ const ChatRoom = ({ tId, handleChat }) => {
 
     socket.emit('newMessage', newMessage)
 
-    setChatMessage({
-      name: user.nick,
-      msg: '',
-    })
-
     handleChat(_id)
     
     setTicket(true)
@@ -160,6 +155,11 @@ const ChatRoom = ({ tId, handleChat }) => {
         room: _id,
       }
 
+      setChatMessage({
+        name: user.nick,
+        msg: '',
+      })
+      
       handleNewMessage(newMessage);
     }
   }

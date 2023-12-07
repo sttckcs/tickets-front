@@ -39,7 +39,7 @@ const Home = () => {
             </strong>
           ))
           } */}
-          <h1>¿Te gustaría comprar skins de <b>Counter Strike?</b></h1>
+          <h1>¿Te gustaría comprar o vender skins de <b>Counter Strike?</b></h1>
           <p>¡Consulta el precio de tu <strong className="strong-pink">skin favorita</strong> abriendo un ticket aquí!</p> 
           <p>Conseguiremos la skin de tus sueños al <strong className="strong-orange">mejor precio</strong></p>
         </div>
