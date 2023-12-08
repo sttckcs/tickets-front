@@ -2,9 +2,11 @@ import { Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalCont
 import { API } from '../services/services';
 import { useEffect, useState } from 'react';
 import { Waveform } from '@uiball/loaders';
+import { useAuth } from '../contexts/AuthContext';
 
 const MailModal = ({ open, setOpen }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
+  const { user } = useAuth();
   const [emails, setEmails] = useState();
   const [loading, setLoading] = useState(true);
   const [subject, setSubject] = useState('');
@@ -18,8 +20,9 @@ const MailModal = ({ open, setOpen }) => {
   useEffect(() => {
     const getEmails = async () => {
       try {
-        const res = await API.get(
-          'user/emails'
+        const res = await API.post(
+          'user/emails', 
+          { id: user._id }
         );
         setEmails(res.data);
       } catch (error) {
@@ -40,6 +43,7 @@ const handleEmail = async (e) => {
   console.log(emails);
   try {
     const res = await API.post('user/email', {
+      id: user._id,
       emails,
       subject,
       message
