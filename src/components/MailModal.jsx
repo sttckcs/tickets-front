@@ -2,13 +2,9 @@ import { Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalCont
 import { API } from '../services/services';
 import { useEffect, useState } from 'react';
 import { Waveform } from '@uiball/loaders';
-import { useAuth } from '../contexts/AuthContext';
 
 const MailModal = ({ open, setOpen }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
-  const { user } = useAuth();
-  const [emails, setEmails] = useState();
-  const [loading, setLoading] = useState(true);
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
@@ -18,21 +14,7 @@ const MailModal = ({ open, setOpen }) => {
   }
 
   useEffect(() => {
-    const getEmails = async () => {
-      try {
-        const res = await API.post(
-          'user/emails', 
-          { id: user._id }
-        );
-        setEmails(res.data);
-      } catch (error) {
-        setEmails(null);
-      }
-      setLoading(false)
-    };
-
     if (open) {
-      getEmails();
       setSubject('');
       setMessage('');
     }
@@ -40,11 +22,8 @@ const MailModal = ({ open, setOpen }) => {
 
 const handleEmail = async (e) => {
   e.preventDefault();
-  console.log(emails);
   try {
     const res = await API.post('user/email', {
-      id: user._id,
-      emails,
       subject,
       message
     });
@@ -63,18 +42,16 @@ return (
       <ModalHeader>Envia un correo</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        {loading ?
-          <div className='loader'>
-            <Waveform color="white" />
-          </div> : 
-          <form onSubmit={handleEmail}>
-            <input style={{ width: '500px', paddingLeft: '8px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />
-            <textarea maxLength='800' value={message} style={{ resize: 'none', height: '150px' }} placeholder="Asunto" onChange={(e) => setMessage(e.target.value)} required />
-            <ModalFooter>
-              <Button colorScheme='blue' type='submit' mr={-1}>Enviar</Button>
-            </ModalFooter>
-          </form>
-        }
+        <div className='loader'>
+          <Waveform color="white" />
+        </div> : 
+        <form onSubmit={handleEmail}>
+          <input style={{ width: '500px', paddingLeft: '8px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />
+          <textarea maxLength='800' value={message} style={{ resize: 'none', height: '150px' }} placeholder="Asunto" onChange={(e) => setMessage(e.target.value)} required />
+          <ModalFooter>
+            <Button colorScheme='blue' type='submit' mr={-1}>Enviar</Button>
+          </ModalFooter>
+        </form>
       </ModalBody>
     </ModalContent>
   </Modal>

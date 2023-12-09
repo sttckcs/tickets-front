@@ -16,6 +16,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   const [email, setEmail] = useState('');
   const [forgotten, setForgotten] = useState(false);
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [pwd1, setPwd1] = useState('')
   const [pwd2, setPwd2] = useState('')
   const [openTerms, setOpenTerms] = useState(false);
@@ -54,19 +55,27 @@ const UserModal = ({ open, setOpen, mode }) => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      await API.post('user/register', {
-        nick,
-        name,
-        steam,
-        phone,
-        email,
-        password
-      });
-      alert('Usuario creado! Verifica tu correo para iniciar sesión')
-      handleClose();
-    } catch (error) {
-      alert(`Error en el registro: ${error.response.data.message}`);
+    if (password !== '' || password2 !== '') {
+      if (password !== password2) {
+        alert('Las contraseñas deben coincidir')
+        setPassword('');
+        setPassword2('');
+        return
+      }
+      try {
+        await API.post('user/register', {
+          nick,
+          name,
+          steam,
+          phone,
+          email,
+          password
+        });
+        alert('Usuario creado! Verifica tu correo para iniciar sesión')
+        handleClose();
+      } catch (error) {
+        alert(`Error en el registro: ${error.response.data.message}`);
+      }
     }
   };
 
@@ -283,12 +292,19 @@ const UserModal = ({ open, setOpen, mode }) => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <input
+                  type="password"
+                  placeholder="Confirma la contraseña"
+                  value={password2}
+                  onChange={(e) => setPassword2(e.target.value)}
+                  required
+                />
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '10px'}}>
                   <Button style={{ backgroundColor: 'rgb(20, 100, 45)', color: 'white' }} onClick={() => setOpenTerms(true)}>Términos y condiciones</Button><Text fontSize='xl' style={{ fontWeight: '600' }}>{acceptedTerms ? 'Aceptados' : 'Sin aceptar'}</Text>
                 </div>
                 <TermsModal openTerms={openTerms} setOpenTerms={setOpenTerms} acceptedTerms={acceptedTerms} setAcceptedTerms={setAcceptedTerms} />
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={!acceptedTerms}>
+                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={ !acceptedTerms || password === '' || password2 === '' }>
                     Registrar
                   </Button>
                 </ModalFooter>

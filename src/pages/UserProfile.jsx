@@ -8,7 +8,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const UserProfile = () => {
   const { id } = useParams();
-  const { user, setTicket } = useAuth();
+  const { setTicket } = useAuth();
   const [profileUser, setProfileUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [detailOpen, setDetailOpen] = useState(false)
@@ -31,8 +31,8 @@ const UserProfile = () => {
 
     const getTickets = async () => {
       try {
-        const res = await API.get(
-          'ticket/all', { id: user._id }
+        const res = await API.post(
+          'ticket/all'
         );
         if(res.data !== tickets) setTickets(res.data);
       } catch (error) {
@@ -63,8 +63,8 @@ const UserProfile = () => {
     try {
       await API.post(
         'ticket/close',
-        {_id,
-        open}
+        { _id,
+        open }
       );
     } catch (error) {
       console.log(error)
@@ -75,7 +75,7 @@ const UserProfile = () => {
     try {
       await API.post(
         'ticket/delete',
-        {_id}
+        { _id }
       );
       setDetailOpen(false);
     } catch (error) {

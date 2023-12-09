@@ -54,7 +54,7 @@ function App() {
                   <Route path='/chat' element={user ? <Chat /> : <NotFound />}></Route>
                   <Route path='/chat/:id' element={user ? <ChatRoom /> : <NotFound />}></Route>
                   <Route path='/verify/:nick/:token' element={!user ? <VerifyUser /> : <NotFound />}></Route>
-                  <Route path='/recover/:id/:nick/:token' element={!user ? <ChangePassword /> : <NotFound />}></Route>
+                  <Route path='/recover/:token' element={!user ? <ChangePassword /> : <NotFound />}></Route>
                   <Route path='*' element={<NotFound />}></Route>
                 </Routes>
               </div>

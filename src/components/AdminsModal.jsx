@@ -1,9 +1,7 @@
-import { useAuth } from '../contexts/AuthContext'
 import { useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react';
 import { API } from '../services/services';
 import { useEffect, useState } from 'react';
 const AdminsModal = ({ open, setOpen }) => {
-  const { user } = useAuth();
   const [admins, setAdmins] = useState([]);
   const { onClose } = useDisclosure({ defaultIsOpen: true })
 
@@ -11,8 +9,7 @@ const AdminsModal = ({ open, setOpen }) => {
     const getAdmins = async () => {
       try {
         const res = await API.post(
-          'user/admins', 
-          { id: user._id }
+          'user/admins'
         );
         setAdmins(res.data);
       } catch (error) {

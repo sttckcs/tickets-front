@@ -32,7 +32,7 @@ const Admin = () => {
     const getTickets = async () => {
       try {
         const res = await API.post(
-          'ticket/all', { id: user._id }
+          'ticket/all'
         );
         if(res.data !== tickets) setTickets(res.data);
       } catch (error) {
@@ -62,7 +62,6 @@ const Admin = () => {
       await API.post(
         'ticket/close',
         { _id,
-        admin: user._id,
         open }
       );
       const updatedTickets = tickets.map(ticket => {
@@ -82,7 +81,7 @@ const Admin = () => {
     try {
       await API.post(
         'ticket/delete',
-        { _id, admin: user._id }
+        { _id }
       );
       const updatedTickets = tickets.filter(ticket => ticket._id !== _id)
       setTickets(updatedTickets)
