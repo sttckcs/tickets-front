@@ -94,7 +94,7 @@ form input {
 .notis {
   display: flex;
   position: absolute;
-  max-height: 139px;
+  max-height: 140px;
   overflow-y: scroll;
   top: 50px;
   right: 65px;
