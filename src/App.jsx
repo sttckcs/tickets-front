@@ -20,6 +20,7 @@ import Sell from './pages/Sell';
 import Links from './pages/Links';
 import Twitter from '/images/x1.png';
 import Users from './pages/Users';
+import Ticket from './pages/Ticket';
 // import skins from '../public/images/skins.png'
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
                   <Route path='/sell' element={user ? <Sell /> : <NotFound />}></Route>
                   <Route path='/links' element={user ? <Links /> : <NotFound />}></Route>
                   <Route path='/tickets/:id/profile' element={user?.admin? <UserProfile /> : <NotFound />}></Route>
+                  <Route path='/tickets/:id' element={user?.admin? <Ticket /> : <NotFound />}></Route>
                   <Route path='/users' element={user?.admin? <Users /> : <NotFound />}></Route>
                   <Route path='/profile' element={user && !user.admin ? <MyProfile /> : <NotFound />}></Route>
                   <Route path='/tickets' element={user && !user.admin ? <Tickets /> : user && user.admin ? <Admin /> : <NotFound />}></Route>

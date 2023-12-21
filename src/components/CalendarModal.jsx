@@ -3,10 +3,11 @@ import { DateRangePicker } from 'react-date-range'
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { es } from 'date-fns/locale';
-const CalendarModal = ({ open, setOpen, selectionRange, handleSelect }) => {
+const CalendarModal = ({ open, setOpen, getStats, selectionRange, handleSelect }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
 
   const handleClose = () => {
+    if (getStats) getStats();
     onClose();
     setOpen(false);
   }

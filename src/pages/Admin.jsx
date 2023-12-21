@@ -7,21 +7,21 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { useAuth } from "../contexts/AuthContext";
 import TicketDetailModal from "../components/TicketDetailModal";
 import MailModal from "../components/MailModal";
+import Star from '/images/star.png';
 
 const Admin = () => {
-  const { user, setTicket } = useAuth();
+  const { user, setTicket, getTickets, setTickets, tickets } = useAuth();
   // const textColor = useColorModeValue('#E2E8F0', '#2D3748')
   // const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
   const textColor = useColorModeValue('#2D3748', '#E2E8F0')
   const bgColor = useColorModeValue('#E2E8F0', '#2D3748')
   const [calOpen, setCalOpen] = useState(false)
+  const [loading, setLoading] = useState(true);
   const [detailOpen, setDetailOpen] = useState(false)
   const [mailOpen, setMailOpen] = useState(false)
-  const [tickets, setTickets] = useState([])
   const [currentTicket, setCurrentTicket] = useState(null);
   const [status, setStatus] = useState('')
   const [category, setCategory] = useState('')
-  const [loading, setLoading] = useState(true)
   const [startDate, setStartDate] = useState(new Date('Mon Jun 05 2023 00:00:00 GMT+0200 (Central European Summer Time)'));
   const [endDate, setEndDate] = useState(new Date());
   const [order, setOrder] = useState('newest');
@@ -29,32 +29,33 @@ const Admin = () => {
   const debouncedSearch = useDebounce(search, 400);
 
   useEffect(() => {
-    const getTickets = async () => {
-      try {
-        const res = await API.post(
-          'ticket/all'
-        );
-        if(res.data !== tickets) setTickets(res.data);
-      } catch (error) {
-        setTickets([]);
-      }
-      setLoading(false)
-    };
-
+    let intervalId;
     const fetchTicketsPeriodically = () => {
-      getTickets();
-      const intervalId = setInterval(getTickets, 10000); 
-  
+      intervalId = setInterval(getTickets, 10000); 
       return () => clearInterval(intervalId);
     };
   
     fetchTicketsPeriodically();
-    setTicket(true)
-  }, []);
+    setTicket(true);
+    setLoading(false);
+
+    if (!detailOpen) getTickets();
+
+    return () => {
+      clearInterval(intervalId);
+    }
+  }, [detailOpen]);
 
   const handleDetails = (ticket) => {
     setCurrentTicket(ticket)
     setDetailOpen(true)
+  }
+
+  const ticketNewTab = (ticket, e) => {
+    if (e.button == 2) {
+      e.preventDefault();
+      window.open(`/tickets/${ticket._id}`, '_blank')
+    }
   }
 
   const handleClose = async (_id, open) => {
@@ -93,7 +94,7 @@ const Admin = () => {
 
   const handleChat = async (_id) => {
     const updatedTickets = tickets.map(ticket => {
-      if(ticket._id === _id) {
+      if (ticket._id === _id) {
         return { ...ticket, adminLast: user.admin }
       }
       return ticket;
@@ -102,7 +103,7 @@ const Admin = () => {
     setTickets(updatedTickets)
   }
 
-  const handleSelect = (date) =>{
+  const handleSelect = (date) => {
     setStartDate(date.selection.startDate);
     setEndDate(date.selection.endDate);
   };
@@ -117,8 +118,8 @@ const Admin = () => {
     const ticketDate = new Date(ticket.createdAt)
     if (!status && !ticket.open) return false;
     if (category && ticket.category !== category) return false;
-    if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast) && status === 'open') || ((!ticket.open || !ticket.adminLast) && status === 'read'))) return false;
-    if (debouncedSearch && ticket.user.nick !== debouncedSearch) return false;
+    if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast) && status === 'open') || ((!ticket.open || !ticket.adminLast) && status === 'read')) || (ticket.marked && status === 'unmarked') || (!ticket.marked && status === 'marked')) return false;
+    if (debouncedSearch && ticket.user.nick !== debouncedSearch && ticket.user.email !== debouncedSearch && ticket._id.substring(0,8) !== debouncedSearch) return false;
 
     return (ticketDate >= startDate && ticketDate <= endDate)
   })
@@ -134,6 +135,8 @@ const Admin = () => {
             <option value='open'>Ver pendientes</option>
             <option value='read'>Ver leídos</option>
             <option value='closed'>Ver cerrados</option>
+            <option value='marked'>Ver marcados</option>
+            <option value='unmarked'>Ver sin marcar</option>
           </Select>
         </Box>
         <Box w='210px'>
@@ -167,18 +170,24 @@ const Admin = () => {
         </div> : 
         <>
           <div className="tickets">
-            {filteredTickets.map((ticket) => 
-              <div 
-                key={ticket._id} 
-                className="ticket" 
-                style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }} 
-                onClick={() => handleDetails(ticket)}
-              >
-                <strong>{ticket._id.substring(0,8)}</strong>
-              </div>
-            )}
+            {filteredTickets.map((ticket) => {
+              return (
+                <div key={ticket._id} style={{ position: 'relative', margin: '0px 10px' }}>
+                  <div 
+                    className="ticket" 
+                    style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }} 
+                    onClick={() => handleDetails(ticket)}
+                    onMouseDown={(e) => ticketNewTab(ticket, e)}
+                    onContextMenu={(e) => ticketNewTab(ticket, e)}
+                  >
+                    {ticket.marked && <img src={Star} alt='star' className="ticket-star"/>}
+                    <strong>{ticket._id.substring(0,8)}</strong>
+                  </div>
+                </div>
+              )
+            })}
           </div>
-          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
+          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} setTicket={setCurrentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
           <MailModal open={mailOpen} setOpen={setMailOpen} />
         </>
       }

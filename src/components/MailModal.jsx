@@ -2,6 +2,8 @@ import { Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalCont
 import { API } from '../services/services';
 import { useEffect, useState } from 'react';
 import { Waveform } from '@uiball/loaders';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MailModal = ({ open, setOpen }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
@@ -27,10 +29,10 @@ const handleEmail = async (e) => {
       subject,
       message
     });
-    if (res.status === 200) alert('Email sent successfully!');
+    if (res.status === 200) toast.success('Email sent successfully!');
     handleClose();
   } catch (error) {
-    alert(`Failed to send the email: ${error.response.data.message}`);
+    toast.error(`Failed to send the email: ${error.response.data.message}`);
   }
 };
 
@@ -53,6 +55,7 @@ return (
           </ModalFooter>
         </form>
       </ModalBody>
+      <ToastContainer theme="colored" position="top-center" limit={3} />
     </ModalContent>
   </Modal>
   )

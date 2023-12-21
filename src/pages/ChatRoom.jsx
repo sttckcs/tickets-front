@@ -5,23 +5,29 @@ import { useParams } from 'react-router-dom';
 import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
 import { Button, useColorModeValue, Input } from '@chakra-ui/react'
+import EditIcon from '/images/edit.png'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const socket = io(socketURL);
 
-const ChatRoom = ({ tId, handleChat }) => {
+const ChatRoom = ({ tId, handleChat, open }) => {
   const { id } = useParams();
-  const _id = tId ? tId : id
-  const { user, loading, ticket, setTicket, notis, setNotis, setInChat } = useAuth()
+  let _id = tId ? tId : id
+  const { user, ticket, setTicket, notis, setNotis, setInChat } = useAuth()
   // const textColor = useColorModeValue('#E2E8F0', '#2D3748')
   // const bgColor = useColorModeValue('#2D3748', '#E2E8F0')
   const textColor = useColorModeValue('#2D3748', '#E2E8F0')
   const bgColor = useColorModeValue('#E2E8F0', '#2D3748')
   const [owner, setOwner] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [access, setAccess] = useState(false)  
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
   const [msgList, setMsgList] = useState([])
   const [previewImage, setPreviewImage] = useState(null);
   const [blob, setBlob] = useState(null);
+  const [editId, setEditId] = useState('');
+  const [editMsg, setEditMsg] = useState('');
 
   const handlePaste = (e) => {
     const items = e.clipboardData.items;
@@ -32,7 +38,6 @@ const ChatRoom = ({ tId, handleChat }) => {
         const imageUrl = URL.createObjectURL(blob);
         setBlob(blob);
         setPreviewImage(imageUrl);
-        console.log('imageURL', imageUrl);
         break;
       }
     }
@@ -72,6 +77,7 @@ const ChatRoom = ({ tId, handleChat }) => {
 
 
   useEffect(() => {
+    let intervalId;
     const verifyAccess = async () => {
       if (user.admin || user.tickets.find(ticket => ticket._id === _id)) {
         try {
@@ -90,14 +96,15 @@ const ChatRoom = ({ tId, handleChat }) => {
     }
 
     const getMessages = async () => {
-        try {
-          const res = await API.post(
-            'ticket/messages', { id: _id }
-          );
-          setMsgList(res.data.messages)
-        } catch (error) {
-          console.log(error)
+      try {
+        const res = await API.post(
+          'ticket/messages', { id: _id }
+        );
+        if (msgList !== res.data.messages) setMsgList(res.data.messages)
+      } catch (error) {
+        console.log(error)
       }
+      setLoading(false)
     };
 
     setInChat(true);
@@ -105,18 +112,20 @@ const ChatRoom = ({ tId, handleChat }) => {
       setNotis(notis.filter(id => id !== _id))
     }
     verifyAccess();
+    if (access) getMessages();
     
-    const getMessagesPeriodically = () => {
-      getMessages();
-      const intervalId = setInterval(getMessages, 1000); 
-  
+    if (open || id) {
+      intervalId = setInterval(getMessages, 1000); 
+    } else {
       return () => clearInterval(intervalId);
-    };
+    }
     
-    getMessagesPeriodically();
     socket.emit('userJoin', { username:user.nick, id: _id })
-    return () => setInChat(false)
-  }, [_id, user.admin, user.nick, user.tickets, loading, ticket])
+    return () => {
+      clearInterval(intervalId);
+      setInChat(false);
+    }
+  }, [_id, user.admin, user.nick, user.tickets, ticket, open])
   
   socket.on('newMessage', () => {
     setTicket(true)
@@ -133,13 +142,12 @@ const ChatRoom = ({ tId, handleChat }) => {
       });
 
     } catch (error) {
-      alert(`Error saving message: ${error.response.data.message}`);
+      toast.error(`Error guardando el mensaje: ${error.response.data.message}`);
     }
 
     socket.emit('newMessage', newMessage)
 
-    handleChat(_id)
-    
+    if (!id) handleChat(_id);
     setTicket(true)
     setPreviewImage(null)
     setBlob(null)
@@ -164,10 +172,70 @@ const ChatRoom = ({ tId, handleChat }) => {
     }
   }
 
+  const messageDelete = async (message) => {
+    try {
+      await API.post('ticket/deletemessage', {
+        message, _id
+      });
+    } catch (error) {
+      toast.error(`Error borrando el mensaje`);
+    }
+  }
+
+  const handleEdit = (msg) => {
+    if (editId === msg.time) {
+      setEditId(null);
+      setEditMsg('');
+    } else {
+      setEditId(msg.time);
+      setEditMsg(msg.msg)
+    }
+  } 
+
+  const handleEditSubmit = async (time) => {
+    const message = msgList.filter(msg => msg.time === time);
+    try {
+      await API.post('ticket/editmessage', {
+        message, edit: editMsg, _id
+      });
+    } catch (error) {
+      toast.error(`Error editando el mensaje`);
+    }
+    setEditId(null);
+    setEditMsg('');
+  }
+  
+  const handleDelete = (time) => {
+    const message = msgList.filter(msg => msg.time === time);
+    console.log('message', message);
+    // setMsgList(prev => {
+    //   return prev.filter(msg => msg !== message);
+    // })
+    messageDelete(message);
+  }
+
+  const renderMessage = (message) => {
+    const urlRegex = /(\b(?:https?:\/\/|www\.)\S+\b)/g;
+    const cloudinaryUrlRegex = /https:\/\/res\.cloudinary\.com/g;
+
+    const parts = message.split(urlRegex);
+
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        if (part.match(cloudinaryUrlRegex)) return <img key={index} className='imagen-chat' src={part} alt='imagen chat' />
+        else return (
+          <a key={index} href={part.startsWith('www.') ? `http://${part}` : part} style={{ color: 'rgb(75, 87, 218)' }} target='_blank' rel='noopener noreferrer'>{part}</a>
+        )
+      } else {
+        return <span key={index}>{part}</span>
+      }
+    })
+  }
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       {loading ?
-        <div className={`${tId ? 'modal-loader' : 'loader'}`}>
+        <div className={`${tId ? 'loader-ticket' : 'loader-sm'}`}>
           <Waveform color="white" />
         </div> :
         access ? 
@@ -180,12 +248,23 @@ const ChatRoom = ({ tId, handleChat }) => {
               <ul style={{ listStyleType: 'none' }}>
                 {msgList.map((msg, index) => {
                   const date = `${new Date(msg.time).toLocaleDateString('es-ES', {day: '2-digit', month:'2-digit', year:'2-digit'})} ${new Date(msg.time).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`
-                  return <li key={index} style={{ padding: '5px 0px' }}>
+                  return <li key={index} style={{ padding: '5px 0px', width: '100%' }}>
                     {date === 'Invalid Date Invalid Date' ?
                       '' : 
                       <>
-                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}` }}><b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span></div>
-                        {msg.msg.startsWith('https://res.cloudinary.com/') ? <img className='imagen-chat' src={msg.msg} alt='imagen' /> : <h5 style={{ textAlign: 'justify', color: 'white' }}>{msg.msg}</h5>}
+                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}`, position: 'relative' }}>
+                          <b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
+                          {user.admin && (msg.name == 'Aregodas' || msg.name == 'admin') && 
+                            <>
+                              <img src={EditIcon} className='edit-icon' style={{ width: '20px' }} onClick={() => handleEdit(msg)} alt='edit-icon' />
+                              <div className='gg-trash' onClick={() => handleDelete(msg.time)}></div>
+                            </>
+                          }
+                        </div>
+                        {editId === msg.time
+                          ? <><input className='edit-text' type='text' value={editMsg} onChange={(e) => setEditMsg(e.target.value)} /><Button onClick={() => handleEditSubmit(msg.time)}>Enviar</Button></>
+                          : <h5 style={{ textAlign: 'justify', color: 'white' }}>{renderMessage(msg.msg)}</h5>
+                        }
                       </>
                     }
                   </li>
@@ -196,12 +275,6 @@ const ChatRoom = ({ tId, handleChat }) => {
               <Input type='text' onPaste={handlePaste} style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} />
               <Button type='submit'>Enviar</Button>
             </form>
-            {/* <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
-              <label htmlFor="image-upload" style={{ cursor: 'pointer' }}>Selecciona una imagen</label>
-              {image && <p>{image.name}</p>}
-              <input type="file" id="image-upload" accept="image/*" style={{ display: 'none' }} onChange={handleImageChange} />
-              <Button onClick={handleImageUpload}>Subir imagen</Button>
-            </div> */}
             <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
               {previewImage && (
                 <div>
@@ -219,6 +292,7 @@ const ChatRoom = ({ tId, handleChat }) => {
           </div>
         : ''
       }
+      <ToastContainer theme="colored" position="top-center" limit={3} />
     </div>
   )
 }

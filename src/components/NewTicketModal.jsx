@@ -3,6 +3,9 @@ import { useAuth } from '../contexts/AuthContext'
 import { Select, Checkbox, Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react'
 import { API } from '../services/services'
 import { useEffect } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const NewTicketModal = ({ open, setOpen }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
@@ -28,7 +31,7 @@ const NewTicketModal = ({ open, setOpen }) => {
       }
       handleClose();
     } catch (error) {
-      alert(`Failed to create ticket: ${error.response.data.message}`);
+      toast.error(`Error creando el ticket: ${error.response.data.message}`);
     }
   };
 
@@ -60,6 +63,7 @@ const NewTicketModal = ({ open, setOpen }) => {
             </form>
           </div>
         </ModalBody>
+        <ToastContainer theme="colored" position="top-center" limit={3} />
       </ModalContent>
     </Modal>
   )

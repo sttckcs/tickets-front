@@ -1,6 +1,8 @@
 import { useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react';
 import { API } from '../services/services';
 import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const AdminsModal = ({ open, setOpen }) => {
   const [admins, setAdmins] = useState([]);
   const { onClose } = useDisclosure({ defaultIsOpen: true })
@@ -13,7 +15,7 @@ const AdminsModal = ({ open, setOpen }) => {
         );
         setAdmins(res.data);
       } catch (error) {
-        console.log('error', error);
+        toast.error('Error obteniendo los admins')
         setAdmins([]);
       }
     }
@@ -50,6 +52,7 @@ const AdminsModal = ({ open, setOpen }) => {
         </ModalBody>
         <ModalFooter>
         </ModalFooter>
+        <ToastContainer theme="colored" position="top-center" limit={3} />
       </ModalContent>
     </Modal>
   )

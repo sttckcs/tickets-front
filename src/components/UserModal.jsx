@@ -4,10 +4,12 @@ import { Text, Button, Select, Box, useDisclosure, Modal, ModalCloseButton, Moda
 import { API } from '../services/services'
 import TermsModal from './TermsModal'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const UserModal = ({ open, setOpen, mode }) => {
 
   const navigate = useNavigate();
-  const { user, setUser, setAuth } = useAuth();
+  const { isAuth, user, setUser, setAuth } = useAuth();
   const { onClose } = useDisclosure({ defaultIsOpen: true })
   const [newUser, setNewUser] = useState(user);
   const [nick, setNick] = useState('');
@@ -29,6 +31,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     setPhone('')
     setEmail('')
     setPassword('')
+    setPassword2('')
     setAcceptedTerms(false)
     setForgotten(false)
     setEditF('nick')
@@ -43,13 +46,13 @@ const UserModal = ({ open, setOpen, mode }) => {
         password
       });
       if (res.status === 200) {
+        setUser(res.data);
         setAuth(true);
       }
       handleClose();
       navigate('/');
     } catch (error) {
-      console.log(error);
-      alert(`Error con el login: ${error.response.data.message}`);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -57,7 +60,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     e.preventDefault();
     if (password !== '' || password2 !== '') {
       if (password !== password2) {
-        alert('Las contraseñas deben coincidir')
+        toast.error('Las contraseñas deben coincidir')
         setPassword('');
         setPassword2('');
         return
@@ -71,10 +74,10 @@ const UserModal = ({ open, setOpen, mode }) => {
           email,
           password
         });
-        alert('Usuario creado! Verifica tu correo para iniciar sesión')
+        toast.success('Usuario creado! Verifica tu correo para iniciar sesión')
         handleClose();
       } catch (error) {
-        alert(`Error en el registro: ${error.response.data.message}`);
+        toast.error(`Error en el registro: ${error.response.data.message}`);
       }
     }
   };
@@ -91,10 +94,10 @@ const UserModal = ({ open, setOpen, mode }) => {
       await API.post('user/recovery', {
         email,
       });
-      alert('Correo de recuperación enviado! Comprueba tu bandeja')
+      toast.success('Correo de recuperación enviado! Comprueba tu bandeja')
       handleClose();
     } catch (error) {
-      alert(`Error enviando el correo: ${error.response.data.message}`);
+      toast.error(`Error enviando el correo: ${error.response.data.message}`);
     }
   }
 
@@ -104,12 +107,12 @@ const UserModal = ({ open, setOpen, mode }) => {
       await API.post('user/sendverify', {
         email,
       });
-      alert('Verificación de cuenta enviada! Comprueba tu bandeja');
+      toast.success('Verificación de cuenta enviada! Comprueba tu bandeja');
       handleClose();
     } catch (error) {
-      if (error.response.status === 304) alert(`El usuario ya está verificado`);
-      else if (error.response.status === 404) alert(`Usuario no encontrado`);
-      else alert('Error enviando el correo', error.response.data.message);
+      if (error.response.status === 304) toast.error(`El usuario ya está verificado`);
+      else if (error.response.status === 404) toast.error(`Usuario no encontrado`);
+      else toast.error('Error enviando el correo', error.response.data.message);
     }
   }
 
@@ -151,7 +154,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     e.preventDefault();
     if (pwd1 !== '' || pwd2 !== '') {
       if (pwd1 !== pwd2) {
-        alert('Las contraseñas deben coincidir')
+        toast.error('Las contraseñas deben coincidir')
         setPwd1('')
         setPwd2('')
         return
@@ -166,7 +169,7 @@ const UserModal = ({ open, setOpen, mode }) => {
         setPwd1('')
         setPwd2('')
       } catch (error) {
-        alert(`Error cambiando la contraseña: ${error.response.data.message}`);
+        toast.error(`Error cambiando la contraseña: ${error.response.data.message}`);
         return
       }
     } 
@@ -176,12 +179,12 @@ const UserModal = ({ open, setOpen, mode }) => {
         newUser
       });
       setUser({...newUser, _id: user._id})
-      alert('Usuario editado correctamente!')
+      toast.success('Usuario editado correctamente!')
       handleClose();
     } catch (error) {
       console.log(Object.keys(error.response.data.keyValue)[0])
-      if (Object.keys(error.response.data.keyValue)[0] === 'email') alert(`Error editando el usuario: El email ya existe`);
-      else if (Object.keys(error.response.data.keyValue)[0] === 'nick') alert(`Error editando el usuario: El nick ya existe`);
+      if (Object.keys(error.response.data.keyValue)[0] === 'email') toast.error(`Error editando el usuario: El email ya existe`);
+      else if (Object.keys(error.response.data.keyValue)[0] === 'nick') toast.error(`Error editando el usuario: El nick ya existe`);
       setNewUser(user)
     }
   };
@@ -189,7 +192,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   const handleBillingSubmit = async (e) => {
     e.preventDefault();
     if (newUser.nif.length < 9) {
-      alert('Error en el NIF');
+      toast.error('Error en el NIF');
       return;
     }
   
@@ -199,11 +202,11 @@ const UserModal = ({ open, setOpen, mode }) => {
         newUser
       });
       setUser({...newUser, _id: user._id})
-      alert('Datos de facturación añadidos correctamente!')
+      toast.success('Datos de facturación añadidos correctamente!')
+      isAuth();
       handleClose();
     } catch (error) {
-      console.log(error)
-      alert('Error añadiendo los datos de facturación', error);
+      toast.error('Error añadiendo los datos de facturación', error);
       setNewUser(user)
     }
   };
@@ -470,6 +473,7 @@ const UserModal = ({ open, setOpen, mode }) => {
             </div>
           }
         </ModalBody>
+        <ToastContainer theme="colored" position="top-center" limit={3} />
       </ModalContent>
     </Modal>
   )

@@ -1,14 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext"
 import { Waveform } from "@uiball/loaders";
 import MainChat from "../components/MainChat";
 
 const Chat = () => {
-  const { user, setTicket, loading } = useAuth();
+  const { user, setTicket, tickets, getTickets } = useAuth();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    console.log('chats', user.chats[0].messages[user.chats[0].messages.length - 1].time);
-    setTicket(true)
+    let intervalId;
+    const fetchTicketsPeriodically = () => {
+      intervalId = setInterval(getTickets, 10000); 
+  
+      return () => clearInterval(intervalId);
+    };
+  
+    fetchTicketsPeriodically();
+    setTicket(true);
+    setLoading(false);
+    return () => {
+      clearInterval(intervalId);
+    }
   }, [setTicket])
 
   const formatTickets = (tickets) => {
@@ -22,7 +34,7 @@ const Chat = () => {
   return (
     <>
     {loading ?
-      <div className="loader">
+      <div className="loader-sm">
         <Waveform color="white" />
       </div> :
       <>
@@ -35,7 +47,7 @@ const Chat = () => {
             })}
           </div> : 
           <div className="chat-box">
-            {formatTickets(user.chats).map(ticket => {
+            {formatTickets([...tickets]).map(ticket => {
               if (ticket.open) return (
                 <MainChat ticket={ticket} key={ticket._id} />
               )

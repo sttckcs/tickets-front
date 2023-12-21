@@ -5,9 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useColorMode } from '@chakra-ui/react'
 import logo from '/images/Logo-Con-Glow.png'
-import userIcon from '/images/Icono-User.png'
-import notisIcon from '/images/Icono-Correo.png'
-import settingsIcon from '/images/Icono-Settings.png'
+import userIcon from '/images/Icono-User2.png'
+import notisIcon from '/images/Icono-Correo2.png'
+import settingsIcon from '/images/Icono-Settings2.png'
 // import moon from '../moon-25.svg'
 // import sun from '../sun.png'
 
