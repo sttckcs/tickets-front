@@ -4,9 +4,11 @@ import { API } from "../services/services"
 import { Waveform } from "@uiball/loaders"
 import { Button } from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom"
+import { ToastContainer, toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 const ChangePassword = () => {
-  const { token, nick } = useParams()
+  const { token } = useParams()
   const [success, setSuccess] = useState(null)
   const [loading, setLoading] = useState(true)
   const [pwd1, setPwd1] = useState('')
@@ -18,9 +20,9 @@ const ChangePassword = () => {
       try {
         const res = await API.post(
           'user/recover', 
-          { token, nick }
+          { token }
         );
-        if (res.data === 'confirmed') setSuccess(true);
+        if (res.data.message === 'confirmed') setSuccess(true);
         else setSuccess(false)
       } catch (error) {
         setSuccess(false);
@@ -30,12 +32,12 @@ const ChangePassword = () => {
 
     verify();
 
-  }, [nick, token]);
+  }, [token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (pwd1 !== pwd2) {
-      alert('Las contraseñas deben coincidir')
+      toast.error('Las contraseñas deben coincidir')
       setPwd1('')
       setPwd2('')
       return
@@ -43,14 +45,14 @@ const ChangePassword = () => {
     try {
       const res = await API.post(
         'user/password', 
-        { nick, password: pwd1 }
+        { token, password: pwd1 }
       );
-      if (res.data === 'password changed') alert('Contraseña cambiada! Ya puedes iniciar sesión')
+      if (res.data === 'password changed') toast.success('Contraseña cambiada! Ya puedes iniciar sesión')
       setPwd1('')
       setPwd2('')
       navigate('/');
     } catch (error) {
-      alert(`Error cambiando la contraseña: ${error.response.data.message}`);
+      toast.error(`Error cambiando la contraseña: ${error.response.data.message}`);
     }
   }
 
@@ -86,6 +88,7 @@ const ChangePassword = () => {
             }
         </div>
         }
+      <ToastContainer theme="colored" position="top-center" limit={3} />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { Button, Checkbox, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react'
 import { useAuth } from '../contexts/AuthContext'
-import { NavLink } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ChatRoom from '../pages/ChatRoom';
 import { useState } from 'react';
 import { API } from '../services/services';
@@ -8,23 +8,62 @@ import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handleCloseT, handleDelete }) => {
+const Ticket = () => {
+  const { id } = useParams();
+  const [ticket, setTicket] = useState(null);
   const { onClose } = useDisclosure({ defaultIsOpen: true })
   const { user } = useAuth();
+  const [open, setOpen] = useState(true);
   const [notify, setNotify] = useState(false);
   const [marked, setMarked] = useState(false);
 
   useEffect(() => {
+    if (!ticket) getTicket();
+    
     if (ticket) {
       setNotify(user.admin ? ticket.notifyAdmin : ticket.notifyUser)
       setMarked(ticket.marked)
     }
   }, [ticket, user.admin])
 
+  const getTicket = async () => {
+    try {
+      const res = await API.post('ticket/id', { id })
+      setTicket(res.data);
+    } catch (error) {
+      toast.error('Error cargando el ticket');
+    }
+  }
+
   const handleClose = () => {
     setOpen(false);
-    setTicket(null);
     onClose();
+    window.close();
+  }
+
+  const handleCloseT = async (_id, open) => {
+    try {
+      await API.post(
+        'ticket/close',
+        { _id,
+        open }
+      );
+      getTicket();
+    } catch (error) {
+      toast.error(error)
+    }
+  }
+
+  const handleDelete = async (_id) => {
+    try {
+      await API.post(
+        'ticket/delete',
+        { _id }
+      );
+      getTicket();
+    } catch (error) {
+      toast.error(error)
+    }
   }
 
   const handleMark = async () => {
@@ -66,16 +105,16 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
           <ModalHeader>Detalles del ticket</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {ticket &&
-              <div style={{ fontSize: '1.5rem' }}>
+            {ticket ?
+              <div style={{ fontSize: '1.5rem', height: '60vh' }}>
                 <h1>Id: {ticket._id.substring(0,8)}</h1>
-                {user.admin && <h1>Creado por: <NavLink to={`${ticket.user._id}/profile`}><strong>{ticket.user.nick}</strong></NavLink></h1>}
+                {user.admin && <h1>Creado por: <a href={`/tickets/${ticket.user._id}/profile`}><strong>{ticket.user.nick}</strong></a></h1>}
                 <h2>Categoría: {ticket.category === 'sell' ? 'venta' : ticket.category === 'buy' ? 'compra' : 'balance'}</h2>
                 <h2>Fecha: {new Date(ticket.createdAt).toLocaleDateString('es-ES')} {new Date(ticket.createdAt).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}</h2>
                 <h2>Estado: {user.admin ? ticket.open && !ticket.adminLast ? 'Pendiente' : ticket.open && ticket.adminLast ? 'Leído' : 'Cerrado' : ticket.open ? 'Abierto' : 'Cerrado'}</h2>
                 <Checkbox isChecked={notify} onChange={handleNotify}><p style={{ fontSize: '1.25rem', marginRight: '20px' }} >Recibe notificaciones por correo</p></Checkbox>
                 {user.admin && <Checkbox isChecked={marked} onChange={handleMark}><p style={{ fontSize: '1.25rem' }} >Ticket marcado</p></Checkbox>}
-                {ticket.open && <ChatRoom handleChat={handleChat} tId={ticket._id} open={open} />}
+                {ticket.open && <ChatRoom tId={ticket._id} open={open} />}
                 <ModalFooter style={{ padding: '0px' }}>
                   {user.admin &&
                     <>
@@ -84,14 +123,17 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
                     </>
                   }
                 </ModalFooter>
+              </div> :
+              <div style={{ width: '235px', margin: '10px auto' }}>
+                <h1 style={{ fontSize: '2rem'}}>No se encuentra el ticket</h1>
               </div>
             }
           </ModalBody>
-	<ToastContainer theme="colored" position="top-center" limit={3} />
+          <ToastContainer theme="colored" position="top-center" limit={3} />
         </ModalContent>
       </Modal>
     </>
   )
 }
 
-export default TicketDetailModal;
+export default Ticket;

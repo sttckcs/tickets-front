@@ -4,10 +4,13 @@ import { Text, Button, Select, Box, useDisclosure, Modal, ModalCloseButton, Moda
 import { API } from '../services/services'
 import TermsModal from './TermsModal'
 import { useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const UserModal = ({ open, setOpen, mode }) => {
 
   const navigate = useNavigate();
-  const { user, setUser, setAuth } = useAuth();
+  const { isAuth, user, setUser, setAuth } = useAuth();
   const { onClose } = useDisclosure({ defaultIsOpen: true })
   const [newUser, setNewUser] = useState(user);
   const [nick, setNick] = useState('');
@@ -16,6 +19,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   const [email, setEmail] = useState('');
   const [forgotten, setForgotten] = useState(false);
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [pwd1, setPwd1] = useState('')
   const [pwd2, setPwd2] = useState('')
   const [openTerms, setOpenTerms] = useState(false);
@@ -28,6 +32,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     setPhone('')
     setEmail('')
     setPassword('')
+    setPassword2('')
     setAcceptedTerms(false)
     setForgotten(false)
     setEditF('nick')
@@ -42,31 +47,39 @@ const UserModal = ({ open, setOpen, mode }) => {
         password
       });
       if (res.status === 200) {
+	setUser(res.data);
         setAuth(true);
       }
       handleClose();
       navigate('/');
     } catch (error) {
-      console.log(error);
-      alert(`Error con el login: ${error.response.data.message}`);
+      toast.error(error.response.data.message);
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    try {
-      await API.post('user/register', {
-        nick,
-        name,
-        steam,
-        phone,
-        email,
-        password
-      });
-      alert('Usuario creado! Verifica tu correo para iniciar sesión')
-      handleClose();
-    } catch (error) {
-      alert(`Error en el registro: ${error.response.data.message}`);
+    if (password !== '' || password2 !== '') {
+      if (password !== password2) {
+        toast.error('Las contraseñas deben coincidir')
+        setPassword('');
+        setPassword2('');
+        return
+      }
+      try {
+        await API.post('user/register', {
+          nick: nick.replace(/\s/g, ''),
+          name,
+          steam,
+          phone,
+          email,
+          password
+        });
+        toast.success('Usuario creado! Verifica tu correo para iniciar sesión')
+        handleClose();
+      } catch (error) {
+        toast.error(`Error en el registro: ${error.response.data.message}`);
+      }
     }
   };
 
@@ -82,10 +95,23 @@ const UserModal = ({ open, setOpen, mode }) => {
       await API.post('user/recovery', {
         email,
       });
-      alert('Correo de recuperación enviado! Comprueba tu bandeja')
+      toast.success('Correo de recuperación enviado! Comprueba tu bandeja')
       handleClose();
     } catch (error) {
-      alert(`Error enviando el correo: ${error.response.data.message}`);
+      toast.error(`Error enviando el correo: ${error.response.data.message}`);
+    }
+  }
+
+  const handleVerify = async (e) => {
+    e.preventDefault();
+    try {
+      await API.post('user/sendverify', {
+        email,
+      });
+      toast.success('Si cumples los requisitos recibirás un mensaje en tu bandeja de entrada');
+      handleClose();
+    } catch (error) {
+      toast.error('Error enviando el correo', error.response.data.message);
     }
   }
 
@@ -127,7 +153,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     e.preventDefault();
     if (pwd1 !== '' || pwd2 !== '') {
       if (pwd1 !== pwd2) {
-        alert('Las contraseñas deben coincidir')
+        toast.error('Las contraseñas deben coincidir')
         setPwd1('')
         setPwd2('')
         return
@@ -135,36 +161,39 @@ const UserModal = ({ open, setOpen, mode }) => {
 
       try {
         await API.post('user/password', { 
-          nick: user.nick, 
+          nick: user.nick,
+          id: user._id,
           password: pwd1 
         });
         setPwd1('')
         setPwd2('')
       } catch (error) {
-        alert(`Error cambiando la contraseña: ${error.response.data.message}`);
+        toast.error(`Error cambiando la contraseña: ${error.response.data.message}`);
         return
       }
     } 
+
+    newUser.nick = newUser.nick.replace(/\s/g, '');
+
     try {
       await API.put('user/edit', {
         _id: user._id,
         newUser
       });
       setUser({...newUser, _id: user._id})
-      alert('Usuario editado correctamente!')
+      toast.success('Usuario editado correctamente!')
       handleClose();
     } catch (error) {
-      console.log(Object.keys(error.response.data.keyValue)[0])
-      if (Object.keys(error.response.data.keyValue)[0] === 'email') alert(`Error editando el usuario: El email ya existe`);
-      else if (Object.keys(error.response.data.keyValue)[0] === 'nick') alert(`Error editando el usuario: El nick ya existe`);
+      if (Object.keys(error.response.data.keyValue)[0] === 'email') toast.error(`Error editando el usuario: El email ya existe`);
+      else if (Object.keys(error.response.data.keyValue)[0] === 'nick') toast.error(`Error editando el usuario: El nick ya existe`);
       setNewUser(user)
     }
   };
 
   const handleBillingSubmit = async (e) => {
     e.preventDefault();
-    if (newUser.nif.length < 9) {
-      alert('Error en el NIF');
+    if (newUser.nif.length < 4) {
+      toast('Error en el NIF');
       return;
     }
   
@@ -174,11 +203,11 @@ const UserModal = ({ open, setOpen, mode }) => {
         newUser
       });
       setUser({...newUser, _id: user._id})
-      alert('Datos de facturación añadidos correctamente!')
-      handleClose();
+      toast('Datos de facturación añadidos correctamente!')
+      isAuth()
+      handleClose()
     } catch (error) {
-      console.log(error)
-      alert('Error añadiendo los datos de facturación')
+      toast('Error añadiendo los datos de facturación', error.message);
       setNewUser(user)
     }
   };
@@ -206,16 +235,21 @@ const UserModal = ({ open, setOpen, mode }) => {
                 <ModalFooter mt={2} style={{ display: 'flex', justifyContent: 'flex-start' }}>
                   {!forgotten ?
                     <div>
-                      <Button colorScheme='blue' type='submit' mr={1}>
+                      <Button colorScheme='blue' type='submit' mr={8}>
                         Iniciar
                       </Button>
                       <Button colorScheme='green' onClick={() => setForgotten(true)}>
-                        Contraseña olvidada?
+                        No puedes entrar?
                       </Button>
                     </div> :
-                    <Button colorScheme='blue' onClick={handleForgotten}>
-                      Enviar
-                    </Button>
+                    <div style={{ display: 'flex', marginLeft: '15%', flexDirection: 'column' }}>
+                      <Button colorScheme='blue' onClick={handleVerify} mb={2}>
+                        Verificar cuenta
+                      </Button>
+                      <Button colorScheme='blue' onClick={handleForgotten} mt={2}>
+                        Recuperar contraseña
+                      </Button>
+                    </div>
                   }
                 </ModalFooter>
               </form>
@@ -228,7 +262,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   type="text" 
                   placeholder="Nick" 
                   value={nick} 
-                  onChange={(e) => setNick(e.target.value.toLowerCase())} 
+                  onChange={(e) => setNick(e.target.value)} 
                   required 
                 />
                 <input 
@@ -247,7 +281,6 @@ const UserModal = ({ open, setOpen, mode }) => {
                     e.target.value = num
                     if (num.length <= 9) setPhone(e.target.value)
                     }} 
-                  required   
                 />
                 <input 
                   type="email" 
@@ -263,12 +296,19 @@ const UserModal = ({ open, setOpen, mode }) => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                <input
+                  type="password"
+                  placeholder="Confirma la contraseña"
+                  value={password2}
+                  onChange={(e) => setPassword2(e.target.value)}
+                  required
+                />
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '10px'}}>
                   <Button style={{ backgroundColor: 'rgb(20, 100, 45)', color: 'white' }} onClick={() => setOpenTerms(true)}>Términos y condiciones</Button><Text fontSize='xl' style={{ fontWeight: '600' }}>{acceptedTerms ? 'Aceptados' : 'Sin aceptar'}</Text>
                 </div>
                 <TermsModal openTerms={openTerms} setOpenTerms={setOpenTerms} acceptedTerms={acceptedTerms} setAcceptedTerms={setAcceptedTerms} />
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={!acceptedTerms || phone.length <9}>
+                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={ !acceptedTerms || password === '' || password2 === '' }>
                     Registrar
                   </Button>
                 </ModalFooter>
@@ -300,7 +340,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   id="nif"
                   value={newUser.nif} 
                   onChange={(e) => {
-                    if (e.target.value.length <= 9) handleUserEdit(e);
+                    if (e.target.value.length <= 12) handleUserEdit(e);
                   }} 
                   required
                 />
@@ -349,7 +389,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   />
                 </div>
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={newUser.nif.length < 9}>
+                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={newUser.nif.length < 4}>
                     Aceptar
                   </Button>
                 </ModalFooter>
@@ -434,6 +474,7 @@ const UserModal = ({ open, setOpen, mode }) => {
             </div>
           }
         </ModalBody>
+        <ToastContainer theme="colored" position="top-center" limit={3} />
       </ModalContent>
     </Modal>
   )

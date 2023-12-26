@@ -2,11 +2,11 @@ import { Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalCont
 import { API } from '../services/services';
 import { useEffect, useState } from 'react';
 import { Waveform } from '@uiball/loaders';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MailModal = ({ open, setOpen }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
-  const [emails, setEmails] = useState();
-  const [loading, setLoading] = useState(true);
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
@@ -16,20 +16,7 @@ const MailModal = ({ open, setOpen }) => {
   }
 
   useEffect(() => {
-    const getEmails = async () => {
-      try {
-        const res = await API.get(
-          'user/emails'
-        );
-        setEmails(res.data);
-      } catch (error) {
-        setEmails(null);
-      }
-      setLoading(false)
-    };
-
     if (open) {
-      getEmails();
       setSubject('');
       setMessage('');
     }
@@ -37,17 +24,15 @@ const MailModal = ({ open, setOpen }) => {
 
 const handleEmail = async (e) => {
   e.preventDefault();
-  console.log(emails);
   try {
     const res = await API.post('user/email', {
-      emails,
       subject,
       message
     });
-    if (res.status === 200) alert('Email sent successfully!');
+    if (res.status === 200) toast.success('Correo enviado!');
     handleClose();
   } catch (error) {
-    alert(`Failed to send the email: ${error.response.data.message}`);
+    toast.error(`Error enviando el correo: ${error.response.data.message}`);
   }
 };
 
@@ -59,19 +44,18 @@ return (
       <ModalHeader>Envia un correo</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        {loading ?
-          <div className='loader'>
-            <Waveform color="white" />
-          </div> : 
-          <form onSubmit={handleEmail}>
-            <input style={{ width: '500px', paddingLeft: '8px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />
-            <textarea maxLength='800' value={message} style={{ resize: 'none', height: '150px' }} placeholder="Asunto" onChange={(e) => setMessage(e.target.value)} required />
-            <ModalFooter>
-              <Button colorScheme='blue' type='submit' mr={-1}>Enviar</Button>
-            </ModalFooter>
-          </form>
-        }
+        <div className='loader'>
+          <Waveform color="white" />
+        </div> : 
+        <form onSubmit={handleEmail}>
+          <input style={{ width: '500px', paddingLeft: '8px' }} type="text" placeholder="Título" value={subject} onChange={(e) => setSubject(e.target.value)} required />
+          <textarea maxLength='800' value={message} style={{ resize: 'none', height: '150px' }} placeholder="Asunto" onChange={(e) => setMessage(e.target.value)} required />
+          <ModalFooter>
+            <Button colorScheme='blue' type='submit' mr={-1}>Enviar</Button>
+          </ModalFooter>
+        </form>
       </ModalBody>
+    <ToastContainer theme="colored" position="top-center" limit={3} />
     </ModalContent>
   </Modal>
   )

@@ -12,7 +12,7 @@ const baseStyle = definePartsStyle({
   header: {
     fontSize: '2.5rem',
     fontFamily: 'Teko-Regular',
-    color: `rgb(38, 40, 124)`
+    color: `rgb(51, 54, 167)`
   },
   dialog: {
     fontSize: '1.5rem',

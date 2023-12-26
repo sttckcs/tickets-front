@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { socketURL } from '../services/services';
 
-const socket = io(socketURL);
+const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true } );
 
 const HelpChat = ({ load, setLoad }) => {
   const textColor = useColorModeValue('#E2E8F0', '#2D3748')

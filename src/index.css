@@ -32,8 +32,6 @@ main {
   display: flex;
   justify-content: center;
   align-items: start;
-  -webkit-user-select: none;
-  user-select: none;
   z-index: 999;
 }
 
@@ -96,6 +94,8 @@ form input {
   position: absolute;
   top: 50px;
   right: 65px;
+  max-height: 140px;
+  overflow-y: scroll;
   flex-direction: column;
   padding: 5px;
   background-color: var(--chakra-colors-gray-400);
@@ -141,6 +141,10 @@ form input {
   padding: 20px;
 }
 
+.css-k14945 {
+  transition-duration: 50ms !important;
+}
+
 .loader {
   height: 100vh;
   width: 100vw;
@@ -155,6 +159,103 @@ form input {
   align-items: center;
   display: flex;
   justify-content: center;
+}
+
+.loader-small {
+  height: 10vh;
+  width: 10vw;
+  margin: 0 auto;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.loader-ticket {
+  height: 57.8vh;
+  width: 100vw;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.edit-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  left: 180px;
+  width: 20px;
+}
+
+.edit-text {
+  font-size: 1.45rem;
+  border-radius: 4px;
+  height: 30px;
+  width: 50% !important;
+  margin-left: 0 !important;
+  padding-left: 8px;
+}
+
+.gg-trash {
+  box-sizing: border-box;
+  position: absolute;
+  cursor: pointer;
+  top: 10px;
+  left: 210px;
+  display: block;
+  transform: scale(var(--ggs,1));
+  width: 10px;
+  height: 12px;
+  border: 2px solid transparent;
+  box-shadow:
+      0 0 0 2px,
+      inset -2px 0 0,
+      inset 2px 0 0;
+  border-bottom-left-radius: 1px;
+  border-bottom-right-radius: 1px;
+  margin-top: 4px
+}
+
+.gg-trash::after,
+.gg-trash::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute
+}
+
+.gg-trash::after {
+  background: currentColor;
+  border-radius: 3px;
+  width: 16px;
+  height: 2px;
+  top: -4px;
+  left: -5px
+}
+
+.gg-trash::before {
+  width: 10px;
+  height: 4px;
+  border: 2px solid;
+  border-bottom: transparent;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  top: -7px;
+  left: -2px
+}
+
+.perfil-admin {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 10px;
+}
+
+.ticket-star {
+  width: 24px;
+  position: absolute;
+  top: -9px;
+  right: -9px;
 }
 
 .noti {
@@ -200,7 +301,7 @@ textarea {
   gap: 20px;
   background-color: transparent;
   align-items: center;
-  border: 3px solid #171c5f;
+  border: 3px solid #7a7fc7;
   background-color: rgb(3, 3, 21);
   border-left: 3px solid transparent;
   border-right: 3px solid transparent;
@@ -227,7 +328,7 @@ textarea {
   font-weight: 700;
   text-align: center;
   position: relative;
-  color: rgb(39, 41, 124);
+  color: rgb(200, 200, 255);
   text-transform: uppercase;
 }
 
@@ -248,6 +349,7 @@ textarea {
   gap: 5px;
   max-height: 50vh;
   margin-top: 10px;
+  padding-top: 2px;
 }
 
 .help-chat {
@@ -291,10 +393,15 @@ textarea {
   right: 2px;
 }
 
+.preview-image {
+  max-width: 200px;
+  max-height: 200px;
+}
+
 .footer {
+  font-size: 1.5rem;
   width: 100%;
   padding: 0px 20px;
-  font-size: 1.5rem;
   text-align: center;
   position: fixed;
   bottom: 10px;
@@ -330,6 +437,10 @@ textarea {
   align-items: flex-end;
 }
 
+.help h1 {
+  font-size: 1.5rem;
+}
+
 .help p {
   background-color: #718096;
   color: white;
@@ -343,7 +454,7 @@ textarea {
 }
 
 .chat-ticket {
-  max-height: 57.8vh;
+  height: 57.8vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -373,7 +484,7 @@ form > input {
 .chat-window {
   margin-top: 20px;
   height: 60vh;
-  max-width: 80vw;
+  width: 80vw;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -442,13 +553,16 @@ option {
 
 .chat-box {
   text-align: center;
+  width: 91vw;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 10px;
-  padding: 0px 10px;
-  max-height: 126px;
-  overflow-y: hidden;
+  padding: 0px 20px;
+  max-height: 53vh;
+  overflow-y: scroll;
   font-size: 1.5rem;
+  margin: 10px auto;
 }
 .conversations {
   display: flex;
@@ -576,7 +690,41 @@ option {
   width: 430px;
 }
 
+.home-font {
+  font-size: 2rem;
+}
+
+.imagen-chat {
+  margin: 10px 0px;
+  max-width: 50%;
+}
+
+
+.support {
+  width: 90px;
+  height: 90px;
+}
+
 @media screen and (max-width: 500px) {
+  .home h1 {
+    font-size: 2.5rem;
+  }
+  
+  .home p {
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 35px;
+  }
+  .chat-window {
+    height: 55vh;
+  }
+  .footer {
+    font-size: 1rem;
+  }
+
+  .home-font {
+    font-size: 1.5rem;
+  }
   .nav-title {
     visibility: hidden;
   }
@@ -605,8 +753,30 @@ option {
 }
 
 @media screen and (max-width: 1200px) {
+  .home h1 {
+    font-size: 3rem;
+  }
+  
+  .home p {
+    text-align: center;
+    font-size: 1.625rem;
+    line-height: 35px;
+  }
+  .help {
+    bottom: 55px;
+  }
+  .help h1 {
+    font-size: 1rem;    
+  }
+  .rrss {
+    bottom: 65px;
+  }
   .faq {
     max-height: 55vh;
+  }
+  .support {
+    width: 60px;
+    height: 60px;
   }
 }
 

@@ -5,9 +5,9 @@ import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useColorMode } from '@chakra-ui/react'
 import logo from '/images/Logo-Con-Glow.png'
-import userIcon from '/images/Icono-User.png'
-import notisIcon from '/images/Icono-Correo.png'
-import settingsIcon from '/images/Icono-Settings.png'
+import userIcon from '/images/Icono-User2.png'
+import notisIcon from '/images/Icono-Correo2.png'
+import settingsIcon from '/images/Icono-Settings2.png'
 // import moon from '../moon-25.svg'
 // import sun from '../sun.png'
 
@@ -61,14 +61,13 @@ const Navbar = () => {
         <>
           <button style={{ padding: '4px 10px' }} onClick={() => handleClick('login')}>Login</button>
           <button style={{ padding: '4px 10px' }} onClick={() => handleClick('register')}>Registro</button>
+	  <NavLink to={'/faq'}>FAQ</NavLink>
         </> :
         <>
-          {user.admin && <NavLink to={'/'}>Admin</NavLink>}
-          {!user.admin && <NavLink to={'/tickets'}>Tickets</NavLink>}
+          <NavLink to={'/tickets'}>Tickets</NavLink>
           {user.admin && <NavLink to={'/chat'}>Chat</NavLink>}
-          {user.admin && <NavLink to={'/permissions'}>Permisos</NavLink>}
+          {user.admin && <NavLink to={'/users'}>Usuarios</NavLink>}
           {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
-          {!user.admin && <NavLink to={'/links'}>Enlaces</NavLink>}
           {user.admin && <button style={{ padding: '4px 10px' }} onClick={logout}>Salir</button>}
         </>
         }

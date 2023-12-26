@@ -3,12 +3,17 @@ import { useEffect, useState } from "react";
 import { API } from "../services/services";
 import { Waveform } from "@uiball/loaders";
 import Profile from "../components/Profile";
+import TicketDetailModal from "../components/TicketDetailModal";
+import { useAuth } from "../contexts/AuthContext";
 
 const UserProfile = () => {
   const { id } = useParams();
-  const [user, setUser] = useState(null)
+  const { setTicket } = useAuth();
+  const [profileUser, setProfileUser] = useState(null)
   const [loading, setLoading] = useState(true)
-
+  const [detailOpen, setDetailOpen] = useState(false)
+  const [currentTicket, setCurrentTicket] = useState(null);
+  const [tickets, setTickets] = useState([])
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -17,15 +22,77 @@ const UserProfile = () => {
           'user/id',
           { id }
         );
-        setUser(res.data);
+        setProfileUser(res.data);
       } catch (error) {
-        setUser(null);
+        setProfileUser(null);
+      }
+      setLoading(false)
+    };
+
+    const getTickets = async () => {
+      try {
+        const res = await API.post(
+          'ticket/all'
+        );
+        if(res.data !== tickets) setTickets(res.data);
+      } catch (error) {
+        setTickets([]);
       }
       setLoading(false)
     };
 
     fetchUser();
+    getTickets();
+    
+    setTicket(true)
   }, [id]);
+
+  const handleDetails = (ticket) => {
+    const _id = ticket.user;
+    const updatedTicket = {
+      _id: _id,
+      nick: profileUser.nick
+    }
+    ticket.user = updatedTicket;
+    console.log('updatedTicket', updatedTicket);
+    setCurrentTicket(ticket)
+    setDetailOpen(true)
+  }
+
+  const handleClose = async (_id, open) => {
+    try {
+      await API.post(
+        'ticket/close',
+        { _id,
+        open }
+      );
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDelete = async (_id) => {
+    try {
+      await API.post(
+        'ticket/delete',
+        { _id }
+      );
+      setDetailOpen(false);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleChat = async (_id) => {
+    const updatedTickets = tickets.map(ticket => {
+      if(ticket._id === _id) {
+        return { ...ticket, adminLast: profileUser.admin }
+      }
+      return ticket;
+    })
+    setCurrentTicket(updatedTickets.filter(ticket => ticket._id === _id)[0])
+    setTickets(updatedTickets)
+  }
 
   return (
     <>
@@ -33,21 +100,37 @@ const UserProfile = () => {
         <div className="loader">
           <Waveform color="white" />
         </div> :
-        user ?
+        profileUser ?
           <>
-            <Profile user={user} />
+            <div className='perfil-admin'>
+              <Profile user={profileUser} />
+              {profileUser.idNeverlate !== 0 &&
+                <div>
+                  <strong style={{ fontSize: '3rem'}}>Otros datos</strong>
+                  <div style={{ margin: '10px 0 20px 0', fontSize: '1.75rem', lineHeight: '35px' }}>
+                    <h1>Apellidos: {profileUser.apellidos}</h1>
+                    <h1>Dirección: {profileUser.direccionFacturacion}</h1>
+                    <h1>Código Postal: {profileUser.codigoPostalFacturacion}</h1>
+                    <h1>País: {profileUser.paisFacturacion}</h1>
+                    <h1>Empresa: {profileUser.empresa ? 'si' : 'no'}</h1>
+                  </div>
+                </div>
+              }
+            </div>
             <h2 style={{ fontSize: '2.25rem' }}><b>Tickets</b></h2>
             <div className="tickets">
-            {[...user.tickets].reverse().map((ticket) => 
+            {[...profileUser.tickets].reverse().map((ticket) => 
               <div 
                 key={ticket._id} 
                 className="ticket" 
                 style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }} 
+                onClick={() => handleDetails(ticket)}
               >
                 <strong>{ticket._id.substring(0,8)}</strong>
               </div>
             )}
           </div>
+          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
           </>
            : 
           <strong>Error 404: Usuario no encontrado</strong>
