@@ -42,6 +42,7 @@ main {
 form input {
   width: 90%;
 }
+
 .calendar input {
   width: 75px;
   background-color: white;
@@ -105,11 +106,11 @@ form input {
   z-index: 999;
 }
 
-.notis > a {
+.notis>a {
   padding: 5px;
 }
 
-.notis > a:hover {
+.notis>a:hover {
   background-color: var(--chakra-colors-gray-500)
 }
 
@@ -202,14 +203,14 @@ form input {
   top: 10px;
   left: 210px;
   display: block;
-  transform: scale(var(--ggs,1));
+  transform: scale(var(--ggs, 1));
   width: 10px;
   height: 12px;
   border: 2px solid transparent;
   box-shadow:
-      0 0 0 2px,
-      inset -2px 0 0,
-      inset 2px 0 0;
+    0 0 0 2px,
+    inset -2px 0 0,
+    inset 2px 0 0;
   border-bottom-left-radius: 1px;
   border-bottom-right-radius: 1px;
   margin-top: 4px
@@ -279,7 +280,8 @@ form input {
   justify-content: center;
 }
 
-input, textarea {
+input,
+textarea {
   margin: 10px;
   padding: 4px;
 }
@@ -317,11 +319,14 @@ textarea {
   gap: 20px;
 }
 
-#nav a.active, .faq-container a.active {
+#nav a.active,
+.faq-container a.active {
   background-color: var(--chakra-colors-gray-400);
 }
 
-#nav a, #nav button, .faq-container a {
+#nav a,
+#nav button,
+.faq-container a {
   margin: 3px 0px;
   padding: 6px 15px;
   font-size: 1.75rem;
@@ -332,13 +337,14 @@ textarea {
   text-transform: uppercase;
 }
 
-#nav a:hover, #nav button:hover {
+#nav a:hover,
+#nav button:hover {
   color: rgb(255, 122, 49);
   text-shadow:
-  0 0 5px rgba(255, 122, 49, 0.35),
-  0 0 6px rgba(255, 122, 49, 0.35),
-  0 0 7px rgba(255, 122, 49, 0.35),
-  0 0 8px rgba(255, 122, 49, 0.35);
+    0 0 5px rgba(255, 122, 49, 0.35),
+    0 0 6px rgba(255, 122, 49, 0.35),
+    0 0 7px rgba(255, 122, 49, 0.35),
+    0 0 8px rgba(255, 122, 49, 0.35);
 }
 
 .tickets {
@@ -472,7 +478,7 @@ textarea {
   align-items: center;
 }
 
-form > input {
+form>input {
   padding-left: 10px;
 }
 
@@ -493,7 +499,7 @@ form > input {
   /* background-color: rgba(3, 3, 21, 0.9); */
 }
 
-.chat-window > h5 {
+.chat-window>h5 {
   padding: 20px 5px;
 }
 
@@ -522,17 +528,17 @@ option {
   font-size: 1.5rem;
 }
 
-.links > a {
+.links>a {
   font-weight: 600;
 }
 
-.links > a:hover {
+.links>a:hover {
   color: rgb(255, 122, 49);
   text-shadow:
-  0 0 5px rgba(255, 122, 49, 0.35),
-  0 0 6px rgba(255, 122, 49, 0.35),
-  0 0 7px rgba(255, 122, 49, 0.35),
-  0 0 8px rgba(255, 122, 49, 0.35);
+    0 0 5px rgba(255, 122, 49, 0.35),
+    0 0 6px rgba(255, 122, 49, 0.35),
+    0 0 7px rgba(255, 122, 49, 0.35),
+    0 0 8px rgba(255, 122, 49, 0.35);
 }
 
 .faq-link {
@@ -541,13 +547,14 @@ option {
   left: 0;
 }
 
-.faq > h1, .links > h1 {
+.faq>h1,
+.links>h1 {
   font-weight: 700;
   margin-bottom: 10px;
   font-size: 2.5rem;
 }
 
-.faq > p {
+.faq>p {
   padding: 1px;
 }
 
@@ -564,6 +571,7 @@ option {
   font-size: 1.5rem;
   margin: 10px auto;
 }
+
 .conversations {
   display: flex;
   flex-wrap: wrap;
@@ -676,7 +684,7 @@ option {
 .lista-facturas {
   display: flex;
   align-items: center;
-  gap: 20px; 
+  gap: 20px;
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 1.5rem;
@@ -709,15 +717,17 @@ option {
   .home h1 {
     font-size: 2.5rem;
   }
-  
+
   .home p {
     text-align: center;
     font-size: 1.25rem;
     line-height: 35px;
   }
+
   .chat-window {
     height: 55vh;
   }
+
   .footer {
     font-size: 1rem;
   }
@@ -725,6 +735,7 @@ option {
   .home-font {
     font-size: 1.5rem;
   }
+
   .nav-title {
     visibility: hidden;
   }
@@ -733,22 +744,29 @@ option {
     margin-bottom: 10px;
   }
 
-  #nav a, #nav button, .faq-container a {
+  #nav a,
+  #nav button,
+  .faq-container a {
     margin: 2px 0px;
     padding: 3px 15px;
     font-size: 1.25rem;
   }
 
-  .lista-facturas, .factura {
+  .lista-facturas,
+  .factura {
     font-size: 1rem;
   }
 
   .factura {
     width: 100%;
   }
-  
+
   .descarga-icon {
     height: 16px;
+  }
+
+  .faq h1 {
+    font-size: 2rem;
   }
 }
 
@@ -756,28 +774,34 @@ option {
   .home h1 {
     font-size: 3rem;
   }
-  
+
   .home p {
     text-align: center;
     font-size: 1.625rem;
     line-height: 35px;
   }
+
   .help {
     bottom: 55px;
   }
+
   .help h1 {
-    font-size: 1rem;    
+    font-size: 1rem;
   }
+
   .rrss {
     bottom: 65px;
   }
+
   .faq {
     max-height: 55vh;
   }
+
   .support {
     width: 60px;
     height: 60px;
   }
+
 }
 
 @media screen and (min-width: 1200px) {

@@ -25,6 +25,7 @@ const UserModal = ({ open, setOpen, mode }) => {
   const [openTerms, setOpenTerms] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [editF, setEditF] = useState('nick');
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   useEffect(() => {
     setNick('')
@@ -82,7 +83,7 @@ const UserModal = ({ open, setOpen, mode }) => {
       }
     }
   };
-
+1
   const handleClose = () => {
     if (mode === 'edit' || mode === 'billing') setNewUser(user);
     onClose();
@@ -91,27 +92,33 @@ const UserModal = ({ open, setOpen, mode }) => {
   
   const handleForgotten = async (e) => {
     e.preventDefault();
+    if (!emailPattern.test(email)) {
+      toast.error('Introduce un correo válido');
+      return;
+    }
     try {
       await API.post('user/recovery', {
         email,
       });
-      toast.success('Correo de recuperación enviado! Comprueba tu bandeja')
-      handleClose();
+      toast.info('Si el correo existe recibirás un mensaje en tu bandeja');
     } catch (error) {
-      toast.error(`Error enviando el correo: ${error.response.data.message}`);
+      toast.info('Si el correo existe recibirás un mensaje en tu bandeja');
     }
   }
 
   const handleVerify = async (e) => {
     e.preventDefault();
+    if (!emailPattern.test(email)) {
+      toast.error('Introduce un correo válido');
+      return;
+    }
     try {
       await API.post('user/sendverify', {
         email,
       });
-      toast.success('Si cumples los requisitos recibirás un mensaje en tu bandeja de entrada');
-      handleClose();
+      toast.info('Si cumples los requisitos recibirás un mensaje en tu correo');
     } catch (error) {
-      toast.error('Error enviando el correo', error.response.data.message);
+      toast.info('Si cumples los requisitos recibirás un mensaje en tu correo');
     }
   }
 
@@ -340,7 +347,7 @@ const UserModal = ({ open, setOpen, mode }) => {
                   id="nif"
                   value={newUser.nif} 
                   onChange={(e) => {
-                    if (e.target.value.length <= 12) handleUserEdit(e);
+                    if (e.target.value.length <= 14) handleUserEdit(e);
                   }} 
                   required
                 />
