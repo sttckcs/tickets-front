@@ -48,7 +48,7 @@ const UserModal = ({ open, setOpen, mode }) => {
         password
       });
       if (res.status === 200) {
-	setUser(res.data);
+        // setUser(res.data);
         setAuth(true);
       }
       handleClose();
@@ -83,13 +83,13 @@ const UserModal = ({ open, setOpen, mode }) => {
       }
     }
   };
-1
+  1
   const handleClose = () => {
     if (mode === 'edit' || mode === 'billing') setNewUser(user);
     onClose();
     setOpen(false);
   }
-  
+
   const handleForgotten = async (e) => {
     e.preventDefault();
     if (!emailPattern.test(email)) {
@@ -167,10 +167,10 @@ const UserModal = ({ open, setOpen, mode }) => {
       }
 
       try {
-        await API.post('user/password', { 
+        await API.post('user/password', {
           nick: user.nick,
           id: user._id,
-          password: pwd1 
+          password: pwd1
         });
         setPwd1('')
         setPwd2('')
@@ -178,7 +178,7 @@ const UserModal = ({ open, setOpen, mode }) => {
         toast.error(`Error cambiando la contraseña: ${error.response.data.message}`);
         return
       }
-    } 
+    }
 
     newUser.nick = newUser.nick.replace(/\s/g, '');
 
@@ -187,7 +187,7 @@ const UserModal = ({ open, setOpen, mode }) => {
         _id: user._id,
         newUser
       });
-      setUser({...newUser, _id: user._id})
+      setUser({ ...newUser, _id: user._id })
       toast.success('Usuario editado correctamente!')
       handleClose();
     } catch (error) {
@@ -203,13 +203,13 @@ const UserModal = ({ open, setOpen, mode }) => {
       toast('Error en el NIF');
       return;
     }
-  
+
     try {
       await API.put('user/billing', {
         _id: user._id,
         newUser
       });
-      setUser({...newUser, _id: user._id})
+      setUser({ ...newUser, _id: user._id })
       toast('Datos de facturación añadidos correctamente!')
       isAuth()
       handleClose()
@@ -219,7 +219,7 @@ const UserModal = ({ open, setOpen, mode }) => {
     }
   };
 
-  
+
   return (
     <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose}>
       <ModalOverlay backdropFilter='auto' backdropBlur='2px' />
@@ -265,36 +265,36 @@ const UserModal = ({ open, setOpen, mode }) => {
           {mode === 'register' &&
             <div>
               <form onSubmit={handleRegister}>
-                <input 
-                  type="text" 
-                  placeholder="Nick" 
-                  value={nick} 
-                  onChange={(e) => setNick(e.target.value)} 
-                  required 
-                />
-                <input 
-                  type="text" 
-                  placeholder="Cuenta de Steam" 
-                  value={steam} 
-                  onChange={(e) => setSteam(e.target.value)} 
+                <input
+                  type="text"
+                  placeholder="Nick"
+                  value={nick}
+                  onChange={(e) => setNick(e.target.value)}
                   required
                 />
                 <input
-                  type="tel" 
-                  placeholder="Número de teléfono" 
-                  value={phone} 
+                  type="text"
+                  placeholder="Cuenta de Steam"
+                  value={steam}
+                  onChange={(e) => setSteam(e.target.value)}
+                  required
+                />
+                <input
+                  type="tel"
+                  placeholder="Número de teléfono"
+                  value={phone}
                   onChange={(e) => {
                     const num = e.target.value.replace(/\D/g, '')
                     e.target.value = num
                     if (num.length <= 9) setPhone(e.target.value)
-                    }} 
+                  }}
                 />
-                <input 
-                  type="email" 
-                  placeholder="Correo" 
-                  value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
-                  required 
+                <input
+                  type="email"
+                  placeholder="Correo"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
                 <input
                   type="password"
@@ -310,12 +310,12 @@ const UserModal = ({ open, setOpen, mode }) => {
                   onChange={(e) => setPassword2(e.target.value)}
                   required
                 />
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '10px'}}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', margin: '10px' }}>
                   <Button style={{ backgroundColor: 'rgb(20, 100, 45)', color: 'white' }} onClick={() => setOpenTerms(true)}>Términos y condiciones</Button><Text fontSize='xl' style={{ fontWeight: '600' }}>{acceptedTerms ? 'Aceptados' : 'Sin aceptar'}</Text>
                 </div>
                 <TermsModal openTerms={openTerms} setOpenTerms={setOpenTerms} acceptedTerms={acceptedTerms} setAcceptedTerms={setAcceptedTerms} />
                 <ModalFooter mt={2}>
-                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={ !acceptedTerms || password === '' || password2 === '' }>
+                  <Button colorScheme='blue' type='submit' mr={1} isDisabled={!acceptedTerms || password === '' || password2 === ''}>
                     Registrar
                   </Button>
                 </ModalFooter>
@@ -325,39 +325,39 @@ const UserModal = ({ open, setOpen, mode }) => {
           {mode === 'billing' &&
             <div>
               <form onSubmit={handleBillingSubmit}>
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   placeholder="Nombre"
                   id="name"
-                  value={newUser.name} 
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
-                />
-                <input 
-                  type="text" 
-                  placeholder="Apellidos"
-                  id="apellidos"
-                  value={newUser.apellidos} 
-                  onChange={(e) => handleUserEdit(e)} 
+                  value={newUser.name}
+                  onChange={(e) => handleUserEdit(e)}
                   required
                 />
                 <input
-                  type="text" 
-                  placeholder="NIF/CIF"
-                  id="nif"
-                  value={newUser.nif} 
-                  onChange={(e) => {
-                    if (e.target.value.length <= 14) handleUserEdit(e);
-                  }} 
+                  type="text"
+                  placeholder="Apellidos"
+                  id="apellidos"
+                  value={newUser.apellidos}
+                  onChange={(e) => handleUserEdit(e)}
                   required
                 />
-                <input 
-                  type="text" 
-                  placeholder="Dirección" 
+                <input
+                  type="text"
+                  placeholder="NIF/CIF"
+                  id="nif"
+                  value={newUser.nif}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 14) handleUserEdit(e);
+                  }}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Dirección"
                   id="direccionFacturacion"
-                  value={newUser.direccionFacturacion} 
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
+                  value={newUser.direccionFacturacion}
+                  onChange={(e) => handleUserEdit(e)}
+                  required
                 />
                 <input
                   type="text"
@@ -377,22 +377,22 @@ const UserModal = ({ open, setOpen, mode }) => {
                 />
                 <div style={{ display: 'flex', alignItems: 'center', marginLeft: '10px', marginTop: '6px' }}>
                   <p>Persona Física</p>
-                  <input 
+                  <input
                     type="checkbox"
                     style={{ width: '30px', height: '30px' }}
-                    checked={!newUser.empresa} 
+                    checked={!newUser.empresa}
                     id="empresaF"
-                    onChange={(e) => handleUserEdit(e)} 
+                    onChange={(e) => handleUserEdit(e)}
                   />
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', marginLeft: '10px' }}>
                   <p>Persona Jurídica (Empresa)</p>
-                  <input 
+                  <input
                     type="checkbox"
                     style={{ width: '30px', height: '30px' }}
-                    checked={newUser.empresa} 
+                    checked={newUser.empresa}
                     id="empresaT"
-                    onChange={(e) => handleUserEdit(e)} 
+                    onChange={(e) => handleUserEdit(e)}
                   />
                 </div>
                 <ModalFooter mt={2}>
@@ -405,56 +405,57 @@ const UserModal = ({ open, setOpen, mode }) => {
           }
           {mode === 'edit' &&
             <div>
-            <Box w='150px' mb='20px' ml='10px'>
-              <Select fontSize='1.25rem' isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
-                <option value='nick'>Nick</option>
-                <option value='name'>Nombre</option>
-                <option value='steam'>Steam</option>
-                <option value='phone'>Teléfono</option>
-                <option value='email'>Email</option>
-                <option value='password'>Contraseña</option>
-              </Select>
-            </Box>
+              <Box w='150px' mb='20px' ml='10px'>
+                <Select fontSize='1.25rem' isRequired={true} variant='filled' onChange={(e) => setEditF(e.target.value)}>
+                  <option value='nick'>Nick</option>
+                  <option value='name'>Nombre</option>
+                  <option value='steam'>Steam</option>
+                  <option value='phone'>Teléfono</option>
+                  <option value='email'>Email</option>
+                  <option value='password'>Contraseña</option>
+                </Select>
+              </Box>
               <form onSubmit={handleUserSubmit}>
-                {editF === 'nick' && <input 
-                  type="text" 
-                  value={newUser.nick} 
+                {editF === 'nick' && <input
+                  type="text"
+                  value={newUser.nick}
                   id="nick"
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
+                  onChange={(e) => handleUserEdit(e)}
+                  required
                 />}
                 {editF === 'name' && <input
-                  type="text" 
-                  value={newUser.name} 
+                  type="text"
+                  value={newUser.name}
                   id="name"
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
+                  onChange={(e) => handleUserEdit(e)}
+                  required
                 />}
-                {editF === 'steam' && <input 
-                  type="text" 
-                  value={newUser.steam} 
+                {editF === 'steam' && <input
+                  type="text"
+                  value={newUser.steam}
                   id="steam"
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
+                  onChange={(e) => handleUserEdit(e)}
+                  required
                 />}
                 {editF === 'phone' && <input
-                  type="tel" 
-                  value={newUser.phone} 
+                  type="tel"
+                  value={newUser.phone}
                   id="phone"
                   onChange={(e) => {
                     const num = e.target.value.replace(/\D/g, '')
                     e.target.value = num;
-                    if (num.length <= 9) handleUserEdit(e)}} 
-                  required 
+                    if (num.length <= 9) handleUserEdit(e)
+                  }}
+                  required
                 />}
-                {editF === 'email' && <input 
-                  type="text" 
-                  value={newUser.email} 
+                {editF === 'email' && <input
+                  type="text"
+                  value={newUser.email}
                   id="email"
-                  onChange={(e) => handleUserEdit(e)} 
-                  required 
+                  onChange={(e) => handleUserEdit(e)}
+                  required
                 />}
-                {editF === 'password' && 
+                {editF === 'password' &&
                   <>
                     <input
                       type="password"
