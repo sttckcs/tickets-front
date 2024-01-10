@@ -34,7 +34,7 @@ const UserProfile = () => {
         const res = await API.post(
           'ticket/all'
         );
-        if(res.data !== tickets) setTickets(res.data);
+        if (res.data !== tickets) setTickets(res.data);
       } catch (error) {
         setTickets([]);
       }
@@ -43,7 +43,7 @@ const UserProfile = () => {
 
     fetchUser();
     getTickets();
-    
+
     setTicket(true)
   }, [id]);
 
@@ -63,8 +63,10 @@ const UserProfile = () => {
     try {
       await API.post(
         'ticket/close',
-        { _id,
-        open }
+        {
+          _id,
+          open
+        }
       );
     } catch (error) {
       console.log(error)
@@ -85,7 +87,7 @@ const UserProfile = () => {
 
   const handleChat = async (_id) => {
     const updatedTickets = tickets.map(ticket => {
-      if(ticket._id === _id) {
+      if (ticket._id === _id) {
         return { ...ticket, adminLast: profileUser.admin }
       }
       return ticket;
@@ -97,7 +99,7 @@ const UserProfile = () => {
   return (
     <>
       {loading ?
-        <div className="loader">
+        <div className="loader-sm">
           <Waveform color="white" />
         </div> :
         profileUser ?
@@ -106,7 +108,7 @@ const UserProfile = () => {
               <Profile user={profileUser} />
               {profileUser.idNeverlate !== 0 &&
                 <div>
-                  <strong style={{ fontSize: '3rem'}}>Otros datos</strong>
+                  <strong style={{ fontSize: '3rem' }}>Otros datos</strong>
                   <div style={{ margin: '10px 0 20px 0', fontSize: '1.75rem', lineHeight: '35px' }}>
                     <h1>Apellidos: {profileUser.apellidos}</h1>
                     <h1>Dirección: {profileUser.direccionFacturacion}</h1>
@@ -119,20 +121,20 @@ const UserProfile = () => {
             </div>
             <h2 style={{ fontSize: '2.25rem' }}><b>Tickets</b></h2>
             <div className="tickets">
-            {[...profileUser.tickets].reverse().map((ticket) => 
-              <div 
-                key={ticket._id} 
-                className="ticket" 
-                style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }} 
-                onClick={() => handleDetails(ticket)}
-              >
-                <strong>{ticket._id.substring(0,8)}</strong>
-              </div>
-            )}
-          </div>
-          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
+              {[...profileUser.tickets].reverse().map((ticket) =>
+                <div
+                  key={ticket._id}
+                  className="ticket"
+                  style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }}
+                  onClick={() => handleDetails(ticket)}
+                >
+                  <strong>{ticket._id.substring(0, 8)}</strong>
+                </div>
+              )}
+            </div>
+            <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
           </>
-           : 
+          :
           <strong>Error 404: Usuario no encontrado</strong>
       }
     </>

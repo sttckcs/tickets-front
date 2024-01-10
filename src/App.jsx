@@ -86,7 +86,7 @@ function App() {
               target="_blank"
               rel="noreferrer"
             >
-              <img className='rrss' src={Twitter} alt='Logo Twitter' />
+              <img className="rrss" src={Twitter} alt="Logo Twitter" loading="lazy" />
             </a>
             <footer className="footer">
               <b>© 2023 SKINDREAM, SL. Todos los derechos reservados.</b>

@@ -31,10 +31,10 @@ const Admin = () => {
   useEffect(() => {
     let intervalId;
     const fetchTicketsPeriodically = () => {
-      intervalId = setInterval(getTickets, 10000); 
+      intervalId = setInterval(getTickets, 10000);
       return () => clearInterval(intervalId);
     };
-  
+
     fetchTicketsPeriodically();
     setTicket(true);
     setLoading(false);
@@ -55,11 +55,13 @@ const Admin = () => {
     try {
       await API.post(
         'ticket/close',
-        { _id,
-        open }
+        {
+          _id,
+          open
+        }
       );
       const updatedTickets = tickets.map(ticket => {
-        if(ticket._id === _id) {
+        if (ticket._id === _id) {
           return { ...ticket, open: !open }
         }
         return ticket;
@@ -94,7 +96,7 @@ const Admin = () => {
 
   const handleChat = async (_id) => {
     const updatedTickets = tickets.map(ticket => {
-      if(ticket._id === _id) {
+      if (ticket._id === _id) {
         return { ...ticket, adminLast: user.admin }
       }
       return ticket;
@@ -103,7 +105,7 @@ const Admin = () => {
     setTickets(updatedTickets)
   }
 
-  const handleSelect = (date) =>{
+  const handleSelect = (date) => {
     console.log('date', date);
     setStartDate(date.selection.startDate);
     setEndDate(date.selection.endDate);
@@ -119,12 +121,12 @@ const Admin = () => {
     const ticketDate = new Date(ticket.createdAt)
     if (!status && !ticket.open) return false;
     if (category && ticket.category !== category) return false;
-    if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast) && status === 'open') || ((!ticket.open || !ticket.adminLast) && status === 'read')) || (ticket.marked && status === 'unmarked') || (!ticket.marked && status === 'marked')) return false;
-    if (debouncedSearch && ticket.user.nick !== debouncedSearch && ticket.user.email !== debouncedSearch && ticket._id.substring(0,8) !== debouncedSearch) return false;
+    if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast || ticket.marked) && status === 'open') || ((!ticket.open || !ticket.adminLast || ticket.marked) && status === 'read')) || (ticket.marked && status === 'unmarked') || (!ticket.marked && status === 'marked')) return false;
+    if (debouncedSearch && ticket.user.nick !== debouncedSearch && ticket.user.email !== debouncedSearch && ticket._id.substring(0, 8) !== debouncedSearch) return false;
 
     return (ticketDate >= startDate && ticketDate <= endDate)
   })
-  
+
   if (order === 'oldest') filteredTickets = [...filteredTickets].reverse();
 
   return (
@@ -165,23 +167,23 @@ const Admin = () => {
         </Box>
         <CalendarModal open={calOpen} setOpen={setCalOpen} selectionRange={selectionRange} handleSelect={handleSelect} />
       </nav>
-      {loading ? 
+      {loading ?
         <div className="loader-sm">
           <Waveform color="white" />
-        </div> : 
+        </div> :
         <>
           <div className="tickets">
-            {filteredTickets.map((ticket) => 
-              <div 
-                key={ticket._id} 
-                className="ticket" 
-                style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }} 
+            {filteredTickets.map((ticket) =>
+              <div
+                key={ticket._id}
+                className="ticket"
+                style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }}
                 onClick={() => handleDetails(ticket)}
                 onMouseDown={(e) => ticketNewTab(ticket, e)}
                 onContextMenu={(e) => ticketNewTab(ticket, e)}
               >
-                {ticket.marked && <img src={Star} alt='star' className="ticket-star"/>}
-                <strong>{ticket._id.substring(0,8)}</strong>
+                {ticket.marked && <img src={Star} alt='star' className="ticket-star" />}
+                <strong>{ticket._id.substring(0, 8)}</strong>
               </div>
             )}
           </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client'
 import { useAuth } from '../contexts/AuthContext';
-import { useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
 import { Button, useColorModeValue, Input } from '@chakra-ui/react'
@@ -9,9 +9,10 @@ import EditIcon from '/images/edit.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true } );
+const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true });
 
 const ChatRoom = ({ tId, handleChat, open }) => {
+  const navigate = useNavigate();
   const { id } = useParams();
   let _id = tId ? tId : id
   const { user, ticket, setTicket, notis, setNotis, setInChat } = useAuth()
@@ -20,8 +21,9 @@ const ChatRoom = ({ tId, handleChat, open }) => {
   const textColor = useColorModeValue('#2D3748', '#E2E8F0')
   const bgColor = useColorModeValue('#E2E8F0', '#2D3748')
   const [owner, setOwner] = useState(null)
+  const [oid, setOid] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [access, setAccess] = useState(false)  
+  const [access, setAccess] = useState(false)
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
   const [msgList, setMsgList] = useState([])
   const [previewImage, setPreviewImage] = useState(null);
@@ -57,18 +59,19 @@ const ChatRoom = ({ tId, handleChat, open }) => {
 
       const res = await API.post(
         'ticket/image',
-         formData,
-        { headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
 
       const newMessage = {
         name: chatMessage.name,
         msg: res.data.imageUrl,
         room: _id,
       }
-
+      setPreviewImage(null);
       handleNewMessage(newMessage);
     } catch (error) {
       toast.error('Error subiendo la imagen:', error.response.data.message);
@@ -86,7 +89,10 @@ const ChatRoom = ({ tId, handleChat, open }) => {
           );
           if (res.data.open) {
             setAccess(true)
-            if (res.data.user.nick !== user.nick) setOwner(res.data.user.nick)
+            if (res.data.user.nick !== user.nick) {
+              setOwner(res.data.user.nick)
+              setOid(res.data.user._id)
+            }
             else setOwner(user.nick)
           }
         } catch (error) {
@@ -113,20 +119,20 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     }
     verifyAccess();
     if (access) getMessages();
-    
+
     if (open || id) {
-      intervalId = setInterval(getMessages, 1000); 
+      intervalId = setInterval(getMessages, 1000);
     } else {
       return () => clearInterval(intervalId);
     }
-    
-    socket.emit('userJoin', { username:user.nick, id: _id })
+
+    socket.emit('userJoin', { username: user.nick, id: _id })
     return () => {
       clearInterval(intervalId);
       setInChat(false);
     }
   }, [_id, user.admin, user.nick, user.tickets, ticket, open])
-  
+
   socket.on('newMessage', () => {
     setTicket(true)
   })
@@ -134,7 +140,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
   const handleChange = (e) => {
     setChatMessage({ ...chatMessage, [e.target.name]: e.target.value })
   }
-  
+
   const handleNewMessage = async (newMessage) => {
     try {
       await API.post('ticket/newmessage', {
@@ -167,7 +173,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
         name: user.nick,
         msg: '',
       })
-      
+
       handleNewMessage(newMessage);
     }
   }
@@ -190,7 +196,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
       setEditId(msg.time);
       setEditMsg(msg.msg)
     }
-  } 
+  }
 
   const handleEditSubmit = async (time) => {
     const message = msgList.filter(msg => msg.time === time);
@@ -204,7 +210,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     setEditId(null);
     setEditMsg('');
   }
-  
+
   const handleDelete = (time) => {
     const message = msgList.filter(msg => msg.time === time);
     console.log('message', message);
@@ -232,29 +238,64 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     })
   }
 
+  const handleCloseT = async (_id, open) => {
+    try {
+      await API.post(
+        'ticket/close',
+        {
+          _id,
+          open
+        }
+      );
+      navigate('/chat')
+    } catch (error) {
+      toast.error('Error cerrando el ticket')
+    }
+  }
+
+  const handleDeleteT = async (_id) => {
+    try {
+      await API.post(
+        'ticket/delete',
+        { _id }
+      );
+      navigate('/chat')
+    } catch (error) {
+      toast.error('Error eliminando el ticket')
+    }
+  }
+
+
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       {loading ?
         <div className={`${tId ? 'loader-ticket' : 'loader-sm'}`}>
           <Waveform color="white" />
         </div> :
-        access ? 
+        access ?
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
-            {tId || !user.admin ? '' : <div style={{ fontSize: '2rem' }}>
-              <h2><b>Chat de</b><span style={{ fontWeight: '600' }}> {_id.substring(0,8)}</span> <b>-</b> <b> Ticket de</b> <span style={{ fontWeight: '600' }}>{owner}</span></h2>
+            {tId || !user.admin ? '' : <div style={{ fontSize: '2rem', display: 'flex', justifyContent: 'space-between' }}>
+              <h2>
+                <b>Chat de</b><span style={{ fontWeight: '600' }}> {_id.substring(0, 8)}</span> <b>-</b> <b> Ticket de </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`}>{owner}</NavLink></span>
+              </h2>
+              <div style={{ display: 'flex', gap: '20px' }}>
+                <Button onClick={() => handleCloseT(_id, true)}>Cerrar</Button>
+                <Button onClick={() => handleDeleteT(_id)}>Eliminar</Button>
+              </div>
             </div>}
             <h1 style={{ fontSize: '1.75rem', margin: '10px' }}><b>Mensajes</b></h1>
             <div id={`${tId ? 'chatMessagesTicket' : 'chatMessagesWindow'}`}>
               <ul style={{ listStyleType: 'none' }}>
                 {msgList.map((msg, index) => {
-                  const date = `${new Date(msg.time).toLocaleDateString('es-ES', {day: '2-digit', month:'2-digit', year:'2-digit'})} ${new Date(msg.time).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`
+                  const date = `${new Date(msg.time).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })} ${new Date(msg.time).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
                   return <li key={index} style={{ padding: '5px 0px', width: '100%' }}>
                     {date === 'Invalid Date Invalid Date' ?
-                      '' : 
+                      '' :
                       <>
                         <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}`, position: 'relative' }}>
                           <b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
-                          {user.admin && (msg.name == 'Aregodas' || msg.name == 'admin') && 
+                          {user.admin && (msg.name == 'Aregodas' || msg.name == 'admin') &&
                             <>
                               <img src={EditIcon} className='edit-icon' style={{ width: '20px' }} onClick={() => handleEdit(msg)} alt='edit-icon' />
                               <div className='gg-trash' onClick={() => handleDelete(msg.time)}></div>
@@ -290,7 +331,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
               )}
             </div>
           </div>
-        : ''
+          : ''
       }
       <ToastContainer theme="colored" position="top-center" limit={3} />
     </div>
