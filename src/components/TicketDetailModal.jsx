@@ -87,7 +87,7 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
               </div>
             }
           </ModalBody>
-	<ToastContainer theme="colored" position="top-center" limit={3} />
+	        <ToastContainer theme="colored" position="top-center" limit={3} />
         </ModalContent>
       </Modal>
     </>

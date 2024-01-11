@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
-import { Button, useColorModeValue, Input } from '@chakra-ui/react'
+import { Button, useColorModeValue, Input, Checkbox } from '@chakra-ui/react'
 import EditIcon from '/images/edit.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,6 +24,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
   const [oid, setOid] = useState(null)
   const [loading, setLoading] = useState(true)
   const [access, setAccess] = useState(false)
+  const [currentTicket, setCurrentTicket] = useState(null)
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
   const [msgList, setMsgList] = useState([])
   const [previewImage, setPreviewImage] = useState(null);
@@ -89,6 +90,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
           );
           if (res.data.open) {
             setAccess(true)
+            setCurrentTicket(res.data)
             if (res.data.user.nick !== user.nick) {
               setOwner(res.data.user.nick)
               setOid(res.data.user._id)
@@ -238,26 +240,26 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     })
   }
 
-  const handleCloseT = async (_id, open) => {
+  const handleCloseT = async () => {
     try {
       await API.post(
         'ticket/close',
         {
-          _id,
-          open
+          _id: currentTicket._id,
+          open: currentTicket.open
         }
       );
-      navigate('/chat')
+      setCurrentTicket({ ...currentTicket, open: !currentTicket.open })
     } catch (error) {
       toast.error('Error cerrando el ticket')
     }
   }
 
-  const handleDeleteT = async (_id) => {
+  const handleDeleteT = async () => {
     try {
       await API.post(
         'ticket/delete',
-        { _id }
+        { _id: currentTicket._id }
       );
       navigate('/chat')
     } catch (error) {
@@ -265,7 +267,28 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     }
   }
 
+  const categoryMapper = (category) => {
+    return (
+      category === 'buy' ? 'Compra' :
+        category === 'sell' ? 'Venta' :
+          category === 'buff' ? 'Balance' :
+            category
+    )
+  }
 
+  const handleMark = async () => {
+    try {
+      const res = await API.post(
+        'ticket/mark',
+        { _id: currentTicket._id }
+      );
+      if (res.data.marked) toast.success('Ticket desmarcado');
+      else toast.success('Ticket marcado');
+      setCurrentTicket({ ...currentTicket, marked: !res.data.marked })
+    } catch (error) {
+      toast.error('Ha habido un error')
+    }
+  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -277,59 +300,64 @@ const ChatRoom = ({ tId, handleChat, open }) => {
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
             {tId || !user.admin ? '' : <div style={{ fontSize: '2rem', display: 'flex', justifyContent: 'space-between' }}>
               <h2>
-                <b>Chat de</b><span style={{ fontWeight: '600' }}> {_id.substring(0, 8)}</span> <b>-</b> <b> Ticket de </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`}>{owner}</NavLink></span>
+                <b>Ticket: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span><span style={{ fontWeight: '600' }}> - Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span></span> <b>-</b> <b> Usuario: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`}>{owner}</NavLink></span>
               </h2>
               <div style={{ display: 'flex', gap: '20px' }}>
-                <Button onClick={() => handleCloseT(_id, true)}>Cerrar</Button>
-                <Button onClick={() => handleDeleteT(_id)}>Eliminar</Button>
+                <Checkbox isChecked={currentTicket.marked} onChange={handleMark}><p style={{ marginLeft: '4px', fontSize: '1.75rem', fontWeight: '600', color: 'rgb(200, 200, 255)' }} >Ticket marcado</p></Checkbox>
+                <Button onClick={handleCloseT}>{currentTicket.open ? 'Cerrar' : 'Abrir'}</Button>
+                <Button onClick={handleDeleteT}>Eliminar</Button>
               </div>
             </div>}
-            <h1 style={{ fontSize: '1.75rem', margin: '10px' }}><b>Mensajes</b></h1>
-            <div id={`${tId ? 'chatMessagesTicket' : 'chatMessagesWindow'}`}>
-              <ul style={{ listStyleType: 'none' }}>
-                {msgList.map((msg, index) => {
-                  const date = `${new Date(msg.time).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })} ${new Date(msg.time).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
-                  return <li key={index} style={{ padding: '5px 0px', width: '100%' }}>
-                    {date === 'Invalid Date Invalid Date' ?
-                      '' :
-                      <>
-                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}`, position: 'relative' }}>
-                          <b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
-                          {user.admin && (msg.name == 'Aregodas' || msg.name == 'admin') &&
-                            <>
-                              <img src={EditIcon} className='edit-icon' style={{ width: '20px' }} onClick={() => handleEdit(msg)} alt='edit-icon' />
-                              <div className='gg-trash' onClick={() => handleDelete(msg.time)}></div>
-                            </>
-                          }
-                        </div>
-                        {editId === msg.time
-                          ? <><input className='edit-text' type='text' value={editMsg} onChange={(e) => setEditMsg(e.target.value)} /><Button onClick={() => handleEditSubmit(msg.time)}>Enviar</Button></>
-                          : <h5 style={{ textAlign: 'justify', color: 'white' }}>{renderMessage(msg.msg)}</h5>
+            {currentTicket.open &&
+              <>
+                <h1 style={{ fontSize: '1.75rem', margin: '10px' }}><b>Mensajes</b></h1>
+                <div id={`${tId ? 'chatMessagesTicket' : 'chatMessagesWindow'}`}>
+                  <ul style={{ listStyleType: 'none' }}>
+                    {msgList.map((msg, index) => {
+                      const date = `${new Date(msg.time).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })} ${new Date(msg.time).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
+                      return <li key={index} style={{ padding: '5px 0px', width: '100%' }}>
+                        {date === 'Invalid Date Invalid Date' ?
+                          '' :
+                          <>
+                            <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}`, position: 'relative' }}>
+                              <b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
+                              {user.admin && (msg.name == 'Aregodas' || msg.name == 'admin') &&
+                                <>
+                                  <img src={EditIcon} className='edit-icon' style={{ width: '20px' }} onClick={() => handleEdit(msg)} alt='edit-icon' />
+                                  <div className='gg-trash' onClick={() => handleDelete(msg.time)}></div>
+                                </>
+                              }
+                            </div>
+                            {editId === msg.time
+                              ? <><input className='edit-text' type='text' value={editMsg} onChange={(e) => setEditMsg(e.target.value)} /><Button onClick={() => handleEditSubmit(msg.time)}>Enviar</Button></>
+                              : <h5 style={{ textAlign: 'justify', color: 'white' }}>{renderMessage(msg.msg)}</h5>
+                            }
+                          </>
                         }
-                      </>
-                    }
-                  </li>
-                })}
-              </ul>
-            </div>
-            <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-              <Input type='text' onPaste={handlePaste} style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} />
-              <Button type='submit'>Enviar</Button>
-            </form>
-            <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
-              {previewImage && (
-                <div>
-                  <img
-                    src={previewImage}
-                    alt="Pasted Preview"
-                    className="preview-image"
-                  />
-                  <button onClick={clearImagePreview} className="remove-preview-button">
-                    Eliminar
-                  </button>
+                      </li>
+                    })}
+                  </ul>
                 </div>
-              )}
-            </div>
+                <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                  <Input type='text' onPaste={handlePaste} style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} />
+                  <Button type='submit'>Enviar</Button>
+                </form>
+                <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
+                  {previewImage && (
+                    <div>
+                      <img
+                        src={previewImage}
+                        alt="Pasted Preview"
+                        className="preview-image"
+                      />
+                      <button onClick={clearImagePreview} className="remove-preview-button">
+                        Eliminar
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            }
           </div>
           : ''
       }
