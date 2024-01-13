@@ -29,7 +29,7 @@ const TermsModal = ({ openTerms, setOpenTerms, acceptedTerms, setAcceptedTerms }
 
     if (element) {
       const isAtBottom =
-        element.scrollHeight - element.scrollTop < element.clientHeight + 20;
+        element.scrollHeight - element.scrollTop < element.clientHeight + 200;
 
       setIsScrolledToBottom(isAtBottom);
     }

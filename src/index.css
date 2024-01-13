@@ -125,7 +125,6 @@ form input {
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-start;
-  height: 410px;
   overflow-y: auto;
   width: 100%;
   margin-bottom: 10px;
@@ -442,8 +441,8 @@ textarea {
   bottom: 0;
   z-index: 0;
   object-fit: cover;
-  max-width: 80vw;
-  left: 10vw;
+  max-width: 70vw;
+  left: 15vw;
   visibility: hidden;
 }
 
@@ -513,7 +512,7 @@ form>input {
   /* background-color: rgba(3, 3, 21, 0.9); */
 }
 
-.chat-window>h5 {
+.chat-window h5 {
   padding: 20px 5px;
 }
 
@@ -614,6 +613,29 @@ option {
   padding: 3px 10px;
   color: white;
   font-size: 1.5rem;
+}
+
+.chat-options {
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-options h2 {
+  display: flex;
+  gap: 30px;
+}
+
+.chat-panel {
+  display: flex;
+  gap: 20px;
+}
+
+.chat-panel p {
+  margin-left: 4px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: rgb(200, 200, 255)
 }
 
 .chat-popout:focus {
@@ -738,8 +760,29 @@ option {
     line-height: 35px;
   }
 
+  .chat-window h2, .chat-panel p {
+    font-size: 1.5rem;
+  }
+
+  .chat-options {
+    text-align: center;
+    flex-direction: column;
+  }
+  
+  .chat-options h2 {
+    gap: 10px;
+  }
+
   .chat-window {
-    height: 55vh;
+    height: 65vh;
+  }
+
+  .chat-panel {
+    margin-top: 20px;
+  }
+
+  .chat-panel button {
+    padding: 8px;
   }
 
   .footer {
