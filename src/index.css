@@ -404,6 +404,19 @@ textarea {
   max-height: 200px;
 }
 
+.profile {
+  margin: 10px 0;
+  font-size: 1.75rem;
+  line-height: 35px;
+  user-select: text;
+}
+
+
+.profile span {
+  color: rgb(170, 170, 205);
+}
+
+
 .footer {
   font-size: 1.5rem;
   width: 100%;
@@ -421,6 +434,7 @@ textarea {
     0 0 70px rgba(0, 0, 0, 1),
     0 0 80px rgba(0, 0, 0, 1);
   z-index: 999;
+  color: rgb(160, 160, 205);
 }
 
 .skins {
@@ -771,6 +785,11 @@ option {
 }
 
 @media screen and (max-width: 1200px) {
+  #nav-filters {
+    flex-direction: column;
+    margin-top: 12px;
+  }
+
   .home h1 {
     font-size: 3rem;
   }
@@ -808,6 +827,7 @@ option {
   .skins {
     visibility: visible;
   }
+
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1500px) {

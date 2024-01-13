@@ -4,7 +4,7 @@ import '../index.css';
 
 const AuthContext = createContext({
   auth: null,
-  setAuth: () => {},
+  setAuth: () => { },
   user: null,
 });
 
@@ -63,8 +63,8 @@ const AuthProvider = ({ children }) => {
         if (!user.admin) user.tickets.map(ticket => {
           if (ticket.adminLast && ticket.open) return newNotis.push(ticket._id)
         })
-        else if (user.admin)tickets.map(ticket => {
-          if (!ticket.adminLast && ticket.open) return newNotis.push(ticket._id)
+        else if (user.admin) tickets.map(ticket => {
+          if (!ticket.adminLast && ticket.open && !ticket.marked) return newNotis.push(ticket._id)
         })
         setNotis(newNotis)
       }

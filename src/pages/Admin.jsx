@@ -156,13 +156,13 @@ const Admin = () => {
             <option value='oldest'>Más antiguos</option>
           </Select>
         </Box>
-        <Box w='230px'>
+        <Box w='240px'>
           <Input style={{ fontSize: '1.25rem', borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value)} />
         </Box>
-        <Box w='90px'>
+        <Box w='110px'>
           <Button onClick={() => setCalOpen(true)}>Fechas</Button>
         </Box>
-        <Box w='115px'>
+        <Box w='150px'>
           <Button onClick={() => setMailOpen(true)}>Envía correo</Button>
         </Box>
         <CalendarModal open={calOpen} setOpen={setCalOpen} selectionRange={selectionRange} handleSelect={handleSelect} />

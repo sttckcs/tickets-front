@@ -300,7 +300,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
             {tId || !user.admin ? '' : <div style={{ fontSize: '2rem', display: 'flex', justifyContent: 'space-between' }}>
               <h2>
-                <b>Ticket: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span><span style={{ fontWeight: '600' }}> - Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span></span> <b>-</b> <b> Usuario: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`}>{owner}</NavLink></span>
+                <b>Ticket: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span><span style={{ fontWeight: '600' }}> - Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span></span> <b>-</b> <b> Usuario: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`} target='_blank'>{owner}</NavLink></span>
               </h2>
               <div style={{ display: 'flex', gap: '20px' }}>
                 <Checkbox isChecked={currentTicket.marked} onChange={handleMark}><p style={{ marginLeft: '4px', fontSize: '1.75rem', fontWeight: '600', color: 'rgb(200, 200, 255)' }} >Ticket marcado</p></Checkbox>

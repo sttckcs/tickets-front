@@ -108,18 +108,18 @@ const UserProfile = () => {
               <Profile user={profileUser} />
               {profileUser.idNeverlate !== 0 &&
                 <div>
-                  <strong style={{ fontSize: '3rem' }}>Otros datos</strong>
-                  <div style={{ margin: '10px 0 20px 0', fontSize: '1.75rem', lineHeight: '35px' }}>
-                    <h1>Apellidos: {profileUser.apellidos}</h1>
-                    <h1>Dirección: {profileUser.direccionFacturacion}</h1>
-                    <h1>Código Postal: {profileUser.codigoPostalFacturacion}</h1>
-                    <h1>País: {profileUser.paisFacturacion}</h1>
-                    <h1>Empresa: {profileUser.empresa ? 'si' : 'no'}</h1>
+                  <strong style={{ fontSize: '3rem', color: 'rgb(200, 200, 255)' }}>Otros datos</strong>
+                  <div className="profile">
+                    <h1>Apellidos: <span>{profileUser.apellidos}</span></h1>
+                    <h1>Dirección: <span>{profileUser.direccionFacturacion}</span></h1>
+                    <h1>Código Postal: <span>{profileUser.codigoPostalFacturacion}</span></h1>
+                    <h1>País: <span>{profileUser.paisFacturacion}</span></h1>
+                    <h1>Empresa: <span>{profileUser.empresa ? 'si' : 'no'}</span></h1>
                   </div>
                 </div>
               }
             </div>
-            <h2 style={{ fontSize: '2.25rem' }}><b>Tickets</b></h2>
+            <h2 style={{ fontSize: '2.25rem', color: 'rgb(200, 200, 255)' }}><b>Tickets</b></h2>
             <div className="tickets">
               {[...profileUser.tickets].reverse().map((ticket) =>
                 <div
