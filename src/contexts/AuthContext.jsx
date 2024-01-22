@@ -20,7 +20,6 @@ const AuthProvider = ({ children }) => {
   const [inChat, setInChat] = useState(false);
 
   useEffect(() => {
-    getTickets();
     isAuth();
   }, [auth, ticket, inChat]);
 
@@ -35,6 +34,7 @@ const AuthProvider = ({ children }) => {
       );
       if (user !== res.data) setUser(res.data);
       setAuth(true);
+      getTickets();
     } catch (error) {
       setUser(null);
     }
@@ -43,15 +43,13 @@ const AuthProvider = ({ children }) => {
   };
 
   const getTickets = async () => {
-    if (user && user.admin) {
-      try {
-        const res = await API.post(
-          'ticket/all'
-        );
-        if (res.data !== tickets) setTickets(res.data);
-      } catch (error) {
-        setTickets([]);
-      }
+    try {
+      const res = await API.post(
+        'ticket/all'
+      );
+      if (res.data !== tickets) setTickets(res.data);
+    } catch (error) {
+      setTickets([]);
     }
   };
 

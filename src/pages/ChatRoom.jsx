@@ -5,6 +5,7 @@ import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
 import { Button, useColorModeValue, Input, Checkbox } from '@chakra-ui/react'
+import he from 'he'
 import EditIcon from '/images/edit.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -229,13 +230,16 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     const parts = message.split(urlRegex);
 
     return parts.map((part, index) => {
-      if (part.match(urlRegex)) {
-        if (part.match(cloudinaryUrlRegex)) return <img key={index} className='imagen-chat' src={part} alt='imagen chat' />
-        else return (
-          <a key={index} href={part.startsWith('www.') ? `http://${part}` : part} style={{ color: 'rgb(75, 87, 218)' }} target='_blank' rel='noopener noreferrer'>{part}</a>
-        )
+      const cleanPart = he.decode(part)
+      if (cleanPart.match(urlRegex)) {
+        if (cleanPart.match(cloudinaryUrlRegex)) return <img key={index} className='imagen-chat' src={cleanPart} alt='imagen chat' />
+        else {
+          return (
+            <a key={index} href={cleanPart.startsWith('www.') ? `http://${cleanPart}` : cleanPart} style={{ color: 'rgb(75, 87, 218)' }} target='_blank' rel='noopener noreferrer'>{cleanPart}</a>
+          )
+        }
       } else {
-        return <span key={index}>{part}</span>
+        return <span key={index}>{cleanPart}</span>
       }
     })
   }
@@ -300,7 +304,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
           <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
             {tId || !user.admin ? '' : <div className='chat-options'>
               <h2>
-                <span><b>Ticket: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span></span><span style={{ fontWeight: '600' }}> Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span></span><span><b> Usuario: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`} target='_blank'>{owner}</NavLink></span></span>  
+                <span><b>Ticket: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span></span><span style={{ fontWeight: '600' }}> Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span></span><span><b> Usuario: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`} target='_blank'>{owner}</NavLink></span></span>
               </h2>
               <div className='chat-panel'>
                 <Checkbox isChecked={currentTicket.marked} onChange={handleMark}><p>Ticket marcado</p></Checkbox>

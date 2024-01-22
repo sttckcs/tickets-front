@@ -4,9 +4,11 @@ import { useAuth } from '../contexts/AuthContext'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import Draggable from 'react-draggable';
-import { socketURL } from '../services/services';
+import { API, socketURL } from '../services/services';
+import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 
-const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true } );
+const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true });
 
 const HelpChat = ({ load, setLoad }) => {
   const textColor = useColorModeValue('#E2E8F0', '#2D3748')
@@ -16,12 +18,28 @@ const HelpChat = ({ load, setLoad }) => {
   const [convos, setConvos] = useState([])
   const [target, setTarget] = useState()
   const [msgList, setMsgList] = useState([])
+  const [id, setId] = useState('')
 
   useEffect(() => {
-    socket.emit('userJoin', { username: user.nick, id: 'HelpChat' })
-    return () => socket.emit('roomLeave', {username: user.nick, id: 'HelpChat'})
+    if (!user.banned) socket.emit('userJoin', { username: user.nick, id: 'HelpChat' })
+    return () => socket.emit('roomLeave', { username: user.nick, id: 'HelpChat' })
   }, [])
-  
+
+  useEffect(() => {
+    const getId = async () => {
+      try {
+        const res = await API.post("user/nick", {
+          nick: target,
+        });
+        setId(res.data.message);
+      } catch (error) {
+        setId("");
+      }
+    };
+
+    if (target && user.admin) getId();
+  }, [target]);
+
 
   const handleChange = (e) => {
     setChatMessage({ ...chatMessage, [e.target.name]: e.target.value })
@@ -30,7 +48,7 @@ const HelpChat = ({ load, setLoad }) => {
 
   socket.on("newMessage", newMessage => {
     if (user.admin || newMessage.byAdmin || newMessage.name === user.nick) {
-      setMsgList([...msgList, { name: newMessage.name, msg: newMessage.msg, byAdmin: newMessage.byAdmin, room: 'HelpChat', target: newMessage.target}])
+      setMsgList([...msgList, { name: newMessage.name, msg: newMessage.msg, byAdmin: newMessage.byAdmin, room: 'HelpChat', target: newMessage.target }])
       setLoad(true);
     }
   })
@@ -54,12 +72,12 @@ const HelpChat = ({ load, setLoad }) => {
       room: 'HelpChat',
       target: ''
     })
-    
+
   }
 
   const filteredList = user.admin ? [...msgList.filter(msg => !msg.byAdmin)] : [...msgList.filter(msg => msg.target === user.nick || msg.name === user.nick)]
 
-  const handleNewChat = async (target) => {
+  const handleNewChat = (target) => {
     if (user.admin && target !== user.nick && !convos.includes(target)) {
       setConvos(prev => [...prev, target])
       setTarget(target)
@@ -78,11 +96,11 @@ const HelpChat = ({ load, setLoad }) => {
       }))
     };
 
-    return (     
+    return (
       <Draggable>
         <div className='chat-popout'>
           <div style={{ backgroundColor: '#2D3748', color: '#CBD5E0', padding: '6px' }}>
-            <h1 style={{ fontSize: '1.25rem', padding: '4px 0px 0px 4px' }}><b>{tgt}</b></h1>
+            <NavLink to={`/tickets/${id}/profile`}><h1 style={{ fontSize: '1.25rem', padding: '4px 0px 0px 4px' }}><b>{tgt}</b></h1></NavLink>
             <button onClick={() => setTarget('')} style={{ fontSize: '1.5rem', position: 'absolute', top: '-2px', right: '36px' }}>_</button>
             <button onClick={handlePopoutClose} style={{ position: 'absolute', top: '10px', right: '14px', fontSize: '1.25rem' }}><b>X</b></button>
           </div>
@@ -90,10 +108,10 @@ const HelpChat = ({ load, setLoad }) => {
             <div className='help-chat--chat'>
               <ul style={{ listStyleType: 'none' }}>
                 {[...msgList].filter(msg => msg.byAdmin && msg.target === tgt || msg.name === tgt).map((msg, index) => {
-                  const date = `${new Date().toLocaleDateString('es-ES', {day: '2-digit', month:'2-digit', year:'2-digit'})} ${new Date().toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`
+                  const date = `${new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })} ${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
                   return <li key={index}>
                     {date === 'Invalid Date Invalid Date' ?
-                      '' : 
+                      '' :
                       <>
                         <b>{msg.name} </b><span style={{ fontSize: '0.9rem', color: '#CBD5E0', marginLeft: '5px' }}>{date}</span><h5>{msg.msg}</h5>
                       </>
@@ -118,10 +136,10 @@ const HelpChat = ({ load, setLoad }) => {
         <div className='help-chat--chat'>
           <ul style={{ listStyleType: 'none' }}>
             {[...filteredList].filter(msg => !convos.includes(msg.name)).map((msg, index) => {
-              const date = `${new Date().toLocaleDateString('es-ES', {day: '2-digit', month:'2-digit', year:'2-digit'})} ${new Date().toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`
+              const date = `${new Date().toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })} ${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
               return <li key={index}>
                 {date === 'Invalid Date Invalid Date' ?
-                  '' : 
+                  '' :
                   <>
                     <b style={{ cursor: 'pointer' }} onClick={() => handleNewChat(msg.name)}>{msg.name} </b><span style={{ fontSize: '12px', color: '#CBD5E0' }} >{date}</span><h5 style={{ color: 'white' }}>{msg.msg}</h5>
                   </>

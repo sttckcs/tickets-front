@@ -119,6 +119,7 @@ const Admin = () => {
 
   let filteredTickets = tickets.filter(ticket => {
     const ticketDate = new Date(ticket.createdAt)
+    if (ticket.user === null) return false;
     if (!status && !ticket.open) return false;
     if (category && ticket.category !== category) return false;
     if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast || ticket.marked) && status === 'open') || ((!ticket.open || !ticket.adminLast || ticket.marked) && status === 'read')) || (ticket.marked && status === 'unmarked') || (!ticket.marked && status === 'marked')) return false;

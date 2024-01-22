@@ -64,7 +64,7 @@ function App() {
                 </Route>
               </Routes>
             </div>
-            {user &&
+            {(user && !user.banned) &&
               <div className='help'>
                 {<HelpChat load={load} setLoad={changeLoad} />}
                 <button onClick={() => {
@@ -89,7 +89,7 @@ function App() {
               <img className="rrss" src={Twitter} alt="Logo Twitter" loading="lazy" />
             </a>
             <footer className="footer">
-              <b>© 2023 SKINDREAM, SL. Todos los derechos reservados.</b>
+              <b>© {new Date().getFullYear()} SKINDREAM, SL. Todos los derechos reservados.</b>
             </footer>
           </Router>
         }

@@ -392,6 +392,19 @@ textarea {
   font-size: 1.55rem;
 }
 
+.banned-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.banned {
+  font-size: 2.5rem;
+  margin-top: 20px;
+}
+
 .plus {
   position: absolute;
   top: -7px;
@@ -760,7 +773,8 @@ option {
     line-height: 35px;
   }
 
-  .chat-window h2, .chat-panel p {
+  .chat-window h2,
+  .chat-panel p {
     font-size: 1.5rem;
   }
 
@@ -768,7 +782,7 @@ option {
     text-align: center;
     flex-direction: column;
   }
-  
+
   .chat-options h2 {
     gap: 10px;
   }
