@@ -94,6 +94,10 @@ const Admin = () => {
     }
   }
 
+  const nullTicket = () => {
+    setCurrentTicket(null);
+  }
+
   const handleChat = async (_id) => {
     const updatedTickets = tickets.map(ticket => {
       if (ticket._id === _id) {
@@ -188,7 +192,7 @@ const Admin = () => {
               </div>
             )}
           </div>
-          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} setTicket={setCurrentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
+          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
           <MailModal open={mailOpen} setOpen={setMailOpen} />
         </>
       }

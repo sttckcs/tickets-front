@@ -24,8 +24,8 @@ const AuthProvider = ({ children }) => {
   }, [auth, ticket, inChat]);
 
   useEffect(() => {
-    mapNotis();
-  }, [auth, tickets]);
+    // mapNotis();
+  }, [auth, tickets, user]);
 
   const isAuth = async () => {
     try {
@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
       );
       if (user !== res.data) setUser(res.data);
       setAuth(true);
-      getTickets();
+      if (res.data.admin) getTickets();
     } catch (error) {
       setUser(null);
     }
@@ -55,17 +55,15 @@ const AuthProvider = ({ children }) => {
 
   const mapNotis = useCallback(() => {
     let newNotis = [];
-    if (user) {
-      if (!user.idNeverlate && !user.admin) newNotis.push('xx21');
-      if (!inChat) {
-        if (!user.admin) user.tickets.map(ticket => {
-          if (ticket.adminLast && ticket.open) return newNotis.push(ticket._id)
-        })
-        else if (user.admin) tickets.map(ticket => {
-          if (!ticket.adminLast && ticket.open && !ticket.marked) return newNotis.push(ticket._id)
-        })
-        setNotis(newNotis)
-      }
+    if (!user?.idNeverlate && !user?.admin) newNotis.push('xx21');
+    if (!inChat) {
+      if (!user?.admin) user?.tickets.map(ticket => {
+        if (ticket.adminLast && ticket.open) return newNotis.push(ticket._id)
+      })
+      else if (user?.admin) tickets.map(ticket => {
+        if (!ticket.adminLast && ticket.open && !ticket.marked) return newNotis.push(ticket._id)
+      })
+      setNotis(newNotis)
     }
   }, [auth, ticket, user, tickets])
 

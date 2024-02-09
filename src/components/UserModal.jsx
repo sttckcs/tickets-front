@@ -212,21 +212,20 @@ const UserModal = ({ open, setOpen, mode }) => {
   const handleBillingSubmit = async (e) => {
     e.preventDefault();
     if (newUser.nif.length < 4) {
-      toast('Error en el NIF');
+      toast.error('Error en el NIF');
       return;
     }
 
     try {
-      await API.put('user/billing', {
+      const res = await API.put('user/billing', {
         _id: user._id,
         newUser
       });
-      setUser({ ...newUser, _id: user._id })
-      toast('Datos de facturación añadidos correctamente!')
-      isAuth()
+      setUser({ ...newUser, _id: user._id, idNeverlate: res.data.id })
+      toast.success('Datos de facturación añadidos correctamente!')
       handleClose()
     } catch (error) {
-      toast('Error añadiendo los datos de facturación', error.message);
+      toast.error('Error añadiendo los datos de facturación', error.message);
       setNewUser(user)
     }
   };

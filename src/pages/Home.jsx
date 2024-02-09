@@ -25,7 +25,7 @@ const Home = () => {
       {!user
         ? <strong className='home-font'>
           Bienvenido a Todoskins, tu mercado de confianza donde podrás vender,
-          comprar, intercambiar skins de CS:GO y comprar balance de buff.163 al mejor precio
+          comprar, intercambiar skins de CS y comprar balance de buff.163 al mejor precio
         </strong>
         :
         <div className="home">

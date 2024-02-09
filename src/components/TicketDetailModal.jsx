@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handleCloseT, handleDelete }) => {
+const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, handleDelete }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
   const { user } = useAuth();
   const [notify, setNotify] = useState(false);
@@ -23,7 +23,6 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
 
   const handleClose = () => {
     setOpen(false);
-    setTicket(null);
     onClose();
   }
 
@@ -31,8 +30,8 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
     try {
       const res = await API.post(
         'ticket/mark', {
-          _id: ticket._id
-        }
+        _id: ticket._id
+      }
       );
       if (res.data.marked) toast.success('Ticket desmarcado');
       else toast.success('Ticket marcado');
@@ -41,23 +40,23 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
       toast.error('Ha habido un error')
     }
   }
-  
+
   const handleNotify = async () => {
     setNotify(!notify)
     try {
       await API.post(
         'ticket/notify', {
-          id: ticket._id,
-          admin: user.admin,
-          notify: !notify
-        }
+        id: ticket._id,
+        admin: user.admin,
+        notify: !notify
+      }
       );
       toast.success('Notificaciones actualizadas')
     } catch (error) {
       toast.error('Ha habido un error')
     }
   }
-  
+
   return (
     <>
       <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose} size='full'>
@@ -68,14 +67,14 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
           <ModalBody>
             {ticket &&
               <div style={{ fontSize: '1.5rem' }}>
-                <h1>Id: {ticket._id.substring(0,8)}</h1>
+                <h1>Id: {ticket._id.substring(0, 8)}</h1>
                 {user.admin && <h1>Creado por: <NavLink to={`${ticket.user._id}/profile`}><strong>{ticket.user.nick}</strong></NavLink></h1>}
                 <h2>Categoría: {ticket.category === 'sell' ? 'venta' : ticket.category === 'buy' ? 'compra' : 'balance'}</h2>
-                <h2>Fecha: {new Date(ticket.createdAt).toLocaleDateString('es-ES')} {new Date(ticket.createdAt).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}</h2>
+                <h2>Fecha: {new Date(ticket.createdAt).toLocaleDateString('es-ES')} {new Date(ticket.createdAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</h2>
                 <h2>Estado: {user.admin ? ticket.open && !ticket.adminLast ? 'Pendiente' : ticket.open && ticket.adminLast ? 'Leído' : 'Cerrado' : ticket.open ? 'Abierto' : 'Cerrado'}</h2>
                 <Checkbox isChecked={notify} onChange={handleNotify}><p style={{ fontSize: '1.25rem', marginRight: '20px' }} >Recibe notificaciones por correo</p></Checkbox>
                 {user.admin && <Checkbox isChecked={marked} onChange={handleMark}><p style={{ fontSize: '1.25rem' }} >Ticket marcado</p></Checkbox>}
-                {ticket.open && <ChatRoom handleChat={handleChat} tId={ticket._id} open={open} />}
+                <ChatRoom handleChat={handleChat} tId={ticket._id} open={ticket.open} />
                 <ModalFooter style={{ padding: '0px' }}>
                   {user.admin &&
                     <>
@@ -87,7 +86,7 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
               </div>
             }
           </ModalBody>
-	        <ToastContainer theme="colored" position="top-center" limit={3} />
+          <ToastContainer theme="colored" position="top-center" limit={3} />
         </ModalContent>
       </Modal>
     </>

@@ -526,7 +526,7 @@ form>input {
 }
 
 .chat-window h5 {
-  padding: 20px 5px;
+  padding: 5px;
 }
 
 option {
@@ -760,6 +760,29 @@ option {
 .support {
   width: 90px;
   height: 90px;
+}
+
+.maintenance {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+
+  :is(h1) {
+    font-size: 3rem;
+  }
+
+  :is(h2) {
+    font-size: 2.5rem;
+  }
+
+  :is(p) {
+    text-align: center;
+    font-size: 1.75rem;
+    margin: 10px;
+  }
+
 }
 
 @media screen and (max-width: 500px) {

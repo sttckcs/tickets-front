@@ -8,7 +8,7 @@ const Profile = ({ user }) => {
           <img src={user.picture} alt={user.nick} style={{ margin: '10px', width: '100px'}} />
         </div> */}
         <h2><b>Nick:</b> <span>{user.nick}</span></h2>
-        <h2><b>Nombre:</b> <span>{user.name}</span></h2>
+        {user.name && <h2><b>Nombre:</b> <span>{user.name}</span></h2>}
         <h2><b>Steam:</b> <span style={{ color: 'green' }}><a href={user.steam.startsWith('https://steamcommunity.com') ? user.steam : `https://steamcommunity.com/id/${user.steam}`} target="_blank">{user.steam.split('/')[4] ? user.steam.split('/')[4] : user.steam}</a></span></h2>
         {user.nif && <h2><b>NIF:</b> <span>{user.nif}</span></h2>}
         <h2><b>Correo:</b> <span>{user.email}</span></h2>

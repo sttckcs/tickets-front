@@ -8,7 +8,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const UserProfile = () => {
   const { id } = useParams();
-  const { setTicket } = useAuth();
+  const { setTicket, user } = useAuth();
   const [profileUser, setProfileUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [detailOpen, setDetailOpen] = useState(false)
@@ -42,7 +42,7 @@ const UserProfile = () => {
     };
 
     fetchUser();
-    getTickets();
+    if (user.admin) getTickets();
 
     setTicket(true)
   }, [id]);
