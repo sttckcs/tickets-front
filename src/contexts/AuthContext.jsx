@@ -24,7 +24,7 @@ const AuthProvider = ({ children }) => {
   }, [auth, ticket, inChat]);
 
   useEffect(() => {
-    // mapNotis();
+    mapNotis();
   }, [auth, tickets, user]);
 
   const isAuth = async () => {
