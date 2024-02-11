@@ -229,6 +229,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
 
     const parts = message.split(urlRegex);
 
+    console.log('parts', parts);
     return parts.map((part, index) => {
       const cleanPart = he.decode(part)
       if (cleanPart.match(urlRegex)) {
@@ -238,9 +239,8 @@ const ChatRoom = ({ tId, handleChat, open }) => {
             <a key={index} href={cleanPart.startsWith('www.') ? `http://${cleanPart}` : cleanPart} style={{ color: 'rgb(75, 87, 218)' }} target='_blank' rel='noopener noreferrer'>{cleanPart}</a>
           )
         }
-      } else {
-        return <span key={index}>{cleanPart}</span>
-      }
+      } else if (cleanPart === '/') return false;
+      else return <span key={index}>{cleanPart}</span>
     })
   }
 
