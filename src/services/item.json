@@ -1,0 +1,100 @@
+{
+  "appid": 730,
+  "classid": "5683847778",
+  "instanceid": "480085569",
+  "currency": 0,
+  "background_color": "",
+  "icon_url": "-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FA957PHEcDB9_9W7hIyOqPv9NLPF2G5VuZQl072WodSkjQTn_UU-YTqncYaccFc2NQyBqVXqxuzqhZG7uc_XiSw0f3y6kYU",
+  "icon_url_large": "-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpot621FA957PHEcDB9_9W7hIyOqPv9NLPFqWdQ-sJ0xOzFpN2h0QDj_0ttNmnwIoDHcFVqNFjZ-AC2lbq-1pLou5_MyXVkv3I8pSGK_P3OCnU",
+  "descriptions": [
+    {
+      "type": "html",
+      "value": "Exterior: Minimal Wear"
+    },
+    {
+      "type": "html",
+      "value": " "
+    },
+    {
+      "type": "html",
+      "value": "High risk and high reward, the infamous AWP is recognizable by its signature report and one-shot, one-kill policy. It has been painted using a hydrographic printed with comic book onomatopoeia over an orange base coat."
+    },
+    {
+      "type": "html",
+      "value": " "
+    },
+    {
+      "type": "html",
+      "value": "The eSports 2013 Collection",
+      "color": "9da1a9"
+    },
+    {
+      "type": "html",
+      "value": " "
+    },
+    {
+      "type": "html",
+      "value": "<br><div id=\"sticker_info\" name=\"sticker_info\" title=\"Sticker\" style=\"border: 2px solid rgb(102, 102, 102); border-radius: 6px; width=100; margin:4px; padding:8px;\"><center><img width=64 height=48 src=\"https://steamcdn-a.akamaihd.net/apps/730/icons/econ/stickers/team_roles_capsule/bomber.17cc8ddb30db223d3ade354a810cad83722b13db.png\"><img width=64 height=48 src=\"https://steamcdn-a.akamaihd.net/apps/730/icons/econ/stickers/bf2042/mrchompy_paper.f56c6797f3370073afca5d7dbf4a209e2443aab0.png\"><br>Sticker: The Bomber, Mr. Chompy</center></div>"
+    }
+  ],
+  "tradable": 0,
+  "actions": [
+    {
+      "link": "steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20S%owner_steamid%A%assetid%D12584223806600181289",
+      "name": "Inspect in Game..."
+    }
+  ],
+  "name": "AWP | BOOM",
+  "name_color": "D2D2D2",
+  "type": "Classified Sniper Rifle",
+  "market_name": "AWP | BOOM (Minimal Wear)",
+  "market_hash_name": "AWP | BOOM (Minimal Wear)",
+  "market_actions": [
+    {
+      "link": "steam://rungame/730/76561202255233023/+csgo_econ_action_preview%20M%listingid%A%assetid%D12584223806600181289",
+      "name": "Inspect in Game..."
+    }
+  ],
+  "commodity": 0,
+  "market_tradable_restriction": 7,
+  "marketable": 1,
+  "tags": [
+    {
+      "category": "Type",
+      "internal_name": "CSGO_Type_SniperRifle",
+      "localized_category_name": "Type",
+      "localized_tag_name": "Sniper Rifle"
+    },
+    {
+      "category": "Weapon",
+      "internal_name": "weapon_awp",
+      "localized_category_name": "Weapon",
+      "localized_tag_name": "AWP"
+    },
+    {
+      "category": "ItemSet",
+      "internal_name": "set_esports",
+      "localized_category_name": "Collection",
+      "localized_tag_name": "The eSports 2013 Collection"
+    },
+    {
+      "category": "Quality",
+      "internal_name": "normal",
+      "localized_category_name": "Category",
+      "localized_tag_name": "Normal"
+    },
+    {
+      "category": "Rarity",
+      "internal_name": "Rarity_Legendary_Weapon",
+      "localized_category_name": "Quality",
+      "localized_tag_name": "Classified",
+      "color": "d32ce6"
+    },
+    {
+      "category": "Exterior",
+      "internal_name": "WearCategory1",
+      "localized_category_name": "Exterior",
+      "localized_tag_name": "Minimal Wear"
+    }
+  ]
+}

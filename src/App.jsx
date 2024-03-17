@@ -1,27 +1,29 @@
-import { useTransition, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useColorModeValue } from '@chakra-ui/react'
-import Home from "./pages/Home";
-import Admin from "./pages/Admin";
-import NotFound from "./pages/NotFound";
-import Navbar from "./components/Navbar";
+import { useTransition, useState, Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import { useColorModeValue } from '@chakra-ui/react';
 import { useAuth } from "./contexts/AuthContext";
-import { Waveform } from "@uiball/loaders";
-import Tickets from "./pages/Tickets";
-import Faq from "./pages/Faq";
-import MyProfile from "./pages/MyProfile";
-import UserProfile from "./pages/UserProfile";
-import Chat from "./pages/Chat";
-import ChatRoom from "./pages/ChatRoom";
-import VerifyUser from "./pages/VerifyUser";
-import ChangePassword from "./pages/ChangePassword";
-import HelpChat from './components/HelpChat';
-import Sell from './pages/Sell';
-import Links from './pages/Links';
+import { Waveform } from '@uiball/loaders';
 import Twitter from '/images/x1.png';
-import Users from './pages/Users';
-import Ticket from './pages/Ticket';
-// import skins from '../public/images/skins.png'
+
+const Home = lazy(() => import("./pages/Home"));
+const Admin = lazy(() => import("./pages/Admin"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Navbar = lazy(() => import("./components/Navbar"));
+const Tickets = lazy(() => import("./pages/Tickets"));
+const Faq = lazy(() => import("./pages/Faq"));
+const MyProfile = lazy(() => import("./pages/MyProfile"));
+const UserProfile = lazy(() => import("./pages/UserProfile"));
+const Chat = lazy(() => import("./pages/Chat"));
+const ChatRoom = lazy(() => import("./pages/ChatRoom"));
+const VerifyUser = lazy(() => import("./pages/VerifyUser"));
+const ChangePassword = lazy(() => import("./pages/ChangePassword"));
+const HelpChat = lazy(() => import("./components/HelpChat"));
+const Sell = lazy(() => import("./pages/Sell"));
+const Links = lazy(() => import("./pages/Links"));
+const Users = lazy(() => import("./pages/Users"));
+const Ticket = lazy(() => import("./pages/Ticket"));
+
+
 
 function App() {
   const [, startTransition] = useTransition();
@@ -41,23 +43,25 @@ function App() {
             <Waveform color="white" />
           </div> : 
             <Router>
-              <Navbar />
+              {/* <Navbar /> */}
               <div className="container">
                 <Routes>
-                  <Route path='/' element={<Home />}></Route>
-                  <Route path='/faq' element={user ? <Faq /> : <NotFound />}></Route>
-                  <Route path='/sell' element={user ? <Sell /> : <NotFound />}></Route>
-                  <Route path='/links' element={user ? <Links /> : <NotFound />}></Route>
-                  <Route path='/tickets/:id/profile' element={user?.admin? <UserProfile /> : <NotFound />}></Route>
-                  <Route path='/tickets/:id' element={user?.admin? <Ticket /> : <NotFound />}></Route>
-                  <Route path='/users' element={user?.admin? <Users /> : <NotFound />}></Route>
-                  <Route path='/profile' element={user && !user.admin ? <MyProfile /> : <NotFound />}></Route>
-                  <Route path='/tickets' element={user && !user.admin ? <Tickets /> : user && user.admin ? <Admin /> : <NotFound />}></Route>
-                  <Route path='/chat' element={user ? <Chat /> : <NotFound />}></Route>
-                  <Route path='/chat/:id' element={user ? <ChatRoom /> : <NotFound />}></Route>
-                  <Route path='/verify/:nick/:token' element={!user ? <VerifyUser /> : <NotFound />}></Route>
-                  <Route path='/recover/:token' element={!user ? <ChangePassword /> : <NotFound />}></Route>
-                  <Route path='*' element={<NotFound />}></Route>
+                  <Route path='/' element={<Layout />}>
+                    <Route path='/' element={<Home />} />
+                    <Route path='/faq' element={user ? <Faq /> : <NotFound />} />
+                    <Route path='/sell' element={user ? <Sell /> : <NotFound />} />
+                    <Route path='/links' element={user ? <Links /> : <NotFound />} />
+                    <Route path='/tickets/:id/profile' element={user?.admin? <UserProfile /> : <NotFound />} />
+                    <Route path='/tickets/:id' element={user?.admin? <Ticket /> : <NotFound />} />
+                    <Route path='/users' element={user?.admin? <Users /> : <NotFound />} />
+                    <Route path='/profile' element={user && !user.admin ? <MyProfile /> : <NotFound />} />
+                    <Route path='/tickets' element={user && !user.admin ? <Tickets /> : user && user.admin ? <Admin /> : <NotFound />} />
+                    <Route path='/chat' element={user ? <Chat /> : <NotFound />} />
+                    <Route path='/chat/:id' element={user ? <ChatRoom /> : <NotFound />} />
+                    <Route path='/verify/:nick/:token' element={!user ? <VerifyUser /> : <NotFound />} />
+                    <Route path='/recover/:token' element={!user ? <ChangePassword /> : <NotFound />} />
+                    <Route path='*' element={<NotFound />} />
+                  </Route>
                 </Routes>
               </div>
               {user && 
@@ -91,6 +95,23 @@ function App() {
         }
       </main>
       {/* <img className='skins' src={skins} alt='skins' /> */}
+    </>
+  )
+}
+
+function Layout () {
+  return (
+    <>
+      <Navbar />
+      <Suspense 
+        fallback={
+          <div className="loader-small">
+            <Waveform color="white" />
+          </div>
+        }
+      >
+        <Outlet />
+      </Suspense>
     </>
   )
 }
