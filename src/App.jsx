@@ -18,11 +18,10 @@ const Chat = lazy(() => import("./pages/Chat"));
 const ChatRoom = lazy(() => import("./pages/ChatRoom"));
 const VerifyUser = lazy(() => import("./pages/VerifyUser"));
 const ChangePassword = lazy(() => import("./pages/ChangePassword"));
-const Sell = lazy(() => import("./pages/Sell"));
 const Links = lazy(() => import("./pages/Links"));
 const Users = lazy(() => import("./pages/Users"));
 const Ticket = lazy(() => import("./pages/Ticket"));
-
+const Inventory = lazy(() => import("./pages/Inventory"))
 
 
 function App() {
@@ -48,8 +47,8 @@ function App() {
               <Routes>
                 <Route path='/' element={<Layout />}>
                   <Route path='/' element={<Home />} />
+                  <Route path='/inventory' element={<Inventory />}></Route>
                   <Route path='/faq' element={<Faq />} />
-                  <Route path='/sell' element={user ? <Sell /> : <NotFound />} />
                   <Route path='/links' element={user ? <Links /> : <NotFound />} />
                   <Route path='/tickets/:id/profile' element={user?.admin ? <UserProfile /> : <NotFound />} />
                   <Route path='/tickets/:id' element={user?.admin ? <Ticket /> : <NotFound />} />

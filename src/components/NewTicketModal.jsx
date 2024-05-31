@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const NewTicketModal = ({ open, setOpen }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
-  const { user, setTicket } = useAuth();
+  const { setTicket } = useAuth();
   const [category, setCategory] = useState('');
   const [notify, setNotify] = useState(true);
 
@@ -21,7 +21,6 @@ const NewTicketModal = ({ open, setOpen }) => {
     e.preventDefault();
     try {
       const res = await API.post('ticket/add', {
-        user: user._id,
         category,
         notify
       });

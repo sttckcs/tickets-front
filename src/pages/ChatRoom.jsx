@@ -5,6 +5,7 @@ import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
 import { Button, useColorModeValue, Input, Checkbox } from '@chakra-ui/react'
+import InspectItemModal from '../components/InspectItemModal';
 import he from 'he'
 import EditIcon from '/images/edit.png'
 import { ToastContainer, toast } from 'react-toastify';
@@ -32,6 +33,8 @@ const ChatRoom = ({ tId, handleChat, open }) => {
   const [blob, setBlob] = useState(null);
   const [editId, setEditId] = useState('');
   const [editMsg, setEditMsg] = useState('');
+  const [showInspectItem, setShowInspectItem] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
 
   const handlePaste = (e) => {
     const items = e.clipboardData.items;
@@ -295,6 +298,17 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     }
   }
 
+  const openItemDetails = async (item) => {
+    if (item) {
+      const res = await API.get('inventory/' + item);
+      console.log(res);
+      if (res.status === 200) {
+        setCurrentItem(res.data);
+        setShowInspectItem(true);
+      }
+    }
+  }
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       {loading ?
@@ -304,7 +318,21 @@ const ChatRoom = ({ tId, handleChat, open }) => {
         <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
           {tId || !user.admin ? '' : <div className='chat-options'>
             <h2>
-              <span><b>Ticket: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span></span><span style={{ fontWeight: '600' }}> Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span></span><span><b> Usuario: </b><span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`} target='_blank'>{owner}</NavLink></span></span>
+              <span>
+                <b>Ticket: </b>
+                <span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span>
+              </span>
+              <span style={{ fontWeight: '600' }}>
+                Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span>
+              </span>
+              <span>
+                <b> Usuario: </b>
+                <span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`} target='_blank'>{owner}</NavLink></span>
+              </span>
+              <span>
+                <b>Item: </b>
+                <span onClick={(e) => {openItemDetails(currentTicket.weaponAsset)}} style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{(currentTicket.weaponAsset ? currentTicket.weaponAsset : " Sin item")}</span>
+              </span>
             </h2>
             <div className='chat-panel'>
               <Checkbox isChecked={currentTicket.marked} onChange={handleMark}><p>Ticket marcado</p></Checkbox>
@@ -367,6 +395,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
         </div>
       }
       <ToastContainer theme="colored" position="top-center" limit={3} />
+      <InspectItemModal isOpen={showInspectItem} setOpen={setShowInspectItem} currentItem={currentItem} />
     </div>
   )
 }
