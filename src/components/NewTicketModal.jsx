@@ -3,12 +3,13 @@ import { useAuth } from '../contexts/AuthContext'
 import { Select, Checkbox, Button, useDisclosure, Modal, ModalCloseButton, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@chakra-ui/react'
 import { API } from '../services/services'
 import { useEffect } from 'react'
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+
 
 const NewTicketModal = ({ open, setOpen }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
-  const { setTicket } = useAuth();
+  const { user, setTicket } = useAuth();
   const [category, setCategory] = useState('');
   const [notify, setNotify] = useState(true);
 
@@ -21,6 +22,7 @@ const NewTicketModal = ({ open, setOpen }) => {
     e.preventDefault();
     try {
       const res = await API.post('ticket/add', {
+        user: user._id,
         category,
         notify
       });
@@ -61,7 +63,7 @@ const NewTicketModal = ({ open, setOpen }) => {
             </form>
           </div>
         </ModalBody>
-      <ToastContainer theme="colored" position="top-center" limit={3} />
+        <ToastContainer theme="colored" position="top-center" limit={3} />
       </ModalContent>
     </Modal>
   )

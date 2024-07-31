@@ -33,22 +33,21 @@ const Users = () => {
       setLoading(true);
       const res = await API.post(
         'user/stats',
-        {
-          interval,
+        { interval,
           startDate,
           endDate,
           pais: debouncedSearch
         });
-      const { user, ticket, bill } = res.data;
-      setUserCount(user);
-      setTicketCount(ticket);
-      setBillCount(bill);
-      setLoading(false);
+        const { user, ticket, bill } = res.data;
+        setUserCount(user);
+        setTicketCount(ticket);
+        setBillCount(bill);
+        setLoading(false);
     } catch (error) {
       toast.error('Error recogiendo las estadísticas')
     }
-  }
-
+  } 
+  
   const selectionRange = {
     startDate: startDate,
     endDate: endDate,
@@ -71,8 +70,8 @@ const Users = () => {
     if (action === 'permissions') {
       try {
         const res = await API.put(
-          'user/permissions',
-          { email }
+          'user/permissions', 
+          { email, id: user._id }
         );
         res.data.admin ? toast.success(`Se han dado permisos a ${res.data.nick}`) : toast.success(`Se han quitado permisos a ${res.data.nick}`)
       } catch (error) {
@@ -81,24 +80,12 @@ const Users = () => {
     } else if (action === 'verify') {
       try {
         const res = await API.put(
-          'user/verifyAdmin',
-          { email }
+          'user/verifyAdmin', 
+          { email, id: user._id }
         );
         toast.success(`Se ha verificado a ${res.data.nick}`)
       } catch (error) {
         if (error.response.status === 304) toast.error('El usuario ya estaba verificado');
-        else if (error.response.status === 404) toast.error('Usuario no encontrado');
-        else toast.error('Error del servidor');
-      }
-    } else if (action === 'ban') {
-      try {
-        const res = await API.put(
-          'user/ban',
-          { email }
-        );
-        toast.success(`Se ha baneado a ${res.data.nick}`)
-      } catch (error) {
-        if (error.response.status === 304) toast.error('El usuario ya estaba baneado');
         else if (error.response.status === 404) toast.error('Usuario no encontrado');
         else toast.error('Error del servidor');
       }
@@ -108,35 +95,32 @@ const Users = () => {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'center', gap: '30px' }}>
       <div style={{ margin: '20px', width: '400px', fontSize: '1.5rem' }}>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            style={{ width: '320px' }}
-            placeholder={"Introduce el correo del usuario"}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Button colorScheme='blue' type='submit' mt={3} mr={2} onClick={() => setAction('permissions')}>
-            Cambiar permisos
-          </Button>
-          <Button colorScheme='blue' type='submit' mt={3} ml={2} onClick={() => setAction('verify')}>
-            Verificar
-          </Button>
-          <Button colorScheme='blue' type='submit' mt={3} ml={2} onClick={() => setAction('ban')}>
-            Banear
-          </Button>
-        </form>
-        <div>
-          <Button colorScheme='blue' type='submit' mt={5} ml={2} onClick={() => setOpen(true)}>
-            Ver admins
-          </Button>
-        </div>
-        <AdminsModal open={open} setOpen={setOpen} />
+          <form onSubmit={handleSubmit}>
+            <input 
+              type="email" 
+              style={{ width: '320px' }} 
+              placeholder={"Introduce el correo del usuario"} 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required
+            />
+            <Button colorScheme='blue' type='submit' mt={3} mr={2} onClick={() => setAction('permissions')}>
+              Cambiar permisos
+            </Button>
+            <Button colorScheme='blue' type='submit' mt={3} ml={2} onClick={() => setAction('verify')}>
+              Verificar
+            </Button>
+          </form>
+          <div>
+            <Button colorScheme='blue' type='submit' mt={5} ml={2} onClick={() => setOpen(true)}>
+              Ver admins
+            </Button>
+          </div>
+          <AdminsModal open={open} setOpen={setOpen} />
       </div>
       <div style={{ margin: '10px', width: '500px', fontSize: '1.5rem', display: 'flex', gap: '10px', flexDirection: 'column', alignItems: 'center' }}>
         <h1 style={{ fontSize: '3.25rem' }}>Estadísticas</h1>
-        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: '10px'}}>
           <Box w='210px'>
             <Select value={interval} isRequired={true} fontSize='1.25rem' variant='filled' onChange={(e) => setInterval(e.target.value)}>
               <option value='day'>Hoy</option>
@@ -156,7 +140,7 @@ const Users = () => {
         {loading ?
           <div className="loader-small">
             <Waveform color="white" />
-          </div> :
+          </div> : 
           <div>
             <h1>Usuarios: {userCount}</h1>
             <h1>Tickets: {ticketCount}</h1>

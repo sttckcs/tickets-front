@@ -4,18 +4,14 @@ import { useAuth } from '../contexts/AuthContext';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
-import { Button, useColorModeValue, Input, Checkbox } from '@chakra-ui/react'
-import InspectItemModal from '../components/InspectItemModal';
-import he from 'he'
+import { Button, useColorModeValue, Input } from '@chakra-ui/react'
 import EditIcon from '/images/edit.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { fetchAdmins } from '../helpers/admin-names';
 
 const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true });
 
 const ChatRoom = ({ tId, handleChat, open }) => {
-  const navigate = useNavigate();
   const { id } = useParams();
   let _id = tId ? tId : id
   const { user, ticket, setTicket, notis, setNotis, setInChat } = useAuth()
@@ -24,19 +20,14 @@ const ChatRoom = ({ tId, handleChat, open }) => {
   const textColor = useColorModeValue('#2D3748', '#E2E8F0')
   const bgColor = useColorModeValue('#E2E8F0', '#2D3748')
   const [owner, setOwner] = useState(null)
-  const [oid, setOid] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [access, setAccess] = useState(false)
-  const [currentTicket, setCurrentTicket] = useState(null)
+  const [access, setAccess] = useState(false)  
   const [chatMessage, setChatMessage] = useState({ name: user.nick, msg: '', room: id })
   const [msgList, setMsgList] = useState([])
   const [previewImage, setPreviewImage] = useState(null);
   const [blob, setBlob] = useState(null);
   const [editId, setEditId] = useState('');
   const [editMsg, setEditMsg] = useState('');
-  const [showInspectItem, setShowInspectItem] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
-  const [admins, setAdmins] = useState([]);
 
   const handlePaste = (e) => {
     const items = e.clipboardData.items;
@@ -66,22 +57,21 @@ const ChatRoom = ({ tId, handleChat, open }) => {
 
       const res = await API.post(
         'ticket/image',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+         formData,
+        { headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
 
       const newMessage = {
         name: chatMessage.name,
         msg: res.data.imageUrl,
         room: _id,
       }
-      setPreviewImage(null);
+
       handleNewMessage(newMessage);
     } catch (error) {
-      toast.error('Error subiendo la imagen:', error.response.data.message);
+      console.error('Error subiendo la imagen:', error.response.data.message);
     }
   };
 
@@ -126,30 +116,20 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     }
     verifyAccess();
     if (access) getMessages();
-
+    
     if (open || id) {
-      intervalId = setInterval(getMessages, 1000);
+      intervalId = setInterval(getMessages, 1000); 
     } else {
-      getMessages();
       return () => clearInterval(intervalId);
     }
-
-    socket.emit('userJoin', { username: user.nick, id: _id })
+    
+    socket.emit('userJoin', { username:user.nick, id: _id })
     return () => {
       clearInterval(intervalId);
       setInChat(false);
     }
   }, [_id, user.admin, user.nick, user.tickets, ticket, open])
-
-  useEffect(() => {
-    const getAdmins = async () => {
-      const admins = await fetchAdmins();
-      setAdmins(admins);
-    }
-
-    getAdmins()
-  }, [])
-
+  
   socket.on('newMessage', () => {
     setTicket(true)
   })
@@ -157,7 +137,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
   const handleChange = (e) => {
     setChatMessage({ ...chatMessage, [e.target.name]: e.target.value })
   }
-
+  
   const handleNewMessage = async (newMessage) => {
     try {
       await API.post('ticket/newmessage', {
@@ -190,7 +170,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
         name: user.nick,
         msg: '',
       })
-
+      
       handleNewMessage(newMessage);
     }
   }
@@ -213,7 +193,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
       setEditId(msg.time);
       setEditMsg(msg.msg)
     }
-  }
+  } 
 
   const handleEditSubmit = async (time) => {
     const message = msgList.filter(msg => msg.time === time);
@@ -227,9 +207,10 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     setEditId(null);
     setEditMsg('');
   }
-
+  
   const handleDelete = (time) => {
     const message = msgList.filter(msg => msg.time === time);
+    console.log('message', message);
     // setMsgList(prev => {
     //   return prev.filter(msg => msg !== message);
     // })
@@ -243,79 +224,15 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     const parts = message.split(urlRegex);
 
     return parts.map((part, index) => {
-      const cleanPart = he.decode(part)
-      if (cleanPart.match(urlRegex)) {
-        if (cleanPart.match(cloudinaryUrlRegex)) return <img key={index} className='imagen-chat' src={cleanPart} alt='imagen chat' />
-        else {
-          return (
-            <a key={index} href={cleanPart.startsWith('www.') ? `http://${cleanPart}` : cleanPart} style={{ color: 'rgb(75, 87, 218)' }} target='_blank' rel='noopener noreferrer'>{cleanPart}</a>
-          )
-        }
-      } else if (cleanPart === '/') return false;
-      else return <span key={index}>{cleanPart}</span>
-    })
-  }
-
-  const handleCloseT = async () => {
-    try {
-      await API.post(
-        'ticket/close',
-        {
-          _id: currentTicket._id,
-          open: currentTicket.open
-        }
-      );
-      setCurrentTicket({ ...currentTicket, open: !currentTicket.open })
-      setAccess(!currentTicket.open)
-    } catch (error) {
-      toast.error('Error cerrando el ticket')
-    }
-  }
-
-  const handleDeleteT = async () => {
-    try {
-      await API.post(
-        'ticket/delete',
-        { _id: currentTicket._id }
-      );
-      navigate('/chat')
-    } catch (error) {
-      toast.error('Error eliminando el ticket')
-    }
-  }
-
-  const categoryMapper = (category) => {
-    return (
-      category === 'buy' ? 'Compra' :
-        category === 'sell' ? 'Venta' :
-          category === 'buff' ? 'Balance' :
-            category
-    )
-  }
-
-  const handleMark = async () => {
-    try {
-      const res = await API.post(
-        'ticket/mark',
-        { _id: currentTicket._id }
-      );
-      if (res.data.marked) toast.success('Ticket desmarcado');
-      else toast.success('Ticket marcado');
-      setCurrentTicket({ ...currentTicket, marked: !res.data.marked })
-    } catch (error) {
-      toast.error('Ha habido un error')
-    }
-  }
-
-  const openItemDetails = async (item) => {
-    if (item) {
-      const res = await API.get('inventory/' + item);
-      console.log(res);
-      if (res.status === 200) {
-        setCurrentItem(res.data);
-        setShowInspectItem(true);
+      if (part.match(urlRegex)) {
+        if (part.match(cloudinaryUrlRegex)) return <img key={index} className='imagen-chat' src={part} alt='imagen chat' />
+        else return (
+          <a key={index} href={part.startsWith('www.') ? `http://${part}` : part} style={{ color: 'rgb(75, 87, 218)' }} target='_blank' rel='noopener noreferrer'>{part}</a>
+        )
+      } else {
+        return <span key={index}>{part}</span>
       }
-    }
+    })
   }
 
   return (
@@ -324,52 +241,23 @@ const ChatRoom = ({ tId, handleChat, open }) => {
         <div className={`${tId ? 'loader-ticket' : 'loader-sm'}`}>
           <Waveform color="white" />
         </div> :
-        <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
-          {tId || !user.admin ? '' : <div className='chat-options'>
-            <h2>
-              <span>
-                <b>Ticket: </b>
-                <span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{_id.substring(0, 8)}</span>
-              </span>
-              <span style={{ fontWeight: '600' }}>
-                Categoría: <span style={{ color: 'rgb(200, 200, 255)' }}>{categoryMapper(currentTicket.category)}</span>
-              </span>
-              <span>
-                <b> Usuario: </b>
-                <span style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}><NavLink to={`/tickets/${oid}/profile`} target='_blank'>{owner}</NavLink></span>
-              </span>
-              <span>
-                <b>Item: </b>
-                <span onClick={(e) => {openItemDetails(currentTicket.weaponAsset)}} style={{ fontWeight: '600', color: 'rgb(200, 200, 255)' }}>{(currentTicket.weaponAsset ? currentTicket.weaponAsset : " Sin item")}</span>
-              </span>
-            </h2>
-            <div className='chat-panel'>
-              <Checkbox isChecked={currentTicket.marked} onChange={handleMark}><p>Ticket marcado</p></Checkbox>
-              <Button onClick={handleCloseT}>{currentTicket.open ? 'Cerrar' : 'Abrir'}</Button>
-              <Button onClick={handleDeleteT}>Eliminar</Button>
-            </div>
-          </div>}
-          <>
+        access ? 
+          <div className={`${tId ? 'chat-ticket' : 'chat-window'}`}>
+            {tId || !user.admin ? '' : <div style={{ fontSize: '2rem' }}>
+              <h2><b>Chat de</b><span style={{ fontWeight: '600' }}> {_id.substring(0,8)}</span> <b>-</b> <b> Ticket de</b> <span style={{ fontWeight: '600' }}>{owner}</span></h2>
+            </div>}
             <h1 style={{ fontSize: '1.75rem', margin: '10px' }}><b>Mensajes</b></h1>
             <div id={`${tId ? 'chatMessagesTicket' : 'chatMessagesWindow'}`}>
               <ul style={{ listStyleType: 'none' }}>
                 {msgList.map((msg, index) => {
-                  const date = `${new Date(msg.time).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })} ${new Date(msg.time).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}`
+                  const date = `${new Date(msg.time).toLocaleDateString('es-ES', {day: '2-digit', month:'2-digit', year:'2-digit'})} ${new Date(msg.time).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`
                   return <li key={index} style={{ padding: '5px 0px', width: '100%' }}>
                     {date === 'Invalid Date Invalid Date' ?
                       '' :
                       <>
-                        <div style={{ margin: '6px 0px 1px 0px', color: `${(admins.includes(msg.name)) ? 'red' : 'green'}`, position: 'relative' }}>
-                          <b>
-                            {admins.includes(msg.name) && user.admin 
-                              ? msg.name 
-                              : (admins.includes(msg.name) 
-                                ? 'admin' 
-                                : msg.name)
-                            }
-                          </b>
-                          <span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
-                          {user.admin && (admins.includes(msg.name)) &&
+                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}`, position: 'relative' }}>
+                          <b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
+                          {user.admin && (msg.name == 'Aregodas' || msg.name == 'admin') && 
                             <>
                               <img src={EditIcon} className='edit-icon' style={{ width: '20px' }} onClick={() => handleEdit(msg)} alt='edit-icon' />
                               <div className='gg-trash' onClick={() => handleDelete(msg.time)}></div>
@@ -386,33 +274,28 @@ const ChatRoom = ({ tId, handleChat, open }) => {
                 })}
               </ul>
             </div>
-            {access &&
-              <>
-                <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                  <Input type='text' onPaste={handlePaste} style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} />
-                  <Button type='submit'>Enviar</Button>
-                </form>
-                <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
-                  {previewImage && (
-                    <div>
-                      <img
-                        src={previewImage}
-                        alt="Pasted Preview"
-                        className="preview-image"
-                      />
-                      <button onClick={clearImagePreview} className="remove-preview-button">
-                        Eliminar
-                      </button>
-                    </div>
-                  )}
+            <form onSubmit={newMessageSubmit} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+              <Input type='text' onPaste={handlePaste} style={{ backgroundColor: bgColor, color: textColor, marginRight: '20px', fontSize: '1.25rem' }} _placeholder={{ color: textColor }} placeholder='Introduce tu mensaje' name='msg' value={chatMessage.msg} onChange={handleChange} />
+              <Button type='submit'>Enviar</Button>
+            </form>
+            <div style={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '20px' }}>
+              {previewImage && (
+                <div>
+                  <img
+                    src={previewImage}
+                    alt="Pasted Preview"
+                    className="preview-image"
+                  />
+                  <button onClick={clearImagePreview} className="remove-preview-button">
+                    Eliminar
+                  </button>
                 </div>
-              </>
-            }
-          </>
-        </div>
+              )}
+            </div>
+          </div>
+        : ''
       }
       <ToastContainer theme="colored" position="top-center" limit={3} />
-      <InspectItemModal isOpen={showInspectItem} setOpen={setShowInspectItem} currentItem={currentItem} />
     </div>
   )
 }

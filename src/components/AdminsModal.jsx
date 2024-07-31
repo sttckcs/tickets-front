@@ -3,7 +3,6 @@ import { API } from '../services/services';
 import { useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 const AdminsModal = ({ open, setOpen }) => {
   const [admins, setAdmins] = useState([]);
   const { onClose } = useDisclosure({ defaultIsOpen: true })

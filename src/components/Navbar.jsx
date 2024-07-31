@@ -58,19 +58,19 @@ const Navbar = () => {
         }
       </div>
       <nav id='nav' style={{ aActive: 'red' }}>
-        {!user ?
-          <>
-            <button style={{ padding: '4px 10px' }} onClick={() => handleClick('login')}>Login</button>
-            <button style={{ padding: '4px 10px' }} onClick={() => handleClick('register')}>Registro</button>
-            <NavLink to={'/faq'}>FAQ</NavLink>
-          </> :
-          <>
-            <NavLink to={'/tickets'}>Tickets</NavLink>
-            {user.admin && <NavLink to={'/chat'}>Chat</NavLink>}
-            {user.admin && <NavLink to={'/users'}>Usuarios</NavLink>}
-            {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
-            {user.admin && <button style={{ padding: '4px 10px' }} onClick={logout}>Salir</button>}
-          </>
+        {!user ? 
+        <>
+          <button style={{ padding: '4px 10px' }} onClick={() => handleClick('login')}>Login</button>
+          <button style={{ padding: '4px 10px' }} onClick={() => handleClick('register')}>Registro</button>
+        </> :
+        <>
+          <NavLink to={'/tickets'}>Tickets</NavLink>
+          {user.admin && <NavLink to={'/chat'}>Chat</NavLink>}
+          {user.admin && <NavLink to={'/users'}>Usuarios</NavLink>}
+          {!user.admin && <NavLink to={'/faq'}>FAQ</NavLink>}
+          {!user.admin && <NavLink to={'/links'}>Enlaces</NavLink>}
+          {user.admin && <button style={{ padding: '4px 10px' }} onClick={logout}>Salir</button>}
+        </>
         }
       </nav>
       <UserModal open={open} setOpen={setOpen} mode={mode} />

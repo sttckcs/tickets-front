@@ -6,27 +6,40 @@ import { useState } from 'react';
 import { API } from '../services/services';
 import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import InspectItemModal from '../components/InspectItemModal';
 import 'react-toastify/dist/ReactToastify.css';
 
-const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, handleDelete }) => {
+const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handleCloseT, handleDelete }) => {
   const { onClose } = useDisclosure({ defaultIsOpen: true })
   const { user } = useAuth();
   const [notify, setNotify] = useState(false);
   const [marked, setMarked] = useState(false);
-  const [showInspectItem, setShowInspectItem] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {
     if (ticket) {
       setNotify(user.admin ? ticket.notifyAdmin : ticket.notifyUser)
       setMarked(ticket.marked)
     }
-  }, [ticket])
+  }, [ticket, user.admin])
 
   const handleClose = () => {
     setOpen(false);
+    if (user.admin) setTicket(null);
     onClose();
+  }
+
+  const handleMark = async () => {
+    try {
+      const res = await API.post(
+        'ticket/mark', {
+          _id: ticket._id
+        }
+      );
+      if (res.data.marked) toast.success('Ticket desmarcado');
+      else toast.success ('Ticket marcado');
+      setMarked(!res.data.marked);
+    } catch (error) {
+      toast.error('Ha habido un error');
+    }
   }
 
   const handleMark = async () => {
@@ -80,16 +93,15 @@ const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, ha
           <ModalCloseButton />
           <ModalBody>
             {ticket &&
-              <div style={{ fontSize: '1.5rem' }}>
-                <h1>Id: {ticket._id.substring(0, 8)}</h1>
+              <div style={{ fontSize: '1.5rem', height: '60vh' }}>
+                <h1>Id: {ticket._id.substring(0,8)}</h1>
                 {user.admin && <h1>Creado por: <NavLink to={`${ticket.user._id}/profile`}><strong>{ticket.user.nick}</strong></NavLink></h1>}
                 <h2>Categoría: {ticket.category === 'sell' ? 'venta' : ticket.category === 'buy' ? 'compra' : 'balance'}</h2>
                 <h2>Fecha: {new Date(ticket.createdAt).toLocaleDateString('es-ES')} {new Date(ticket.createdAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</h2>
                 <h2>Estado: {user.admin ? ticket.open && !ticket.adminLast ? 'Pendiente' : ticket.open && ticket.adminLast ? 'Leído' : 'Cerrado' : ticket.open ? 'Abierto' : 'Cerrado'}</h2>
-                <h2 onClick={e => openItemDetails(ticket.weaponAsset)}>Item: {ticket && ticket.weaponAsset ? ticket.weaponAsset : "Sin item"}</h2>
                 <Checkbox isChecked={notify} onChange={handleNotify}><p style={{ fontSize: '1.25rem', marginRight: '20px' }} >Recibe notificaciones por correo</p></Checkbox>
                 {user.admin && <Checkbox isChecked={marked} onChange={handleMark}><p style={{ fontSize: '1.25rem' }} >Ticket marcado</p></Checkbox>}
-                <ChatRoom handleChat={handleChat} tId={ticket._id} open={ticket.open} />
+                {ticket.open && <ChatRoom handleChat={handleChat} tId={ticket._id} open={open} />}
                 <ModalFooter style={{ padding: '0px' }}>
                   {user.admin &&
                     <>
@@ -102,7 +114,6 @@ const TicketDetailModal = ({ open, setOpen, ticket, handleChat, handleCloseT, ha
             }
           </ModalBody>
           <ToastContainer theme="colored" position="top-center" limit={3} />
-          <InspectItemModal isOpen={showInspectItem} setOpen={setShowInspectItem} currentItem={currentItem} />
         </ModalContent>
       </Modal>
     </>

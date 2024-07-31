@@ -29,10 +29,10 @@ const handleEmail = async (e) => {
       subject,
       message
     });
-    if (res.status === 200) toast.success('Correo enviado!');
+    if (res.status === 200) toast.success('Email sent successfully!');
     handleClose();
   } catch (error) {
-    toast.error(`Error enviando el correo: ${error.response.data.message}`);
+    toast.error(`Failed to send the email: ${error.response.data.message}`);
   }
 };
 
@@ -55,7 +55,7 @@ return (
           </ModalFooter>
         </form>
       </ModalBody>
-    <ToastContainer theme="colored" position="top-center" limit={3} />
+      <ToastContainer theme="colored" position="top-center" limit={3} />
     </ModalContent>
   </Modal>
   )

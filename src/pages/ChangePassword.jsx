@@ -19,7 +19,7 @@ const ChangePassword = () => {
     const verify = async () => {
       try {
         const res = await API.post(
-          'user/recover',
+          'user/recover', 
           { token }
         );
         if (res.data.message === 'confirmed') setSuccess(true);
@@ -44,7 +44,7 @@ const ChangePassword = () => {
     }
     try {
       const res = await API.post(
-        'user/password',
+        'user/password', 
         { token, password: pwd1 }
       );
       if (res.data === 'password changed') toast.success('Contraseña cambiada! Ya puedes iniciar sesión')
@@ -87,8 +87,8 @@ const ChangePassword = () => {
             <h1>Ha habido un error al intentar cambiar tu contraseña</h1>
           }
         </div>
-      }
-      <ToastContainer theme="colored" position="top-center" limit={3} />
+        }
+        <ToastContainer theme="colored" position="top-center" limit={3} />
     </div>
   )
 }

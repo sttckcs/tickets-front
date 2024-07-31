@@ -50,7 +50,7 @@ const Ticket = () => {
       );
       getTicket();
     } catch (error) {
-      toast.error(error)
+      console.log(error)
     }
   }
 
@@ -62,7 +62,7 @@ const Ticket = () => {
       );
       getTicket();
     } catch (error) {
-      toast.error(error)
+      console.log(error)
     }
   }
 
@@ -74,7 +74,7 @@ const Ticket = () => {
         }
       );
       if (res.data.marked) toast.success('Ticket desmarcado');
-      else toast.success('Ticket marcado');
+      else toast.success ('Ticket marcado');
       setMarked(!res.data.marked);
     } catch (error) {
       toast.error('Ha habido un error')

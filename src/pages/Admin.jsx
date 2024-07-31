@@ -7,7 +7,7 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { useAuth } from "../contexts/AuthContext";
 import TicketDetailModal from "../components/TicketDetailModal";
 import MailModal from "../components/MailModal";
-import Star from '/images/star-xxl.png';
+import Star from '/images/star.png';
 
 const Admin = () => {
   const { user, setTicket, getTickets, setTickets, tickets } = useAuth();
@@ -31,10 +31,10 @@ const Admin = () => {
   useEffect(() => {
     let intervalId;
     const fetchTicketsPeriodically = () => {
-      intervalId = setInterval(getTickets, 10000);
+      intervalId = setInterval(getTickets, 10000); 
       return () => clearInterval(intervalId);
     };
-
+  
     fetchTicketsPeriodically();
     setTicket(true);
     setLoading(false);
@@ -51,14 +51,19 @@ const Admin = () => {
     setDetailOpen(true)
   }
 
+  const ticketNewTab = (ticket, e) => {
+    if (e.button == 2) {
+      e.preventDefault();
+      window.open(`/tickets/${ticket._id}`, '_blank')
+    }
+  }
+
   const handleClose = async (_id, open) => {
     try {
       await API.post(
         'ticket/close',
-        {
-          _id,
-          open
-        }
+        { _id,
+        open }
       );
       const updatedTickets = tickets.map(ticket => {
         if (ticket._id === _id) {
@@ -122,11 +127,10 @@ const Admin = () => {
 
   let filteredTickets = tickets.filter(ticket => {
     const ticketDate = new Date(ticket.createdAt)
-    if (ticket.user === null) return false;
     if (!status && !ticket.open) return false;
     if (category && ticket.category !== category) return false;
-    if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast || ticket.marked) && status === 'open') || ((!ticket.open || !ticket.adminLast || ticket.marked) && status === 'read')) || (ticket.marked && status === 'unmarked') || (!ticket.marked && status === 'marked')) return false;
-    if (debouncedSearch && ticket.user.nick !== debouncedSearch && ticket.user.email !== debouncedSearch && ticket._id.substring(0, 8) !== debouncedSearch) return false;
+    if (status && ((!ticket.open && status !== 'closed') || (ticket.open && status === 'closed') || ((!ticket.open || ticket.adminLast) && status === 'open') || ((!ticket.open || !ticket.adminLast) && status === 'read')) || (ticket.marked && status === 'unmarked') || (!ticket.marked && status === 'marked')) return false;
+    if (debouncedSearch && ticket.user.nick !== debouncedSearch && ticket.user.email !== debouncedSearch && ticket._id.substring(0,8) !== debouncedSearch) return false;
 
     return (ticketDate >= startDate && ticketDate <= endDate)
   })
@@ -160,7 +164,7 @@ const Admin = () => {
             <option value='oldest'>Más antiguos</option>
           </Select>
         </Box>
-        <Box w='240px'>
+        <Box w='230px'>
           <Input style={{ fontSize: '1.25rem', borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value)} />
         </Box>
         <Box w='110px'>
@@ -177,21 +181,24 @@ const Admin = () => {
         </div> :
         <>
           <div className="tickets">
-            {filteredTickets.map((ticket) =>
-              <div
-                key={ticket._id}
-                className="ticket"
-                style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }}
-                onClick={() => handleDetails(ticket)}
-                onMouseDown={(e) => ticketNewTab(ticket, e)}
-                onContextMenu={(e) => ticketNewTab(ticket, e)}
-              >
-                {ticket.marked && <img src={Star} alt='star' className="ticket-star" />}
-                <strong>{ticket._id.substring(0, 8)}</strong>
-              </div>
-            )}
+            {filteredTickets.map((ticket) => {
+              return (
+                <div key={ticket._id} style={{ position: 'relative', margin: '0px 10px' }}>
+                  <div 
+                    className="ticket" 
+                    style={{ backgroundColor: !ticket.open ? 'red' : ticket.adminLast ? 'gray' : 'green' }} 
+                    onClick={() => handleDetails(ticket)}
+                    onMouseDown={(e) => ticketNewTab(ticket, e)}
+                    onContextMenu={(e) => ticketNewTab(ticket, e)}
+                  >
+                    {ticket.marked && <img src={Star} alt='star' className="ticket-star"/>}
+                    <strong>{ticket._id.substring(0,8)}</strong>
+                  </div>
+                </div>
+              )
+            })}
           </div>
-          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
+          <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} setTicket={setCurrentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
           <MailModal open={mailOpen} setOpen={setMailOpen} />
         </>
       }

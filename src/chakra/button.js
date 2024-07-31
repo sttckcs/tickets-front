@@ -6,7 +6,7 @@ export const Button = {
     fontWeight: 700,
     _focus: {
       boxShadow: 'none'
-    }
+    },
   },
   sizes: {
     sm: {

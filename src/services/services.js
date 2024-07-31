@@ -20,7 +20,7 @@ export const APIHeaders = {
 export const API = axios.create({
     baseURL : 'https://todoskins.com/api',
     withCredentials: true,
-    timeout: 25000,
+    timeout: 20000,
     headers : APIHeaders
 });
 
