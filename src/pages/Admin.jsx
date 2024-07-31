@@ -110,7 +110,6 @@ const Admin = () => {
   }
 
   const handleSelect = (date) => {
-    console.log('date', date);
     setStartDate(date.selection.startDate);
     setEndDate(date.selection.endDate);
   };

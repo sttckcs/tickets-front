@@ -54,7 +54,6 @@ const UserProfile = () => {
       nick: profileUser.nick
     }
     ticket.user = updatedTicket;
-    console.log('updatedTicket', updatedTicket);
     setCurrentTicket(ticket)
     setDetailOpen(true)
   }

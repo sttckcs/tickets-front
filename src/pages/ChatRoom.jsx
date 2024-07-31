@@ -10,6 +10,7 @@ import he from 'he'
 import EditIcon from '/images/edit.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchAdmins } from '../helpers/admin-names';
 
 const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true });
 
@@ -35,6 +36,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
   const [editMsg, setEditMsg] = useState('');
   const [showInspectItem, setShowInspectItem] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
+  const [admins, setAdmins] = useState([]);
 
   const handlePaste = (e) => {
     const items = e.clipboardData.items;
@@ -139,6 +141,15 @@ const ChatRoom = ({ tId, handleChat, open }) => {
     }
   }, [_id, user.admin, user.nick, user.tickets, ticket, open])
 
+  useEffect(() => {
+    const getAdmins = async () => {
+      const admins = await fetchAdmins();
+      setAdmins(admins);
+    }
+
+    getAdmins()
+  }, [])
+
   socket.on('newMessage', () => {
     setTicket(true)
   })
@@ -219,7 +230,6 @@ const ChatRoom = ({ tId, handleChat, open }) => {
 
   const handleDelete = (time) => {
     const message = msgList.filter(msg => msg.time === time);
-    console.log('message', message);
     // setMsgList(prev => {
     //   return prev.filter(msg => msg !== message);
     // })
@@ -232,7 +242,6 @@ const ChatRoom = ({ tId, handleChat, open }) => {
 
     const parts = message.split(urlRegex);
 
-    console.log('parts', parts);
     return parts.map((part, index) => {
       const cleanPart = he.decode(part)
       if (cleanPart.match(urlRegex)) {
@@ -350,9 +359,17 @@ const ChatRoom = ({ tId, handleChat, open }) => {
                     {date === 'Invalid Date Invalid Date' ?
                       '' :
                       <>
-                        <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}`, position: 'relative' }}>
-                          <b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
-                          {user.admin && (msg.name == 'Aregodas' || msg.name == 'admin') &&
+                        <div style={{ margin: '6px 0px 1px 0px', color: `${(admins.includes(msg.name)) ? 'red' : 'green'}`, position: 'relative' }}>
+                          <b>
+                            {admins.includes(msg.name) && user.admin 
+                              ? msg.name 
+                              : (admins.includes(msg.name) 
+                                ? 'admin' 
+                                : msg.name)
+                            }
+                          </b>
+                          <span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>
+                          {user.admin && (admins.includes(msg.name)) &&
                             <>
                               <img src={EditIcon} className='edit-icon' style={{ width: '20px' }} onClick={() => handleEdit(msg)} alt='edit-icon' />
                               <div className='gg-trash' onClick={() => handleDelete(msg.time)}></div>

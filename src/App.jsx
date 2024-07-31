@@ -5,6 +5,7 @@ import { useAuth } from "./contexts/AuthContext";
 import { Waveform } from '@uiball/loaders';
 import Twitter from '/images/x1.png';
 import HelpChat from "./components/HelpChat";
+import { circIn } from 'framer-motion';
 
 const Home = lazy(() => import("./pages/Home"));
 const Admin = lazy(() => import("./pages/Admin"));
