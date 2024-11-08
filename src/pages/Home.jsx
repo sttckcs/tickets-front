@@ -28,7 +28,7 @@ const Home = () => {
           Bienvenido a Todoskins, tu mercado de confianza donde podrás vender,
           comprar, intercambiar skins de CS:GO y comprar balance de buff.163 al mejor precio
         </strong>
-      :
+        :
         <div className="home">
           {/* {texts.map((text, index) => (
             <strong 
@@ -43,8 +43,8 @@ const Home = () => {
           <p>¡Consulta el precio de tu <strong className="strong-pink">skin favorita</strong> abriendo un ticket aquí!</p> 
           <p>Conseguiremos la skin de tus sueños al <strong className="strong-orange">mejor precio</strong></p>
         </div>
-       }
-       <img src={skins} alt="skins" className='skins' />
+      }
+      <img src={skins} alt="skins" className='skins' loading='lazy' />
     </div>
   )
 }

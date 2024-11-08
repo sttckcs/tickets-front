@@ -25,7 +25,8 @@ const Navbar = () => {
   }
 
   const logout = async () => {
-    try {await API.post('user/logout');
+    try {
+      await API.post('user/logout');
       setAuth(false);
     } catch (error) {
       console.log(error)
@@ -36,17 +37,17 @@ const Navbar = () => {
   return (
     <div className='nav-container'>
       <div className='nav-items'>
-        <img className="nav-title" src={logo} onClick={() => navigate('/')} alt="todoskins" />
+        <img className="nav-title" src={logo} onClick={() => navigate('/')} loading="lazy" alt="todoskins" />
         <img src={settingsIcon} className='settings' alt='settings' />
         {(user && !user.admin) && <NavLink to={'/profile'}>
           <img src={userIcon} alt='user logo' className='user-icon' />
         </NavLink>}
-        {user && 
+        {user &&
           <>
             <img src={notisIcon} alt='mail logo' className='notis-icon' onClick={() => setNotisBox(prev => !prev)} />
             {notis.length < 1 ? '' : <div className='noti'>{notis.length}</div>}
-            {notis.length > 0 && notisBox && 
-              <div className='notis' style={ colorMode === 'dark' ? { textColor: 'white' } : {} }>
+            {notis.length > 0 && notisBox &&
+              <div className='notis' style={colorMode === 'dark' ? { textColor: 'white' } : {}}>
                 {notis.map(noti => {
                   if (noti === 'xx21') return <NavLink to={`/profile`} key={noti} onClick={() => setNotisBox(false)}>Necesitas añadir los datos de facturación</NavLink>
                   else return <NavLink to={`/chat/${noti}`} key={noti} onClick={() => setNotisBox(false)}>Nuevo mensaje del ticket {noti.substring(0, 8)}</NavLink>

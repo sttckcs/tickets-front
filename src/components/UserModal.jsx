@@ -99,7 +99,7 @@ const UserModal = ({ open, setOpen, mode }) => {
       }
     }
   };
-
+  1
   const handleClose = () => {
     if (mode === "edit" || mode === "billing") setNewUser(user);
     onClose();
@@ -113,6 +113,10 @@ const UserModal = ({ open, setOpen, mode }) => {
 
   const handleForgotten = async (e) => {
     e.preventDefault();
+    if (!emailPattern.test(email)) {
+      toast.error('Introduce un correo válido');
+      return;
+    }
     try {
       await API.post("user/recovery", {
         email,

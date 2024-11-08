@@ -20,9 +20,20 @@
   font-family: Teko-Regular, Helvetica;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100%;
+}
+
 main {
-  cursor: url('/images/cursor-sm.png'), auto;
-  color: rgb(75, 87, 218);
+  cursor: url('/images/cursor-sm.png') 10 7, auto;
+  color: rgb(109, 117, 208);
   background-image: url('/images/background.png');
   background-size: cover;
   background-position: center;
@@ -32,8 +43,6 @@ main {
   display: flex;
   justify-content: center;
   align-items: start;
-  -webkit-user-select: none;
-  user-select: none;
   z-index: 999;
 }
 
@@ -44,6 +53,7 @@ main {
 form input {
   width: 90%;
 }
+
 .calendar input {
   width: 75px;
   background-color: white;
@@ -115,11 +125,11 @@ form input {
   z-index: 999;
 }
 
-.notis > a {
+.notis>a {
   padding: 5px;
 }
 
-.notis > a:hover {
+.notis>a:hover {
   background-color: var(--chakra-colors-gray-500)
 }
 .nav-title {
@@ -283,7 +293,8 @@ form input {
   justify-content: center;
 }
 
-input, textarea {
+input,
+textarea {
   margin: 10px;
   padding: 4px;
 }
@@ -321,11 +332,14 @@ textarea {
   gap: 20px;
 }
 
-#nav a.active, .faq-container a.active {
+#nav a.active,
+.faq-container a.active {
   background-color: var(--chakra-colors-gray-400);
 }
 
-#nav a, #nav button, .faq-container a {
+#nav a,
+#nav button,
+.faq-container a {
   margin: 3px 0px;
   padding: 6px 15px;
   font-size: 1.75rem;
@@ -336,13 +350,14 @@ textarea {
   text-transform: uppercase;
 }
 
-#nav a:hover, #nav button:hover {
+#nav a:hover,
+#nav button:hover {
   color: rgb(255, 122, 49);
   text-shadow:
-  0 0 5px rgba(255, 122, 49, 0.35),
-  0 0 6px rgba(255, 122, 49, 0.35),
-  0 0 7px rgba(255, 122, 49, 0.35),
-  0 0 8px rgba(255, 122, 49, 0.35);
+    0 0 5px rgba(255, 122, 49, 0.35),
+    0 0 6px rgba(255, 122, 49, 0.35),
+    0 0 7px rgba(255, 122, 49, 0.35),
+    0 0 8px rgba(255, 122, 49, 0.35);
 }
 
 .tickets {
@@ -476,7 +491,7 @@ textarea {
   align-items: center;
 }
 
-form > input {
+form>input {
   padding-left: 10px;
 }
 
@@ -497,7 +512,7 @@ form > input {
   /* background-color: rgba(3, 3, 21, 0.9); */
 }
 
-.chat-window > h5 {
+.chat-window>h5 {
   padding: 20px 5px;
 }
 
@@ -506,7 +521,7 @@ option {
 }
 
 .faq {
-  max-width: 1000px;
+  max-width: 1400px;
   max-height: 70vh;
   margin: 0 auto;
   overflow-y: auto;
@@ -526,17 +541,17 @@ option {
   font-size: 1.5rem;
 }
 
-.links > a {
+.links>a {
   font-weight: 600;
 }
 
-.links > a:hover {
+.links>a:hover {
   color: rgb(255, 122, 49);
   text-shadow:
-  0 0 5px rgba(255, 122, 49, 0.35),
-  0 0 6px rgba(255, 122, 49, 0.35),
-  0 0 7px rgba(255, 122, 49, 0.35),
-  0 0 8px rgba(255, 122, 49, 0.35);
+    0 0 5px rgba(255, 122, 49, 0.35),
+    0 0 6px rgba(255, 122, 49, 0.35),
+    0 0 7px rgba(255, 122, 49, 0.35),
+    0 0 8px rgba(255, 122, 49, 0.35);
 }
 
 .faq-link {
@@ -545,13 +560,14 @@ option {
   left: 0;
 }
 
-.faq > h1, .links > h1 {
+.faq>h1,
+.links>h1 {
   font-weight: 700;
   margin-bottom: 10px;
   font-size: 2.5rem;
 }
 
-.faq > p {
+.faq>p {
   padding: 1px;
 }
 
@@ -568,6 +584,7 @@ option {
   font-size: 1.5rem;
   margin: 10px auto;
 }
+
 .conversations {
   display: flex;
   flex-wrap: wrap;
@@ -596,6 +613,29 @@ option {
   padding: 3px 10px;
   color: white;
   font-size: 1.5rem;
+}
+
+.chat-options {
+  font-size: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-options h2 {
+  display: flex;
+  gap: 30px;
+}
+
+.chat-panel {
+  display: flex;
+  gap: 20px;
+}
+
+.chat-panel p {
+  margin-left: 4px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: rgb(200, 200, 255)
 }
 
 .chat-popout:focus {
@@ -680,7 +720,7 @@ option {
 .lista-facturas {
   display: flex;
   align-items: center;
-  gap: 20px; 
+  gap: 20px;
   justify-content: space-between;
   margin-bottom: 10px;
   font-size: 1.5rem;
@@ -702,7 +742,6 @@ option {
   margin: 10px 0px;
   max-width: 50%;
 }
-
 
 .support {
   width: 90px;
@@ -737,20 +776,23 @@ option {
     margin-bottom: 10px;
   }
 
-  #nav a, #nav button, .faq-container a {
+  #nav a,
+  #nav button,
+  .faq-container a {
     margin: 2px 0px;
     padding: 3px 15px;
     font-size: 1.25rem;
   }
 
-  .lista-facturas, .factura {
+  .lista-facturas,
+  .factura {
     font-size: 1rem;
   }
 
   .factura {
     width: 100%;
   }
-  
+
   .descarga-icon {
     height: 16px;
   }

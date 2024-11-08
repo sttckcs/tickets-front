@@ -28,32 +28,35 @@ const Tickets = () => {
           <Waveform color="white" />
         </div> :
         <>
-          {user.idNeverlate ? 
+          {user.banned ? <h1 className='banned'>Estás baneado</h1> :
             <>
-              <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <Button style={{ margin: '10px', fontSize: '1.5rem' }} onClick={() => setNewOpen(true)}>Nuevo Ticket</Button>
-              </nav>
-              <div className="tickets">
-                {[...user.tickets].reverse().map((ticket) => 
-                  <div 
-                    key={ticket._id} 
-                    className="ticket" 
-                    style={{ backgroundColor: ticket.open ? 'green' : 'red' }}
-                    onClick={() => handleDetails(ticket)}
-                  >
-                    <strong>{ticket._id.substring(0,8)}</strong>
+              {user.idNeverlate ?
+                <>
+                  <nav style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button style={{ margin: '10px', fontSize: '1.5rem' }} onClick={() => setNewOpen(true)}>Nuevo Ticket</Button>
+                  </nav>
+                  <div className="tickets">
+                    {[...user.tickets].reverse().map((ticket) =>
+                      <div
+                        key={ticket._id}
+                        className="ticket"
+                        style={{ backgroundColor: ticket.open ? 'green' : 'red' }}
+                        onClick={() => handleDetails(ticket)}
+                      >
+                        <strong>{ticket._id.substring(0, 8)}</strong>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </> : 
-          <>
-            <h1 style={{ marginTop: '10px', fontSize: '2.5rem', fontWeight: '600' }}>Necesitas añadir los datos de facturación</h1>
-            <Button style={{ margin: '20px' }}><NavLink to={`/profile`}>Ve al perfil</NavLink></Button>
-          </>
+                </> :
+                <>
+                  <h1 style={{ marginTop: '10px', fontSize: '2.5rem', fontWeight: '600' }}>Necesitas añadir los datos de facturación</h1>
+                  <Button style={{ margin: '20px' }}><NavLink to={`/profile`}>Ve al perfil</NavLink></Button>
+                </>
+              }
+            </>
           }
         </>
       }
-
       <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} />
       <NewTicketModal open={newOpen} setOpen={setNewOpen} />
     </>

@@ -97,7 +97,7 @@ const UserProfile = () => {
   return (
     <>
       {loading ?
-        <div className="loader">
+        <div className="loader-sm">
           <Waveform color="white" />
         </div> :
         profileUser ?
@@ -132,7 +132,7 @@ const UserProfile = () => {
           </div>
           <TicketDetailModal open={detailOpen} setOpen={setDetailOpen} ticket={currentTicket} handleChat={handleChat} handleCloseT={handleClose} handleDelete={handleDelete} />
           </>
-           : 
+          :
           <strong>Error 404: Usuario no encontrado</strong>
       }
     </>

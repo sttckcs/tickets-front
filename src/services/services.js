@@ -18,10 +18,10 @@ export const APIHeaders = {
 };
 
 export const API = axios.create({
-    baseURL : 'http://localhost:3001',
+    baseURL : 'https://todoskins.com/api',
     withCredentials: true,
     timeout: 20000,
     headers : APIHeaders
 });
 
-export const socketURL = 'http://localhost:3001'
+export const socketURL = 'https://todoskins.com'

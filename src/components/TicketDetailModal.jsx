@@ -41,23 +41,49 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
       toast.error('Ha habido un error');
     }
   }
-  
+
+  const handleMark = async () => {
+    try {
+      const res = await API.post(
+        'ticket/mark', {
+        _id: ticket._id
+      }
+      );
+      if (res.data.marked) toast.success('Ticket desmarcado');
+      else toast.success('Ticket marcado');
+      setMarked(!res.data.marked);
+    } catch (error) {
+      toast.error('Ha habido un error')
+    }
+  }
+
   const handleNotify = async () => {
     setNotify(!notify)
     try {
       await API.post(
         'ticket/notify', {
-          id: ticket._id,
-          admin: user.admin,
-          notify: !notify
-        }
+        id: ticket._id,
+        admin: user.admin,
+        notify: !notify
+      }
       );
       toast.success('Notificaciones actualizadas')
     } catch (error) {
       toast.error('Ha habido un error')
     }
   }
-  
+
+  const openItemDetails = async (item) => {
+    if (item) {
+      const res = await API.get('inventory/' + item);
+      console.log(res);
+      if (res.status === 200) {
+        setCurrentItem(res.data);
+        setShowInspectItem(true);
+      }
+    }
+  }
+
   return (
     <>
       <Modal blockScrollOnMount={false} closeOnOverlayClick={false} isOpen={open} onClose={handleClose} size='full'>
@@ -71,7 +97,7 @@ const TicketDetailModal = ({ open, setOpen, ticket, setTicket, handleChat, handl
                 <h1>Id: {ticket._id.substring(0,8)}</h1>
                 {user.admin && <h1>Creado por: <NavLink to={`${ticket.user._id}/profile`}><strong>{ticket.user.nick}</strong></NavLink></h1>}
                 <h2>Categoría: {ticket.category === 'sell' ? 'venta' : ticket.category === 'buy' ? 'compra' : 'balance'}</h2>
-                <h2>Fecha: {new Date(ticket.createdAt).toLocaleDateString('es-ES')} {new Date(ticket.createdAt).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}</h2>
+                <h2>Fecha: {new Date(ticket.createdAt).toLocaleDateString('es-ES')} {new Date(ticket.createdAt).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</h2>
                 <h2>Estado: {user.admin ? ticket.open && !ticket.adminLast ? 'Pendiente' : ticket.open && ticket.adminLast ? 'Leído' : 'Cerrado' : ticket.open ? 'Abierto' : 'Cerrado'}</h2>
                 <Checkbox isChecked={notify} onChange={handleNotify}><p style={{ fontSize: '1.25rem', marginRight: '20px' }} >Recibe notificaciones por correo</p></Checkbox>
                 {user.admin && <Checkbox isChecked={marked} onChange={handleMark}><p style={{ fontSize: '1.25rem' }} >Ticket marcado</p></Checkbox>}

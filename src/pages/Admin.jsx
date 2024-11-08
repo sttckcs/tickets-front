@@ -66,7 +66,7 @@ const Admin = () => {
         open }
       );
       const updatedTickets = tickets.map(ticket => {
-        if(ticket._id === _id) {
+        if (ticket._id === _id) {
           return { ...ticket, open: !open }
         }
         return ticket;
@@ -75,6 +75,13 @@ const Admin = () => {
       setTickets(updatedTickets)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const ticketNewTab = (ticket, e) => {
+    if (e.button == 2) {
+      e.preventDefault();
+      window.open(`/tickets/${ticket._id}`, '_blank')
     }
   }
 
@@ -90,6 +97,10 @@ const Admin = () => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const nullTicket = () => {
+    setCurrentTicket(null);
   }
 
   const handleChat = async (_id) => {
@@ -123,7 +134,7 @@ const Admin = () => {
 
     return (ticketDate >= startDate && ticketDate <= endDate)
   })
-  
+
   if (order === 'oldest') filteredTickets = [...filteredTickets].reverse();
 
   return (
@@ -156,18 +167,18 @@ const Admin = () => {
         <Box w='230px'>
           <Input style={{ fontSize: '1.25rem', borderColor: textColor, height: '38px', paddingLeft: '8px', width: '220px', backgroundColor: bgColor, color: textColor }} _placeholder={{ color: textColor }} type='text' placeholder='Busca por nombre' onChange={(e) => setSearch(e.target.value)} />
         </Box>
-        <Box w='90px'>
+        <Box w='110px'>
           <Button onClick={() => setCalOpen(true)}>Fechas</Button>
         </Box>
-        <Box w='115px'>
+        <Box w='150px'>
           <Button onClick={() => setMailOpen(true)}>Envía correo</Button>
         </Box>
         <CalendarModal open={calOpen} setOpen={setCalOpen} selectionRange={selectionRange} handleSelect={handleSelect} />
       </nav>
-      {loading ? 
+      {loading ?
         <div className="loader-sm">
           <Waveform color="white" />
-        </div> : 
+        </div> :
         <>
           <div className="tickets">
             {filteredTickets.map((ticket) => {

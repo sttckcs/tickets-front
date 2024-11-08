@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { io } from 'socket.io-client'
 import { useAuth } from '../contexts/AuthContext';
-import { useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { API, socketURL } from '../services/services';
 import { Waveform } from '@uiball/loaders';
 import { Button, useColorModeValue, Input } from '@chakra-ui/react'
@@ -9,7 +9,7 @@ import EditIcon from '/images/edit.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const socket = io(socketURL);
+const socket = io(socketURL, { path: '/api/socket.io/', transports: ['websocket'], secure: true });
 
 const ChatRoom = ({ tId, handleChat, open }) => {
   const { id } = useParams();
@@ -86,11 +86,14 @@ const ChatRoom = ({ tId, handleChat, open }) => {
           );
           if (res.data.open) {
             setAccess(true)
-            if (res.data.user.nick !== user.nick) setOwner(res.data.user.nick)
-            else setOwner(user.nick)
-          }
+            setCurrentTicket(res.data)
+            if (res.data.user.nick !== user.nick) {
+              setOwner(res.data.user.nick)
+              setOid(res.data.user._id)
+            }
+          } else setAccess(false)
         } catch (error) {
-          console.log(error)
+          toast.error(error)
         }
       }
     }
@@ -102,7 +105,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
         );
         if (msgList !== res.data.messages) setMsgList(res.data.messages)
       } catch (error) {
-        console.log(error)
+        toast.error(error)
       }
       setLoading(false)
     };
@@ -250,7 +253,7 @@ const ChatRoom = ({ tId, handleChat, open }) => {
                   const date = `${new Date(msg.time).toLocaleDateString('es-ES', {day: '2-digit', month:'2-digit', year:'2-digit'})} ${new Date(msg.time).toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`
                   return <li key={index} style={{ padding: '5px 0px', width: '100%' }}>
                     {date === 'Invalid Date Invalid Date' ?
-                      '' : 
+                      '' :
                       <>
                         <div style={{ margin: '6px 0px 1px 0px', color: `${(msg.name == 'Aregodas' || msg.name == 'admin') ? 'red' : 'green'}`, position: 'relative' }}>
                           <b>{msg.name} </b><span style={{ fontSize: '1rem', paddingLeft: '4px' }} >{date}</span>

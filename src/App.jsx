@@ -4,6 +4,9 @@ import { useColorModeValue } from '@chakra-ui/react';
 import { useAuth } from "./contexts/AuthContext";
 import { Waveform } from '@uiball/loaders';
 import Twitter from '/images/x1.png';
+import HelpChat from "./components/HelpChat";
+import { circIn } from 'framer-motion';
+
 
 const Home = lazy(() => import("./pages/Home"));
 const Admin = lazy(() => import("./pages/Admin"));
@@ -17,13 +20,12 @@ const Chat = lazy(() => import("./pages/Chat"));
 const ChatRoom = lazy(() => import("./pages/ChatRoom"));
 const VerifyUser = lazy(() => import("./pages/VerifyUser"));
 const ChangePassword = lazy(() => import("./pages/ChangePassword"));
-const HelpChat = lazy(() => import("./components/HelpChat"));
-const Sell = lazy(() => import("./pages/Sell"));
 const Links = lazy(() => import("./pages/Links"));
 const Users = lazy(() => import("./pages/Users"));
 const Ticket = lazy(() => import("./pages/Ticket"));
-
-
+const Inventory = lazy(() => import("./pages/Inventory"))
+const HelpChat = lazy(() => import("./components/HelpChat"));
+const Sell = lazy(() => import("./pages/Sell"));
 
 function App() {
   const [, startTransition] = useTransition();
@@ -34,11 +36,11 @@ function App() {
   const changeLoad = () => {
     setLoad(true)
   }
-  
+
   return (
     <>
       <main style={{ backgroundColor: bg }}>
-        {loading ? 
+        {loading ?
           <div className="loader">
             <Waveform color="white" />
           </div> : 

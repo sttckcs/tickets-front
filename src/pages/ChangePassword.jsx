@@ -59,7 +59,7 @@ const ChangePassword = () => {
   return (
     <div>
       {loading ?
-        <div className="loader">
+        <div className="loader-sm">
           <Waveform color="white" />
         </div> :
         <div style={{ margin: '20px auto', width: '400px', fontSize: '1.5rem' }}>
@@ -83,9 +83,9 @@ const ChangePassword = () => {
                 Cambiar
               </Button>
             </form>
-            : 
+            :
             <h1>Ha habido un error al intentar cambiar tu contraseña</h1>
-            }
+          }
         </div>
         }
         <ToastContainer theme="colored" position="top-center" limit={3} />

@@ -10,7 +10,7 @@ import "../index.css";
 
 const AuthContext = createContext({
   auth: null,
-  setAuth: () => {},
+  setAuth: () => { },
   user: null,
 });
 
